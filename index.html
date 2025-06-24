@@ -1,54 +1,135 @@
-﻿⚠️ ALERT: Telegram Scam Warning body { font-family: Arial, sans-serif; padding: 20px; transition: background-color 0.3s, color 0.3s; } #language { font-size: 16px; padding: 5px; margin-bottom: 20px; } .lang-section { display: none; } .lang-section.active { display: block; } .dark-mode { background-color: #121212; color: #f0f0f0; } .dark-mode a { color: #90caf9; } .theme-toggle { float: right; padding: 6px 10px; margin-bottom: 10px; cursor: pointer; font-size: 14px; } #alert-banner { background-color: #c62828; color: white; font-weight: bold; padding: 12px; margin-bottom: 20px; border-radius: 8px; } 🌙 Toggle Theme 
 
-⚠️ ALERT by Veselin Ignatov
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>⚠️ ALERT by Veselin Ignatov</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    #language {
+      font-size: 16px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+    .lang-section {
+      display: none;
+    }
+    .lang-section.active {
+      display: block;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+    .dark-mode a {
+      color: #90caf9;
+    }
+    .theme-toggle {
+      float: right;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .alert-banner {
+      background-color: #c62828;
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 
-🇧🇬 Български🇺🇦 Українською🇬🇧 English🇨🇿 Česky🇵🇱 Polski 
+  <select id="language" onchange="changeLanguage(this.value)">
+    <option value="bg">🇧🇬 Български</option>
+    <option value="uk">🇺🇦 Українською</option>
+    <option value="en" selected>🇬🇧 English</option>
+    <option value="cs">🇨🇿 Česky</option>
+    <option value="pl">🇵🇱 Polski</option>
+  </select>
 
-⚠️ Warning: Telegram scam alert 
+  <hr>
 
-Напоследък измамниците рекламират схема, в която много лесни пари: „печелиш 9лв. на видеоклип“.
-В действителност получаваш само 2 лв. След около 15 клипа ти дават „бонус“ от 200–300лв.
-На 20-ия клип ти казват, че си достигнал лимита за деня и предлага нова „възможност“.
-Искат да изпратиш 142 лв., за да получиш 2300 лв. след час. Това е измама.
+  <div id="bg" class="lang-section">
+    <div class="alert-banner">⚠️ ПРЕДУПРЕЖДЕНИЕ: Предупреждение за измама в Telegram</div>
+    <p>Напоследък измамниците рекламират схема, в която много лесни пари: „печелиш 9лв. на видеоклип“.</p>
+    <p>В действителност получаваш само 2 лв. След около 15 клипа ти дават „бонус“ от 200–300лв.</p>
+    <p>На 20-ия клип ти казват, че си достигнал лимита за деня и предлага нова „възможност“.</p>
+    <p>Искат да изпратиш 142 лв., за да получиш 2300 лв. след час. Това е измама.</p>
+    <p><strong>Имена на използваните ботове:</strong><br>Money storm<br>Cash crafter</p>
+  </div>
 
-Имена на използваните ботове:
-Money storm
-Cash crafter
+  <div id="uk" class="lang-section">
+    <div class="alert-banner">⚠️ ПОПЕРЕДЖЕННЯ: Шахрайство в Telegram</div>
+    <p>Нещодавно шахраї рекламують схему, за якою можна дуже легко заробити: «ви заробляєте 9 лв. за відео».</p>
+    <p>Насправді ви отримуєте лише 2 лв. Приблизно після 15 відео вони дають вам «бонус» у розмірі 200–300 лв.</p>
+    <p>На 20-му відео вони повідомляють, що ви досягли ліміту на день і пропонують нову «можливість».</p>
+    <p>Вони хочуть, щоб ви надіслали 142 лв., щоб отримати 2300 лв. за годину. Це шахрайство.</p>
+    <p><strong>Імена ботів:</strong><br>Money storm<br>Cash crafter</p>
+  </div>
 
-Нещодавно шахраї рекламують схему, за якою можна дуже легко заробити: «ви заробляєте 9 лв. за відео».
-Насправді ви отримуєте лише 2 лв. Приблизно після 15 відео вони дають вам «бонус» у розмірі 200–300 лв.
-На 20-му відео вони повідомляють вам, що ви досягли ліміту на день, і пропонують нову «можливість».
-Вони хочуть, щоб ви надіслали 142 лв., щоб отримати 2300 лв. за годину. Це шахрайство.
+  <div id="en" class="lang-section active">
+    <div class="alert-banner">⚠️ WARNING: Scam alert on Telegram</div>
+    <p>Recently, scammers have been promoting a scheme where you can supposedly earn 9 BGN per video.</p>
+    <p>In reality, you receive only 2 BGN. After about 15 videos, they give you a “bonus” of 200–300 BGN.</p>
+    <p>On the 20th video, they tell you you've reached your daily limit and offer a new “opportunity”.</p>
+    <p>They ask you to send 142 BGN to receive 2300 BGN in an hour. This is a scam.</p>
+    <p><strong>Bot names used:</strong><br>Money storm<br>Cash crafter</p>
+  </div>
 
-Імена ботів, що використовуються:
-Money storm
-Cash crafter
+  <div id="cs" class="lang-section">
+    <div class="alert-banner">⚠️ VAROVÁNÍ: Podvod na Telegramu</div>
+    <p>Podvodníci nedávno propagují systém, ve kterém si můžete snadno vydělat peníze: „za každé video vyděláte 9 levů“.</p>
+    <p>Ve skutečnosti dostanete pouze 2 levy. Po zhruba 15 videích vám dají „bonus“ 200–300 levů.</p>
+    <p>U 20. videa vám sdělí, že jste dosáhli denního limitu a nabídnou novou „příležitost“.</p>
+    <p>Chtějí, abyste poslali 142 levů a za hodinu obdrželi 2300 levů. Toto je podvod.</p>
+    <p><strong>Názvy botů:</strong><br>Money storm<br>Cash crafter</p>
+  </div>
 
-Recently, scammers have been advertising a scheme claiming you can earn 9 BGN per video.
-In reality, you only receive 2 BGN. After around 15 videos, they give you a “bonus” of 200–300 BGN.
-By the 20th video, they say you've hit your daily limit and offer a “new opportunity.”
-They ask you to send 142 BGN to receive 2300 BGN in one hour. This is a scam.
+  <div id="pl" class="lang-section">
+    <div class="alert-banner">⚠️ OSTRZEŻENIE: Oszustwo na Telegramie</div>
+    <p>Ostatnio oszuści reklamują schemat, w którym można zarobić bardzo łatwe pieniądze: „zarabiasz 9 lv. za film”.</p>
+    <p>W rzeczywistości otrzymujesz tylko 2 lv. Po około 15 filmach dają ci „bonus” w wysokości 200–300 lv.</p>
+    <p>W 20. filmie mówią ci, że osiągnąłeś limit na dany dzień i oferują nową „okazję”.</p>
+    <p>Chcą, abyś wysłał 142 lv., aby otrzymać 2300 lv. w ciągu godziny. To oszustwo.</p>
+    <p><strong>Nazwy botów:</strong><br>Money storm<br>Cash crafter</p>
+  </div>
 
-Bot names used:
-Money storm
-Cash crafter
+  <hr>
 
-Podvodníci nedávno propagují systém, ve kterém si můžete snadno vydělat peníze: „za každé video vyděláte 9 levů“.
-Ve skutečnosti dostanete pouze 2 levy. Po zhruba 15 videích vám dají „bonus“ 200–300 levů.
-U 20. videa vám sdělí, že jste dosáhli denního limitu a nabídnou novou „příležitost“.
-Chtějí, abyste poslali 142 levů a za hodinu obdrželi 2300 levů. Toto je podvod.
+  <script>
+    function changeLanguage(lang) {
+      localStorage.setItem('language', lang);
+      const sections = document.querySelectorAll('.lang-section');
+      sections.forEach(section => section.classList.remove('active'));
+      const active = document.getElementById(lang);
+      if (active) active.classList.add('active');
+    }
 
-Jména použitých botů:
-Money storm
-Cash crafter
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
 
-Ostatnio oszuści reklamują schemat, w którym można zarobić bardzo łatwe pieniądze: „zarabiasz 9 lv. za film”.
-W rzeczywistości otrzymujesz tylko 2 lv. Po około 15 filmach dają ci „bonus” w wysokości 200–300 lv.
-W 20. filmie mówią ci, że osiągnąłeś limit na dany dzień i oferują nową „okazję”.
-Chcą, abyś wysłał 142 lv., aby otrzymać 2300 lv. w ciągu godziny. To jest oszustwo.
+    document.addEventListener("DOMContentLoaded", function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
 
-Nazwy używanych botów:
-Money storm
-Cash crafter
-
-document.addEventListener("DOMContentLoaded", function () { const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'dark') { document.body.classList.add('dark-mode'); } const savedLang = localStorage.getItem('language'); const defaultLang = savedLang || 'en'; changeLanguage(defaultLang); document.getElementById('language').value = defaultLang; }); function changeLanguage(lang) { localStorage.setItem('language', lang); const sections = document.querySelectorAll('.lang-section'); sections.forEach(section => section.classList.remove('active')); const active = document.getElementById(lang); if (active) active.classList.add('active'); const alertTexts = { bg: '⚠️ Предупреждение: Телеграм измама', uk: '⚠️ Увага: Шахрайство в Telegram', en: '⚠️ Warning: Telegram scam alert', cs: '⚠️ Varování: Podvod na Telegramu', pl: '⚠️ Ostrzeżenie: Oszustwo na Telegramie' }; document.getElementById('alert-text').textContent = alertTexts[lang] || alertTexts['en']; } function toggleTheme() { document.body.classList.toggle('dark-mode'); const isDark = document.body.classList.contains('dark-mode'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); } and 
+      const savedLang = localStorage.getItem('language') || 'en';
+      document.getElementById('language').value = savedLang;
+      changeLanguage(savedLang);
+    });
+  </script>
+</body>
+</html>
