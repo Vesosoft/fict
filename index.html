@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>⚠️ ALERT by Veselin Ignatov</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    #language {
+      font-size: 16px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+    .lang-section {
+      display: none;
+    }
+    .lang-section.active {
+      display: block;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+    .dark-mode a {
+      color: #90caf9;
+    }
+    .theme-toggle {
+      float: right;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
+  <h2>⚠️ ALERT by Veselin Ignatov</h2>
+
+  <select id="language" onchange="changeLanguage(this.value)">
+    <option value="bg">🇧🇬 Български</option>
+    <option value="uk">🇺🇦 Українською</option>
+    <option value="en" selected>🇬🇧 English</option>
+    <option value="cs">🇨🇿 Česky</option>
+    <option value="pl">🇵🇱 Polski</option>
+  </select>
+
+  <hr>
+
+  <!-- Твоето многоезично съдържание: без промени, супер е! -->
+  <div id="bg" class="lang-section">... (български текст) ...</div>
+  <div id="uk" class="lang-section">... (украински текст) ...</div>
+  <div id="en" class="lang-section active">... (english text) ...</div>
+  <div id="cs" class="lang-section">... (česky text) ...</div>
+  <div id="pl" class="lang-section">... (polski text) ...</div>
+
+  <hr>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
+
+      const savedLang = localStorage.getItem('language');
+      const defaultLang = savedLang || 'en';
+      changeLanguage(defaultLang);
+      document.getElementById('language').value = defaultLang;
+    });
+
+    function changeLanguage(lang) {
+      localStorage.setItem('language', lang);
+      const sections = document.querySelectorAll('.lang-section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+      const active = document.getElementById(lang);
+      if (active) active.classList.add('active');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+  </script>
+</body>
+</html>
