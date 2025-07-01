@@ -34,11 +34,17 @@
     button:hover {
       background: #555;
     }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+  />
 </head>
 <body>
-
   <h2>Veso's PGN Viewer 🤠</h2>
 
   <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea>
@@ -46,35 +52,37 @@
   <button id="loadBtn">Зареди партията</button>
   <button id="shareBtn">Сподели във Facebook</button>
 
-  <div id="board" style="width: 400px; margin-top: 20px;"></div>
+  <div id="board"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
   <script>
-    const board = Chessboard('board', {
+    // Инициализация на дъската
+    const board = Chessboard("board", {
       draggable: false,
-      position: 'start',
+      position: "start",
     });
 
     const chess = new Chess();
 
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgn = document.getElementById('pgn').value;
+    // Зареждане на PGN
+    document.getElementById("loadBtn").addEventListener("click", () => {
+      const pgn = document.getElementById("pgn").value;
       if (chess.load_pgn(pgn)) {
         board.position(chess.fen());
       } else {
-        alert('Невалиден PGN запис!');
+        alert("Невалиден PGN запис!");
       }
     });
 
-    document.getElementById('shareBtn').addEventListener('click', (event) => {
+    // Споделяне във Facebook
+    document.getElementById("shareBtn").addEventListener("click", (event) => {
       event.preventDefault();
       const url = encodeURIComponent(window.location.href);
       const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      window.open(fbUrl, 'fbShareWindow', 'width=600,height=400');
+      window.open(fbUrl, "fbShareWindow", "width=600,height=400");
     });
   </script>
-
 </body>
 </html>
