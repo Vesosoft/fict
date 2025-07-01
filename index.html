@@ -35,6 +35,7 @@
       background: #555;
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
 </head>
 <body>
 
@@ -75,16 +76,7 @@
       event.preventDefault();
       const url = encodeURIComponent(window.location.href);
       const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      const width = 600;
-      const height = 400;
-      const left = (screen.width - width) / 2;
-      const top = (screen.height - height) / 2;
-
-      window.open(
-        fbUrl,
-        'fbShareWindow',
-        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-      );
+      window.open(fbUrl, 'fbShareWindow', 'width=600,height=400');
     });
   </script>
 
