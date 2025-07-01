@@ -48,33 +48,3 @@
 
   <div id="board" style="width: 400px; margin-top: 20px;"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
-
-  <script>
-    const board = Chessboard('board', {
-      draggable: false,
-      position: 'start',
-    });
-
-    const chess = new Chess();
-
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgn = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgn)) {
-        board.position(chess.fen());
-      } else {
-        alert('Невалиден PGN запис!');
-      }
-    });
-
-    document.getElementById('shareBtn').addEventListener('click', (event) => {
-      event.preventDefault();
-      const url = encodeURIComponent(window.location.href);
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      window.open(fbUrl, 'fbShareWindow', 'width=600,height=400');
-    });
-  </script>
-
-</body>
-</html>
