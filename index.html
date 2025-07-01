@@ -2,19 +2,24 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Тест бутон</title>
+  <title>Тест на Chessboard и Chess.js</title>
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #board { width: 400px; margin-top: 20px; }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
 </head>
 <body>
-  <h2>Тест на бутона</h2>
-  <button id="testBtn">Натисни ме</button>
+  <h2>Тест на дъската</h2>
+  <div id="board"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
 
   <script>
-    document.getElementById('testBtn').addEventListener('click', () => {
-      alert('Бутонът работи!');
+    const board = Chessboard('board', {
+      position: 'start',
+      draggable: false
     });
   </script>
 </body>
