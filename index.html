@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Veso's PGN Viewer</title>
+<title>Veso's PGN Viewer 🤠💙</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -11,8 +11,61 @@
     background-color: #1e1e1e;
     color: #f0f0f0;
   }
+  #header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  h2 {
+    color: #00c6ff;
+    margin: 0;
+  }
+  /* Language dropdown */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .dropbtn {
+    background-color: #444;
+    color: white;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .dropbtn:hover {
+    background-color: #666;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2a2a2a;
+    min-width: 140px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border-radius: 4px;
+    z-index: 1;
+    margin-top: 5px;
+  }
+  .dropdown-content div {
+    color: #f0f0f0;
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .dropdown-content div:hover {
+    background-color: #444;
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
   #board {
     width: 400px;
+    max-width: 100%;
     margin-bottom: 10px;
   }
   #pgn {
@@ -23,17 +76,35 @@
     background-color: #2b2b2b;
     color: #ffffff;
     border: 1px solid #444;
+    resize: vertical;
   }
-  #controls button, #shareBtn, #copyLinkBtn {
-    margin-right: 5px;
-    padding: 5px 10px;
+  #controls button, #copyLinkBtn, #loadFileBtn {
+    margin: 5px 5px 5px 0;
+    padding: 7px 14px;
     cursor: pointer;
     background-color: #444;
     color: #fff;
     border: none;
     border-radius: 4px;
+    font-size: 14px;
+    user-select: none;
   }
-  #controls button:hover, #shareBtn:hover, #copyLinkBtn:hover {
+  #controls button:hover, #copyLinkBtn:hover, #loadFileBtn:hover {
+    background-color: #666;
+  }
+  #shareBtn {
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+    padding: 7px 14px;
+    background-color: #444;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+  }
+  #shareBtn:hover {
     background-color: #666;
   }
   .info {
@@ -41,18 +112,63 @@
     padding: 10px;
     border: 1px solid #444;
     margin-bottom: 10px;
+    line-height: 1.4;
   }
-  h2 {
-    color: #00c6ff;
+
+  /* Responsive layout */
+  @media (max-width: 600px) {
+    #header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    #controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #board {
+      width: 100%;
+      max-width: 100%;
+    }
+    #pgn {
+      height: 150px;
+    }
+    #controls button, #copyLinkBtn, #loadFileBtn, #shareBtn {
+      flex: 1 1 45%;
+      font-size: 16px;
+      padding: 10px;
+    }
+    .dropdown {
+      width: 100%;
+    }
+    .dropbtn {
+      width: 100%;
+      text-align: left;
+    }
+    .dropdown-content {
+      min-width: 100%;
+      box-sizing: border-box;
+    }
   }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
 </head>
 <body>
 
-<h2>Veso's PGN Viewer 🤠💙</h2>
+<div id="header">
+  <h2>Veso's PGN Viewer 🤠💙</h2>
+  <div class="dropdown" aria-label="Избор на език">
+    <button class="dropbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">Език: 🇧🇬 Български ▼</button>
+    <div class="dropdown-content" id="langMenu" role="menu">
+      <div role="menuitem" data-lang="bg">🇧🇬 Български</div>
+      <div role="menuitem" data-lang="en">🇬🇧 English</div>
+      <div role="menuitem" data-lang="ua">🇺🇦 Українська</div>
+    </div>
+  </div>
+</div>
 
-<div class="info">
+<div class="info" id="infoBlock">
   📝 Поставете тук своя шахматен запис (PGN) — например последната си партия от онлайн платформа.
 </div>
 
@@ -66,7 +182,9 @@
   <button id="nextBtn">Напред</button>
   <button id="endBtn">Край</button>
   <button id="copyLinkBtn">Копирай линка</button>
-  <button id="shareBtn">Сподели във Facebook</button>
+  <a id="shareBtn" href="#" target="_blank" rel="noopener">Сподели във Facebook</a>
+  <button id="loadFileBtn">📂 Зареди PGN файл</button>
+  <input type="file" id="fileInput" accept=".pgn" style="display:none;" />
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
@@ -81,102 +199,57 @@
   let moves = [];
   let currentMoveIndex = 0;
 
-  function loadPGN() {
-    const pgnText = document.getElementById('pgn').value;
-    const loaded = chess.load_pgn(pgnText);
-    if (!loaded) {
-      alert('Невалиден PGN запис!');
-      return false;
+  const translations = {
+    bg: {
+      title: "Veso's PGN Viewer 🤠💙",
+      info: "📝 Поставете тук своя шахматен запис (PGN) — например последната си партия от онлайн платформа.",
+      startBtn: "Начало",
+      prevBtn: "Назад",
+      nextBtn: "Напред",
+      endBtn: "Край",
+      copyLinkBtn: "Копирай линка",
+      shareBtn: "Сподели във Facebook",
+      loadFileBtn: "📂 Зареди PGN файл",
+      langBtn: "Език: 🇧🇬 Български ▼",
+      pgnPlaceholder: "Постави тук своята PGN партия..."
+    },
+    en: {
+      title: "Veso's PGN Viewer 🤠💙",
+      info: "📝 Paste your chess PGN here — for example, your latest game from an online platform.",
+      startBtn: "Start",
+      prevBtn: "Previous",
+      nextBtn: "Next",
+      endBtn: "End",
+      copyLinkBtn: "Copy Link",
+      shareBtn: "Share on Facebook",
+      loadFileBtn: "📂 Load PGN file",
+      langBtn: "Language: 🇬🇧 English ▼",
+      pgnPlaceholder: "Paste your PGN game here..."
+    },
+    ua: {
+      title: "Veso's PGN Viewer 🤠💙",
+      info: "📝 Вставте тут свій шаховий запис (PGN) — наприклад, останню партію з онлайн платформи.",
+      startBtn: "Початок",
+      prevBtn: "Назад",
+      nextBtn: "Вперед",
+      endBtn: "Кінець",
+      copyLinkBtn: "Копіювати посилання",
+      shareBtn: "Поділитися у Facebook",
+      loadFileBtn: "📂 Завантажити PGN файл",
+      langBtn: "Мова: 🇺🇦 Українська ▼",
+      pgnPlaceholder: "Вставте тут свій PGN..."
     }
-    moves = chess.history();
-    currentMoveIndex = 0;
-    board.position(chess.fen());
-    return true;
-  }
-
-  function moveTo(index) {
-    chess.reset();
-    for (let i = 0; i < index; i++) {
-      chess.move(moves[i]);
-    }
-    board.position(chess.fen());
-    currentMoveIndex = index;
-  }
-
-  function resetGame() {
-    if (!loadPGN()) return;
-    board.position(chess.fen());
-  }
-
-  function nextMove() {
-    if (currentMoveIndex < moves.length) {
-      chess.move(moves[currentMoveIndex]);
-      currentMoveIndex++;
-      board.position(chess.fen());
-    }
-  }
-
-  function prevMove() {
-    if (currentMoveIndex > 0) {
-      moveTo(currentMoveIndex - 1);
-    }
-  }
-
-  document.getElementById('startBtn').addEventListener('click', resetGame);
-  document.getElementById('endBtn').addEventListener('click', () => {
-    if (!loadPGN()) return;
-    moveTo(moves.length);
-  });
-  document.getElementById('nextBtn').addEventListener('click', nextMove);
-  document.getElementById('prevBtn').addEventListener('click', prevMove);
-
-  document.getElementById('copyLinkBtn').addEventListener('click', () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      alert('Линкът е копиран!');
-    });
-  });
-
-// Слушатели на бутоните
-document.getElementById('startBtn').addEventListener('click', resetGame);
-document.getElementById('endBtn').addEventListener('click', () => {
-  if (!loadPGN()) return;
-  moveTo(moves.length);
-});
-document.getElementById('nextBtn').addEventListener('click', nextMove);
-document.getElementById('prevBtn').addEventListener('click', prevMove);
-
-document.getElementById('copyLinkBtn').addEventListener('click', () => {
-  navigator.clipboard.writeText(window.location.href).then(() => {
-    alert(currentLang === 'bg' ? 'Линкът е копиран!' : currentLang === 'en' ? 'Link copied!' : 'Посилання скопійовано!');
-  });
-});
-
-document.getElementById('shareBtn').addEventListener('click', () => {
-  const url = encodeURIComponent(window.location.href);
-  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-  const width = 600;
-  const height = 400;
-  const left = (screen.width / 2) - (width / 2);
-  const top = (screen.height / 2) - (height / 2);
-
-  window.open(
-    fbUrl,
-    'fbShareWindow',
-    `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-  );
-});
-
-<!--
-  document.getElementById('shareBtn').addEventListener('click', () => {
-    const url = encodeURIComponent(window.location.href);
-    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-    window.open(fbUrl, '_blank');
-  });
--->
-  window.onload = () => {
-    loadPGN();
   };
-</script>
 
-</body>
-</html>
+  let currentLang = 'bg';
+  function updateTexts(lang) {
+    currentLang = lang;
+    document.querySelector('h2').textContent = translations[lang].title;
+    document.getElementById('infoBlock').textContent = translations[lang].info;
+    document.getElementById('startBtn').textContent = translations[lang].startBtn;
+    document.getElementById('prevBtn').textContent = translations[lang].prevBtn;
+    document.getElementById('nextBtn').textContent = translations[lang].nextBtn;
+    document.getElementById('endBtn').textContent = translations[lang].endBtn;
+    document.getElementById('copyLinkBtn').textContent = translations[lang].copyLinkBtn;
+    document.getElementById('shareBtn').textContent = translations[lang].shareBtn;
+    document.getElementById('loadFile
