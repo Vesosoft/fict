@@ -3,82 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veso's PGN Viewer 🤠💙</title>
+  <title>Veso's PGN Viewer</title>
   <style>
-    body {
-      background-color: #121212;
-      color: #eee;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-      background: #1e1e1e;
-      color: #f0f0f0;
-      border: 1px solid #444;
-      padding: 10px;
-      font-family: monospace;
-    }
-    button {
-      margin-top: 10px;
-      margin-right: 10px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #555;
-    }
+    body { background: #121212; color: #eee; font-family: sans-serif; padding:20px; }
+    textarea { width:100%; height:150px; background:#1e1e1e; color:#f0f0f0; padding:10px; border:1px solid #444; font-family:monospace; }
+    button { margin:10px 5px 5px 0; padding:10px 15px; font-size:16px; background:#333; color:#fff; border:none; border-radius:5px; cursor:pointer; }
+    button:hover { background:#555; }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
 </head>
 <body>
-
-  <h2>Veso's PGN Viewer 🤠💙</h2>
-
-  <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea>
-  <br>
+  <h2>Veso's PGN Viewer 🤠</h2>
+  <textarea id="pgn" placeholder="Постави тук PGN..."></textarea><br>
   <button id="loadBtn">Зареди партията</button>
   <button id="shareBtn">Сподели във Facebook</button>
-
-  <div id="board" style="width: 400px; margin-top: 20px;"></div>
-
+  <div id="board" style="width:400px; margin-top:20px;"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
   <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
-
   <script>
-    const board = Chessboard('board', {
-      draggable: false,
-      position: 'start'
-    });
-
+    const board = Chessboard('board',{draggable:false,position:'start'});
     const chess = new Chess();
-    let moves = [];
-    let index = 0;
+    let moves=[], idx=0;
 
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgn = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgn)) {
-        moves = chess.history();
-        index = 0;
-        board.position(chess.fen());
-      } else {
-        alert('Невалиден PGN запис!');
-      }
+    document.getElementById('loadBtn').addEventListener('click',()=> {
+      let p=document.getElementById('pgn').value;
+      if(chess.load_pgn(p)){ moves=chess.history(); idx=0; board.position(chess.fen()); }
+      else alert('Невалиден PGN!');
     });
 
-    document.getElementById('shareBtn').addEventListener('click', function (event) {
-      event.preventDefault();
-      const url = encodeURIComponent(window.location.href);
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      window.open(fbUrl, 'fbShareWindow', 'width=600,height=400');
+    document.getElementById('shareBtn').addEventListener('click', e=>{
+      e.preventDefault();
+      const u=encodeURIComponent(window.location.href);
+      window.open('https://www.facebook.com/sharer/sharer.php?u='+u,'','width=600,height=400');
     });
   </script>
-
 </body>
 </html>
