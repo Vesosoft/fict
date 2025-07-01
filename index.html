@@ -252,4 +252,131 @@
     document.getElementById('endBtn').textContent = translations[lang].endBtn;
     document.getElementById('copyLinkBtn').textContent = translations[lang].copyLinkBtn;
     document.getElementById('shareBtn').textContent = translations[lang].shareBtn;
-    document.getElementById('loadFile
+    document.getElementById('loadFileBtn').textContent = translations[lang].loadFileBtn;
+    document.getElementById('langBtn').textContent = translations[lang].langBtn;
+    document.getElementById('pgn').placeholder = translations[lang].pgnPlaceholder;
+    updateShareLink();
+  }
+
+  // Зареждане PGN
+  function loadPGN() {
+    const pgnText = document.getElementById('pgn').value;
+    const loaded = chess.load_pgn(pgnText);
+    if (!loaded) {
+      alert(currentLang === 'bg' ? 'Невалиден PGN запис!' : currentLang === 'en' ? 'Invalid PGN!' : 'Невірний PGN!');
+      return false;
+    }
+    moves = chess.history();
+    currentMoveIndex = 0;
+    board.position(chess.fen());
+    return true;
+  }
+
+  // Преместване до ход
+  function moveTo(index) {
+    chess.reset();
+    for (let i = 0; i < index; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+    currentMoveIndex = index;
+  }
+
+  // Рестарт игра
+  function resetGame() {
+    if (!loadPGN()) return;
+    board.position(chess.fen());
+  }
+
+  function nextMove() {
+    if (currentMoveIndex < moves.length) {
+      chess.move(moves[currentMoveIndex]);
+      currentMoveIndex++;
+      board.position(chess.fen());
+    }
+  }
+
+  function prevMove() {
+    if (currentMoveIndex > 0) {
+      moveTo(currentMoveIndex - 1);
+    }
+  }
+
+  document.getElementById('startBtn').addEventListener('click', resetGame);
+  document.getElementById('endBtn').addEventListener('click', () => {
+    if (!loadPGN()) return;
+    moveTo(moves.length);
+  });
+  document.getElementById('nextBtn').addEventListener('click', nextMove);
+  document.getElementById('prevBtn').addEventListener('click', prevMove);
+
+  document.getElementById('copyLinkBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert(currentLang === 'bg' ? 'Линкът е копиран!' : currentLang === 'en' ? 'Link copied!' : 'Посилання скопійовано!');
+    });
+  });
+
+  function updateShareLink() {
+    const url = encodeURIComponent(window.location.href);
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    document.getElementById('shareBtn').setAttribute('href', fbUrl);
+  }
+  updateShareLink();
+
+  // Тук добавяме слушател, който спира презареждането и отваря Facebook share в нов прозорец:
+  document.getElementById('shareBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Спира презареждането
+    const url = encodeURIComponent(window.location.href);
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    const width = 600;
+    const height = 400;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
+
+    window.open(
+      fbUrl,
+      'fbShareWindow',
+      `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+    );
+  });
+
+  document.getElementById('loadFileBtn').addEventListener('click', () => {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('pgn').value = e.target.result;
+      resetGame();
+    };
+    reader.readAsText(file);
+  });
+
+  // Меню за език
+  document.querySelectorAll('#langMenu div').forEach(item => {
+    item.addEventListener('click', () => {
+      updateTexts(item.getAttribute('data-lang'));
+    });
+  });
+
+  // Автоматично засичане на PGN в клипборда при зареждане
+  window.addEventListener('load', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text.includes("1.") && text.length > 20 && text.includes(" ")) {
+        if (confirm(currentLang === 'bg' ? "Открит е PGN текст в клипборда. Искаш ли да го заредим?" : currentLang === 'en' ? "PGN text detected in clipboard. Load it?" : "Виявлено PGN у буфері обміну. Завантажити?")) {
+          document.getElementById('pgn').value = text;
+          resetGame();
+        }
+      }
+    } catch(e) {
+      // clipboard not accessible — ок
+    }
+  });
+</script>
+
+</body>
+</html>
