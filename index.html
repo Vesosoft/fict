@@ -1,135 +1,171 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>⚠️ ALERT by Veselin Ignatov</title>
+  <title>PGN Viewer — Veso Ignatov</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    #language {
-      font-size: 16px;
-      padding: 5px;
-      margin-bottom: 20px;
-    }
-    .lang-section {
-      display: none;
-    }
-    .lang-section.active {
-      display: block;
-    }
-    .dark-mode {
       background-color: #121212;
-      color: #f0f0f0;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 2em;
+      text-align: center;
     }
-    .dark-mode a {
-      color: #90caf9;
+    #board {
+      width: 400px;
+      margin: 20px auto;
     }
-    .theme-toggle {
-      float: right;
-      padding: 6px 10px;
-      margin-bottom: 10px;
+    button {
+      margin: 5px;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      background-color: #333;
+      color: #eee;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 14px;
     }
-    .alert-banner {
-      background-color: #c62828;
-      color: white;
-      font-weight: bold;
-      padding: 12px;
-      margin-bottom: 20px;
-      border-radius: 8px;
+    input[type="file"] {
+      margin-top: 1em;
+    }
+    pre {
+      background: #1e1e1e;
+      padding: 1em;
+      text-align: left;
+      white-space: pre-wrap;
+      border: 1px solid #444;
+      max-width: 600px;
+      margin: 2em auto;
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 
-  <select id="language" onchange="changeLanguage(this.value)">
-    <option value="bg">🇧🇬 Български</option>
-    <option value="uk">🇺🇦 Українською</option>
-    <option value="en" selected>🇬🇧 English</option>
-    <option value="cs">🇨🇿 Česky</option>
-    <option value="pl">🇵🇱 Polski</option>
-  </select>
+<h1>♟️ Veso's PGN Viewer</h1>
+<div id="board"></div>
 
-  <hr>
+<div>
+  <button onclick="prev()">⏮️ Назад</button>
+  <button onclick="next()">⏭️ Напред</button>
+  <button onclick="resetBoard()">🔁 Отначало</button>
+  <button onclick="playAuto()">▶️ Пусни</button>
+</div>
 
-  <div id="bg" class="lang-section">
-    <div class="alert-banner">⚠️ ПРЕДУПРЕЖДЕНИЕ: Предупреждение за измама в Telegram</div>
-    <p>Напоследък измамниците рекламират схема, в която много лесни пари: „печелиш 9лв. на видеоклип“.</p>
-    <p>В действителност получаваш само 2 лв. След около 15 клипа ти дават „бонус“ от 200–300лв.</p>
-    <p>На 20-ия клип ти казват, че си достигнал лимита за деня и предлага нова „възможност“.</p>
-    <p>Искат да изпратиш 142 лв., за да получиш 2300 лв. след час. Това е измама.</p>
-    <p><strong>Имена на използваните ботове:</strong><br>Money storm<br>Cash crafter</p>
-  </div>
+<input type="file" id="pgnFile" accept=".pgn">
+<br>
+<button onclick="downloadPGN()">📥 Изтегли текущата партия</button>
 
-  <div id="uk" class="lang-section">
-    <div class="alert-banner">⚠️ ПОПЕРЕДЖЕННЯ: Шахрайство в Telegram</div>
-    <p>Нещодавно шахраї рекламують схему, за якою можна дуже легко заробити: «ви заробляєте 9 лв. за відео».</p>
-    <p>Насправді ви отримуєте лише 2 лв. Приблизно після 15 відео вони дають вам «бонус» у розмірі 200–300 лв.</p>
-    <p>На 20-му відео вони повідомляють, що ви досягли ліміту на день і пропонують нову «можливість».</p>
-    <p>Вони хочуть, щоб ви надіслали 142 лв., щоб отримати 2300 лв. за годину. Це шахрайство.</p>
-    <p><strong>Імена ботів:</strong><br>Money storm<br>Cash crafter</p>
-  </div>
+<pre id="pgnText"></pre>
 
-  <div id="en" class="lang-section active">
-    <div class="alert-banner">⚠️ WARNING: Scam alert on Telegram</div>
-    <p>Recently, scammers have been promoting a scheme where you can supposedly earn 9 BGN per video.</p>
-    <p>In reality, you receive only 2 BGN. After about 15 videos, they give you a “bonus” of 200–300 BGN.</p>
-    <p>On the 20th video, they tell you you've reached your daily limit and offer a new “opportunity”.</p>
-    <p>They ask you to send 142 BGN to receive 2300 BGN in an hour. This is a scam.</p>
-    <p><strong>Bot names used:</strong><br>Money storm<br>Cash crafter</p>
-  </div>
+<script>
+  const board = Chessboard('board', 'start');
+  const game = new Chess();
 
-  <div id="cs" class="lang-section">
-    <div class="alert-banner">⚠️ VAROVÁNÍ: Podvod na Telegramu</div>
-    <p>Podvodníci nedávno propagují systém, ve kterém si můžete snadno vydělat peníze: „za každé video vyděláte 9 levů“.</p>
-    <p>Ve skutečnosti dostanete pouze 2 levy. Po zhruba 15 videích vám dají „bonus“ 200–300 levů.</p>
-    <p>U 20. videa vám sdělí, že jste dosáhli denního limitu a nabídnou novou „příležitost“.</p>
-    <p>Chtějí, abyste poslali 142 levů a za hodinu obdrželi 2300 levů. Toto je podvod.</p>
-    <p><strong>Názvy botů:</strong><br>Money storm<br>Cash crafter</p>
-  </div>
+  let moves = [];
+  let currentMove = 0;
+  let autoplay;
 
-  <div id="pl" class="lang-section">
-    <div class="alert-banner">⚠️ OSTRZEŻENIE: Oszustwo na Telegramie</div>
-    <p>Ostatnio oszuści reklamują schemat, w którym można zarobić bardzo łatwe pieniądze: „zarabiasz 9 lv. za film”.</p>
-    <p>W rzeczywistości otrzymujesz tylko 2 lv. Po około 15 filmach dają ci „bonus” w wysokości 200–300 lv.</p>
-    <p>W 20. filmie mówią ci, że osiągnąłeś limit na dany dzień i oferują nową „okazję”.</p>
-    <p>Chcą, abyś wysłał 142 lv., aby otrzymać 2300 lv. w ciągu godziny. To oszustwo.</p>
-    <p><strong>Nazwy botów:</strong><br>Money storm<br>Cash crafter</p>
-  </div>
+  const examplePGN = `[Event "Online Game"]
+[Site "Checkmate Chess"]
+[Date "2025.6.30"]
+[Round "1"]
+[White "DamianGuzman"]
+[Black "Veso-Ignatov73"]
+[Result "0-1"]
+[TimeControl "1800"]
+[WhiteElo "2000"]
+[BlackElo "2336"]
+[Time "21:45:01"]
 
-  <hr>
+1. Nb1-c3 d7-d5
+2. d2-d4 c7-c6
+3. e2-e4 d5xe4
+4. Nc3xe4 Bc8-f5
+5. f2-f3 e7-e6
+6. Bc1-g5 Bf8-e7
+7. Bg5xe7 Qd8xe7
+8. g2-g4 Bf5xe4
+9. f3xe4 Qe7-h4+
+10. Ke1-e2 Ng8-f6
+11. Ng1-f3 Qh4xg4
+12. h2-h3 Qg4xe4+
+13. Ke2-f2 Nb8-d7
+14. Qd1-d3 Qe4-f4+
+15. b2-b3 Nd7-c5
+16. d4xc5 Ra8-d8
+17. Qd3-e3 Nf6-e4+
+18. Kf2-e2 Ne4-g3+
+19. Ke2-f2 Ng3xh1+
+20. Kf2-e1 Qf4xe3+`;
 
-  <script>
-    function changeLanguage(lang) {
-      localStorage.setItem('language', lang);
-      const sections = document.querySelectorAll('.lang-section');
-      sections.forEach(section => section.classList.remove('active'));
-      const active = document.getElementById(lang);
-      if (active) active.classList.add('active');
+  function loadPGN(pgn) {
+    game.reset();
+    game.load_pgn(pgn);
+    moves = game.history();
+    currentMove = 0;
+    board.position(game.fen());
+    document.getElementById("pgnText").textContent = pgn;
+  }
+
+  function next() {
+    if (currentMove < moves.length) {
+      game.move(moves[currentMove++]);
+      board.position(game.fen());
     }
+  }
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  function prev() {
+    if (currentMove > 0) {
+      game.undo();
+      currentMove--;
+      board.position(game.fen());
     }
+  }
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
+  function resetBoard() {
+    game.reset();
+    currentMove = 0;
+    board.start();
+  }
+
+  function playAuto() {
+    clearInterval(autoplay);
+    resetBoard();
+    autoplay = setInterval(() => {
+      if (currentMove < moves.length) {
+        next();
+      } else {
+        clearInterval(autoplay);
       }
+    }, 800);
+  }
 
-      const savedLang = localStorage.getItem('language') || 'en';
-      document.getElementById('language').value = savedLang;
-      changeLanguage(savedLang);
-    });
-  </script>
+  function downloadPGN() {
+    const blob = new Blob([game.pgn()], {type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "veso_game.pgn";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById("pgnFile").addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      loadPGN(e.target.result);
+    };
+    reader.readAsText(file);
+  });
+
+  // Load default
+  loadPGN(examplePGN);
+</script>
+
 </body>
 </html>
