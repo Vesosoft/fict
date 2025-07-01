@@ -123,4 +123,15 @@
   });
 
   document.getElementById('shareBtn').addEventListener('click', () => {
-    const url = encodeURIComponent
+    const url = encodeURIComponent(window.location.href);
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    window.open(fbUrl, '_blank');
+  });
+
+  window.onload = () => {
+    loadPGN();
+  };
+</script>
+
+</body>
+</html>
