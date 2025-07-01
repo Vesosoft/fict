@@ -1,9 +1,126 @@
-Veso's PGN Viewer body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; } #board { width: 400px; margin-bottom: 10px; } #pgn { width: 100%; height: 120px; margin-top: 10px; font-family: monospace; } #controls button, #shareBtn, #copyLinkBtn { margin-right: 5px; padding: 5px 10px; cursor: pointer; } .info { background: #e0f0ff; padding: 10px; border: 1px solid #b0d4f1; margin-bottom: 10px; } 
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veso's PGN Viewer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+  }
+  #board {
+    width: 400px;
+    margin-bottom: 10px;
+  }
+  #pgn {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    font-family: monospace;
+  }
+  #controls button, #shareBtn, #copyLinkBtn {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .info {
+    background: #e0f0ff;
+    padding: 10px;
+    border: 1px solid #b0d4f1;
+    margin-bottom: 10px;
+  }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
+</head>
+<body>
 
-Veso's PGN Viewer 🤠💙
+<h2>Veso's PGN Viewer 🤠💙</h2>
 
-📝 Поставете тук своя шахматен запис (PGN) — например последната си партия от онлайн платформа. 
+<div class="info">
+  📝 Поставете тук своя шахматен запис (PGN) — например последната си партия от онлайн платформа.
+</div>
 
-Начало Назад Напред Край Копирай линка Сподели във Facebook 
+<div id="board"></div>
 
-const board = Chessboard('board', { draggable: false, position: 'start', }); const chess = new Chess(); let moves = []; let currentMoveIndex = 0; function loadPGN() { const pgnText = document.getElementById('pgn').value; const loaded = chess.load_pgn(pgnText); if (!loaded) { alert('Невалиден PGN запис!'); return false; } moves = chess.history(); currentMoveIndex = 0; board.position(chess.fen()); return true; } function moveTo(index) { chess.reset(); for (let i = 0; i < index; i++) { chess.move(moves[i]); } board.position(chess.fen()); currentMoveIndex = index; } function resetGame() { if (!loadPGN()) return; board.position(chess.fen()); } function nextMove() { if (currentMoveIndex < moves.length) { chess.move(moves[currentMoveIndex]); currentMoveIndex++; board.position(chess.fen()); } } function prevMove() { if (currentMoveIndex > 0) { moveTo(currentMoveIndex - 1); } } document.getElementById('startBtn').addEventListener('click', resetGame); document.getElementById('endBtn').addEventListener('click', () => { if (!loadPGN()) return; moveTo(moves.length); }); document.getElementById('nextBtn').addEventListener('click', nextMove); document.getElementById('prevBtn').addEventListener('click', prevMove); document.getElementById('copyLinkBtn').addEventListener('click', () => { navigator.clipboard.writeText(window.location.href).then(() => { alert('Линкът е копиран!'); }); }); document.getElementById('shareBtn').addEventListener('click', () => { const url = encodeURIComponent(window.location.href); const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`; window.open(fbUrl, '_blank'); }); window.onload = () => { loadPGN(); }; 
+<textarea id="pgn" placeholder="Постави тук своята PGN партия..." spellcheck="false"></textarea>
+
+<div id="controls">
+  <button id="startBtn">Начало</button>
+  <button id="prevBtn">Назад</button>
+  <button id="nextBtn">Напред</button>
+  <button id="endBtn">Край</button>
+  <button id="copyLinkBtn">Копирай линка</button>
+  <button id="shareBtn">Сподели във Facebook</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+<script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
+<script>
+  const board = Chessboard('board', {
+    draggable: false,
+    position: 'start',
+  });
+
+  const chess = new Chess();
+  let moves = [];
+  let currentMoveIndex = 0;
+
+  function loadPGN() {
+    const pgnText = document.getElementById('pgn').value;
+    const loaded = chess.load_pgn(pgnText);
+    if (!loaded) {
+      alert('Невалиден PGN запис!');
+      return false;
+    }
+    moves = chess.history();
+    currentMoveIndex = 0;
+    board.position(chess.fen());
+    return true;
+  }
+
+  function moveTo(index) {
+    chess.reset();
+    for (let i = 0; i < index; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+    currentMoveIndex = index;
+  }
+
+  function resetGame() {
+    if (!loadPGN()) return;
+    board.position(chess.fen());
+  }
+
+  function nextMove() {
+    if (currentMoveIndex < moves.length) {
+      chess.move(moves[currentMoveIndex]);
+      currentMoveIndex++;
+      board.position(chess.fen());
+    }
+  }
+
+  function prevMove() {
+    if (currentMoveIndex > 0) {
+      moveTo(currentMoveIndex - 1);
+    }
+  }
+
+  document.getElementById('startBtn').addEventListener('click', resetGame);
+  document.getElementById('endBtn').addEventListener('click', () => {
+    if (!loadPGN()) return;
+    moveTo(moves.length);
+  });
+  document.getElementById('nextBtn').addEventListener('click', nextMove);
+  document.getElementById('prevBtn').addEventListener('click', prevMove);
+
+  document.getElementById('copyLinkBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert('Линкът е копиран!');
+    });
+  });
+
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const url = encodeURIComponent
