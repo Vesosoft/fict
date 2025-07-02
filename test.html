@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тест на бутон</title>
+<meta charset="UTF-8" />
+<title>Тест на библиотека</title>
 </head>
 <body>
-  <button id="btn">Натисни ме</button>
-  <script>
-    document.getElementById('btn').addEventListener('click', () => {
-      alert('Бутонът работи!');
-    });
-  </script>
+
+<h2>Тест за зареждане на chessboard.js</h2>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/0.3.0/js/chessboard-0.3.0.min.js"></script>
+
+<script>
+  if(typeof Chessboard === 'function') {
+    document.write("<p>chessboard.js е заредена успешно!</p>");
+  } else {
+    document.write("<p style='color:red;'>chessboard.js НЕ е заредена!</p>");
+  }
+</script>
+
 </body>
 </html>
