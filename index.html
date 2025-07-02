@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Veso's PGN Viewer</title>
   <style>
     body {
@@ -13,15 +13,16 @@
     }
     textarea {
       width: 100%;
-      height: 140px;
+      height: 150px;
       background: #1e1e1e;
       color: #f0f0f0;
+      padding: 10px;
       border: 1px solid #444;
       font-family: monospace;
-      padding: 10px;
     }
     button {
-      margin: 10px 10px 0 0;
+      margin-top: 10px;
+      margin-right: 10px;
       padding: 10px 15px;
       font-size: 16px;
       background: #333;
@@ -33,43 +34,41 @@
     button:hover {
       background: #555;
     }
-    #output {
-      white-space: pre-wrap;
+    #board {
+      width: 400px;
       margin-top: 20px;
-      background: #1e1e1e;
-      padding: 10px;
-      border: 1px solid #444;
     }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
 </head>
 <body>
 
 <h2>Veso's PGN Viewer 🤠</h2>
 
-<textarea id="pgn" placeholder="Постави тук PGN..."></textarea><br>
-<button onclick="loadGame()">Зареди партията</button>
-<button onclick="savePGN()">Изтегли PGN</button>
+<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br/>
+<button id="loadBtn">Зареди партията</button>
 
-<div id="output">Тук ще се появи FEN или съобщение.</div>
+<div id="board"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
 
 <script>
-  function loadGame() {
-    const pgn = document.getElementById('pgn').value;
-    if (pgn.includes('1.') || pgn.includes('[Event')) {
-      document.getElementById('output').textContent = 'Партията е приета. Но този мини-преглед не поддържа дъска.';
-    } else {
-      document.getElementById('output').textContent = 'Грешка: това не прилича на PGN.';
-    }
-  }
+  const board = Chessboard('board', { draggable: false, position: 'start' });
+  const chess = new Chess();
+  let moves = [], idx = 0;
 
-  function savePGN() {
-    const text = document.getElementById('pgn').value;
-    const blob = new Blob([text], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'veso_game.pgn';
-    link.click();
-  }
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    let pgn = document.getElementById('pgn').value;
+    if (chess.load_pgn(pgn)) {
+      moves = chess.history();
+      idx = 0;
+      chess.reset();
+      board.position(chess.fen());
+    } else {
+      alert('Невалиден PGN!');
+    }
+  });
 </script>
 
 </body>
