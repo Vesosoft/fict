@@ -42,7 +42,6 @@
     }
   </style>
 
-  <!-- Правилните библиотеки, които работят заедно -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css"
@@ -58,7 +57,6 @@
 
   <div id="board"></div>
 
-  <!-- Заменихме chess.js с версия 0.10.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
 
@@ -67,8 +65,13 @@
     const chess = new Chess();
 
     document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgnText = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgnText)) {
+      const pgnText = document.getElementById('pgn').value.trim();
+      if (!pgnText) {
+        alert('Моля, постави PGN преди да заредиш партията.');
+        return;
+      }
+      const valid = chess.load_pgn(pgnText);
+      if (valid) {
         board.position(chess.fen());
       } else {
         alert('Невалиден PGN!');
