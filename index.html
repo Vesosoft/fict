@@ -3,26 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Veso's PGN Viewer</title>
+  <title>Veso's PGN Viewer 🤠</title>
   <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-    button, select { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover, select:hover { background: #555; }
-    #board { width: 400px; margin-top: 20px; }
-    #langSelect { float: right; }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #444;
+      font-family: monospace;
+      resize: vertical;
+    }
+    button {
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+    button:hover {
+      background: #555;
+    }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
+
+  <!-- Правилните библиотеки, които работят заедно -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css"
+  />
 </head>
 <body>
 
-  <select id="langSelect">
-    <option value="bg">🇧🇬 BG</option>
-    <option value="ua">🇺🇦 UA</option>
-    <option value="en">🇬🇧 EN</option>
-  </select>
-
-  <h2 id="title">Veso's PGN Viewer 🤠</h2>
+  <h2>Veso's PGN Viewer 🤠</h2>
 
   <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
   <button id="loadBtn">Зареди партията</button>
@@ -30,75 +58,31 @@
 
   <div id="board"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <!-- Заменихме chess.js с версия 0.10.3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
 
   <script>
-    let board = null;
-    let chess = new Chess();
+    const board = Chessboard('board', { draggable: false, position: 'start' });
+    const chess = new Chess();
 
-    function initBoard() {
-      board = Chessboard('board', {
-        draggable: false,
-        position: 'start'
-      });
-    }
-
-    function loadPGN() {
-      const pgn = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgn)) {
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const pgnText = document.getElementById('pgn').value;
+      if (chess.load_pgn(pgnText)) {
         board.position(chess.fen());
       } else {
-        alert(currentLang === 'bg' ? 'Невалиден PGN!' : currentLang === 'ua' ? 'Некоректний PGN!' : 'Invalid PGN!');
+        alert('Невалиден PGN!');
       }
-    }
-
-    function shareFB() {
-      const u = encodeURIComponent(window.location.href);
-      window.open('https://www.facebook.com/sharer/sharer.php?u=' + u, '', 'width=600,height=400');
-    }
-
-    const langData = {
-      bg: {
-        title: "Veso's PGN Viewer 🤠",
-        placeholder: "Постави тук PGN партията си...",
-        load: "Зареди партията",
-        share: "Сподели във Facebook"
-      },
-      ua: {
-        title: "Переглядач партій Veso 🤠",
-        placeholder: "Встав сюди свою партію (PGN)...",
-        load: "Завантажити партію",
-        share: "Поділитися у Facebook"
-      },
-      en: {
-        title: "Veso's PGN Viewer 🤠",
-        placeholder: "Paste your PGN game here...",
-        load: "Load Game",
-        share: "Share on Facebook"
-      }
-    };
-
-    let currentLang = 'bg';
-
-    function updateLang(lang) {
-      currentLang = lang;
-      const data = langData[lang];
-      document.getElementById('title').innerText = data.title;
-      document.getElementById('pgn').placeholder = data.placeholder;
-      document.getElementById('loadBtn').innerText = data.load;
-      document.getElementById('shareBtn').innerText = data.share;
-    }
-
-    document.getElementById('langSelect').addEventListener('change', (e) => {
-      updateLang(e.target.value);
     });
 
-    document.getElementById('loadBtn').addEventListener('click', loadPGN);
-    document.getElementById('shareBtn').addEventListener('click', shareFB);
-
-    window.addEventListener('load', () => {
-      initBoard();
+    document.getElementById('shareBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const currentURL = encodeURIComponent(window.location.href);
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u=' + currentURL,
+        '',
+        'width=600,height=400'
+      );
     });
   </script>
 
