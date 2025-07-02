@@ -1,69 +1,66 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Veso's PGN Viewer</title>
-  <style>
-    body {
-      background: #121212;
-      color: #eee;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-      background: #1e1e1e;
-      color: #f0f0f0;
-      padding: 10px;
-      border: 1px solid #444;
-      font-family: monospace;
-    }
-    button {
-      margin-top: 10px;
-      margin-right: 10px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #555;
-    }
-    #board {
-      width: 400px;
-      margin-top: 20px;
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veso's PGN Viewer</title>
+<style>
+  body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+  textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+  button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+  button:hover { background: #555; }
+  #board { width: 400px; margin-top: 20px; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 </head>
 <body>
 
 <h2>Veso's PGN Viewer 🤠</h2>
 
-<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br/>
+<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
 <button id="loadBtn">Зареди партията</button>
+<button id="prevBtn" disabled>← Назад</button>
+<button id="nextBtn" disabled>Напред →</button>
 
 <div id="board"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.0/chess.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
 <script>
   const board = Chessboard('board', { draggable: false, position: 'start' });
   const chess = new Chess();
 
+  let moves = [];
+  let currentMoveIndex = -1;
+
   document.getElementById('loadBtn').addEventListener('click', () => {
-    const pgn = document.getElementById('pgn').value;
-    const ok = chess.load_pgn(pgn);
-    if (ok) {
-      board.position(chess.fen());
+    const pgnText = document.getElementById('pgn').value;
+    if (chess.load_pgn(pgnText)) {
+      moves = chess.history();
+      currentMoveIndex = -1;
+      chess.reset();
+      board.position('start');
+      document.getElementById('prevBtn').disabled = false;
+      document.getElementById('nextBtn').disabled = false;
     } else {
       alert('Невалиден PGN!');
+    }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentMoveIndex < moves.length - 1) {
+      currentMoveIndex++;
+      chess.move(moves[currentMoveIndex]);
+      board.position(chess.fen());
+    }
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentMoveIndex >= 0) {
+      chess.undo();
+      currentMoveIndex--;
+      board.position(chess.fen());
     }
   });
 </script>
