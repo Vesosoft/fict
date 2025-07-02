@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Veso's PGN Viewer</title>
   <style>
     body {
@@ -20,7 +20,7 @@
       border: 1px solid #444;
       font-family: monospace;
     }
-    button {
+    button, select {
       margin-top: 10px;
       margin-right: 10px;
       padding: 10px 15px;
@@ -31,7 +31,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    button:hover {
+    button:hover, select:hover {
       background: #555;
     }
     #board {
@@ -39,52 +39,73 @@
       margin-top: 20px;
     }
   </style>
-
-  <!-- CSS за дъската -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
 </head>
 <body>
 
   <h2>Veso's PGN Viewer 🤠</h2>
 
+  <label for="langSelect">🌍</label>
+  <select id="langSelect">
+    <option value="bg">BG</option>
+    <option value="en">EN</option>
+    <option value="ua">UA</option>
+  </select>
+
   <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
   <button id="loadBtn">Зареди партията</button>
-  <button id="shareBtn">Сподели във Facebook</button>
-
+  <button id="saveBtn">Изтегли PGN</button>
   <div id="board"></div>
 
-  <!-- JS библиотеки -->
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const board = Chessboard('board', {
-        draggable: false,
-        position: 'start'
-      });
+    const board = Chessboard('board', { draggable: false, position: 'start' });
+    const chess = new Chess();
 
-      const chess = new Chess();
+    const translations = {
+      bg: {
+        load: "Зареди партията",
+        save: "Изтегли PGN",
+        placeholder: "Постави тук PGN партията си..."
+      },
+      en: {
+        load: "Load PGN",
+        save: "Download PGN",
+        placeholder: "Paste your PGN game here..."
+      },
+      ua: {
+        load: "Завантажити партію",
+        save: "Зберегти PGN",
+        placeholder: "Вставте сюди партію у форматі PGN..."
+      }
+    };
 
-      document.getElementById('loadBtn').addEventListener('click', () => {
-        const pgnText = document.getElementById('pgn').value;
-        if (chess.load_pgn(pgnText)) {
-          board.position(chess.fen());
-        } else {
-          alert('Невалиден PGN!');
-        }
-      });
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const pgn = document.getElementById('pgn').value;
+      if (chess.load_pgn(pgn)) {
+        board.position(chess.fen());
+      } else {
+        alert("Невалиден PGN!");
+      }
+    });
 
-      document.getElementById('shareBtn').addEventListener('click', () => {
-        const url = encodeURIComponent(window.location.href);
-        window.open(
-          'https://www.facebook.com/sharer/sharer.php?u=' + url,
-          '',
-          'width=600,height=400'
-        );
-      });
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const blob = new Blob([document.getElementById('pgn').value], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'game.veso.pgn';
+      a.click();
+    });
+
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      const lang = e.target.value;
+      const t = translations[lang];
+      document.getElementById('loadBtn').textContent = t.load;
+      document.getElementById('saveBtn').textContent = t.save;
+      document.getElementById('pgn').placeholder = t.placeholder;
     });
   </script>
-
 </body>
 </html>
