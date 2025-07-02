@@ -2,70 +2,24 @@
 <html lang="bg">
 <head>
 <meta charset="UTF-8" />
-<title>Veso's PGN Viewer</title>
+<title>Прост тест с дъска</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-  textarea, button { font-size: 16px; margin-top: 10px; }
-  textarea {
-    width: 100%; height: 120px; background: #1e1e1e;
-    color: #f0f0f0; padding: 10px; border: 1px solid #444;
-    font-family: monospace;
-  }
-  button {
-    background: #333; color: white; padding: 10px 15px;
-    border: none; border-radius: 5px; margin-right: 10px;
-    cursor: pointer;
-  }
-  button:hover { background: #555; }
-  #board { width: 360px; margin-top: 20px; }
+  #board { width: 360px; margin: 20px auto; }
 </style>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/0.3.0/css/chessboard-0.3.0.min.css" />
 </head>
 <body>
-<h2>Veso's PGN Viewer 🤠</h2>
 
-<textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
-<button id="loadBtn">Зареди партията</button>
-<button id="shareBtn">Сподели във Facebook</button>
+<h2>Тестова дъска</h2>
 
 <div id="board"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/0.3.0/js/chessboard-0.3.0.min.js"></script>
-
 <script>
   var board = Chessboard('board', { position: 'start' });
-  var chess = new Chess();
-
-  document.getElementById('loadBtn').addEventListener('click', function() {
-    var pgn = document.getElementById('pgn').value;
-    var loaded = chess.load_pgn ? chess.load_pgn(pgn) : false;
-    if (!loaded) {
-      // Ако load_pgn липсва, парсим ръчно:
-      try {
-        chess.reset();
-        chess.load_pgn = function(p) {
-          // В по-стара версия може да няма, просто пропускаме
-          return true;
-        }
-        chess.load_pgn(pgn);
-      } catch(e) {
-        alert('Невалиден PGN!');
-        return;
-      }
-    }
-    // Задаваме позицията на дъската
-    board.position(chess.fen());
-  });
-
-  document.getElementById('shareBtn').addEventListener('click', function(e) {
-    e.preventDefault();
-    var url = encodeURIComponent(window.location.href);
-    var fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
-    window.open(fbUrl, '_blank', 'width=600,height=400');
-  });
 </script>
+
 </body>
 </html>
