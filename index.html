@@ -39,7 +39,7 @@
       margin-top: 20px;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
 </head>
 <body>
 
@@ -50,20 +50,17 @@
 
 <div id="board"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.0/chess.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
 
 <script>
   const board = Chessboard('board', { draggable: false, position: 'start' });
   const chess = new Chess();
-  let moves = [], idx = 0;
 
   document.getElementById('loadBtn').addEventListener('click', () => {
-    let pgn = document.getElementById('pgn').value;
-    if (chess.load_pgn(pgn)) {
-      moves = chess.history();
-      idx = 0;
-      chess.reset();
+    const pgn = document.getElementById('pgn').value;
+    const ok = chess.load_pgn(pgn);
+    if (ok) {
       board.position(chess.fen());
     } else {
       alert('Невалиден PGN!');
