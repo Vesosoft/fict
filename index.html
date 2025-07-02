@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Veso's PGN Viewer</title>
   <style>
     body {
@@ -13,16 +13,15 @@
     }
     textarea {
       width: 100%;
-      height: 150px;
+      height: 140px;
       background: #1e1e1e;
       color: #f0f0f0;
-      padding: 10px;
       border: 1px solid #444;
       font-family: monospace;
+      padding: 10px;
     }
-    button, select {
-      margin-top: 10px;
-      margin-right: 10px;
+    button {
+      margin: 10px 10px 0 0;
       padding: 10px 15px;
       font-size: 16px;
       background: #333;
@@ -31,81 +30,47 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    button:hover, select:hover {
+    button:hover {
       background: #555;
     }
-    #board {
-      width: 400px;
+    #output {
+      white-space: pre-wrap;
       margin-top: 20px;
+      background: #1e1e1e;
+      padding: 10px;
+      border: 1px solid #444;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
 </head>
 <body>
 
-  <h2>Veso's PGN Viewer 🤠</h2>
+<h2>Veso's PGN Viewer 🤠</h2>
 
-  <label for="langSelect">🌍</label>
-  <select id="langSelect">
-    <option value="bg">BG</option>
-    <option value="en">EN</option>
-    <option value="ua">UA</option>
-  </select>
+<textarea id="pgn" placeholder="Постави тук PGN..."></textarea><br>
+<button onclick="loadGame()">Зареди партията</button>
+<button onclick="savePGN()">Изтегли PGN</button>
 
-  <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
-  <button id="loadBtn">Зареди партията</button>
-  <button id="saveBtn">Изтегли PGN</button>
-  <div id="board"></div>
+<div id="output">Тук ще се появи FEN или съобщение.</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
+<script>
+  function loadGame() {
+    const pgn = document.getElementById('pgn').value;
+    if (pgn.includes('1.') || pgn.includes('[Event')) {
+      document.getElementById('output').textContent = 'Партията е приета. Но този мини-преглед не поддържа дъска.';
+    } else {
+      document.getElementById('output').textContent = 'Грешка: това не прилича на PGN.';
+    }
+  }
 
-  <script>
-    const board = Chessboard('board', { draggable: false, position: 'start' });
-    const chess = new Chess();
+  function savePGN() {
+    const text = document.getElementById('pgn').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'veso_game.pgn';
+    link.click();
+  }
+</script>
 
-    const translations = {
-      bg: {
-        load: "Зареди партията",
-        save: "Изтегли PGN",
-        placeholder: "Постави тук PGN партията си..."
-      },
-      en: {
-        load: "Load PGN",
-        save: "Download PGN",
-        placeholder: "Paste your PGN game here..."
-      },
-      ua: {
-        load: "Завантажити партію",
-        save: "Зберегти PGN",
-        placeholder: "Вставте сюди партію у форматі PGN..."
-      }
-    };
-
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgn = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgn)) {
-        board.position(chess.fen());
-      } else {
-        alert("Невалиден PGN!");
-      }
-    });
-
-    document.getElementById('saveBtn').addEventListener('click', () => {
-      const blob = new Blob([document.getElementById('pgn').value], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'game.veso.pgn';
-      a.click();
-    });
-
-    document.getElementById('langSelect').addEventListener('change', (e) => {
-      const lang = e.target.value;
-      const t = translations[lang];
-      document.getElementById('loadBtn').textContent = t.load;
-      document.getElementById('saveBtn').textContent = t.save;
-      document.getElementById('pgn').placeholder = t.placeholder;
-    });
-  </script>
 </body>
 </html>
