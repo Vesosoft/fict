@@ -1,253 +1,51 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Veso's PGN Viewer - Без външни библиотеки</title>
-<style>
-  body {
-    background: #121212;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 480px;
-    margin: auto;
-  }
-  textarea {
-    width: 100%;
-    height: 140px;
-    background: #1e1e1e;
-    color: #f0f0f0;
-    border: 1px solid #444;
-    font-family: monospace;
-    padding: 10px;
-    resize: vertical;
-  }
-  button {
-    margin: 10px 5px 5px 0;
-    padding: 10px 15px;
-    font-size: 16px;
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #555;
-  }
-  #board {
-    margin-top: 20px;
-    width: 320px;
-    height: 320px;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    border: 2px solid #444;
-    user-select: none;
-  }
-  .square {
-    width: 40px;
-    height: 40px;
-    box-sizing: border-box;
-  }
-  .light {
-    background: #f0d9b5;
-  }
-  .dark {
-    background: #b58863;
-  }
-  .piece {
-    width: 40px;
-    height: 40px;
-    font-size: 32px;
-    text-align: center;
-    line-height: 40px;
-    cursor: default;
-  }
-  #controls {
-    margin-top: 10px;
-  }
-  #status {
-    margin-top: 10px;
-    min-height: 24px;
-    font-weight: bold;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Veso's PGN Viewer 🤠</title>
+  <style>
+    body { background: #121212; color: #eee; font-family: sans-serif; padding:20px; max-width:480px; margin:auto;}
+    textarea { width:100%; height:150px; background:#1e1e1e; color:#f0f0f0; padding:10px; border:1px solid #444; font-family: monospace;}
+    button { margin:10px 5px 5px 0; padding:10px 15px; font-size:16px; background:#333; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+    button:hover { background:#555;}
+    #board { width: 400px; margin-top: 20px;}
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 </head>
 <body>
 
-<h2>Veso's PGN Viewer - Без външни библиотеки 🤠</h2>
+<h2>Veso's PGN Viewer 🤠</h2>
 
 <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
 <button id="loadBtn">Зареди партията</button>
 <button id="shareBtn">Сподели във Facebook</button>
 
-<div id="controls">
-  <button id="startBtn" disabled>Начало</button>
-  <button id="prevBtn" disabled>← Предишен ход</button>
-  <button id="nextBtn" disabled>Следващ ход →</button>
-</div>
-
 <div id="board"></div>
 
-<div id="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
 <script>
-  // Unicode фигури за шахмат
-  const PIECES = {
-    'P': '♙', 'N': '♘', 'B': '♗', 'R': '♖', 'Q': '♕', 'K': '♔',
-    'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚'
-  };
+  const board = Chessboard('board', { draggable: false, position: 'start' });
+  const chess = new Chess();
 
-  // Създаване на празна шахматна дъска (8x8)
-  const boardEl = document.getElementById('board');
-  const squares = [];
-
-  for(let row=7; row>=0; row--) {
-    for(let col=0; col<8; col++) {
-      const sq = document.createElement('div');
-      sq.classList.add('square');
-      sq.classList.add((row+col) % 2 === 0 ? 'light' : 'dark');
-      const pieceEl = document.createElement('div');
-      pieceEl.classList.add('piece');
-      sq.appendChild(pieceEl);
-      boardEl.appendChild(sq);
-      squares.push(pieceEl);
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    const pgn = document.getElementById('pgn').value;
+    const loaded = chess.load_pgn(pgn);
+    if (!loaded) {
+      alert('Невалиден PGN!');
+      return;
     }
-  }
+    board.position(chess.fen());
+  });
 
-  // Инициален позиция в FEN формат - начална
-  const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  document.getElementById('shareBtn').addEventListener('click', e => {
+    e.preventDefault();
+    const url = encodeURIComponent(window.location.href);
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '', 'width=600,height=400');
+  });
+</script>
 
-  // Функция да парсва FEN и да рисува дъската
-  function drawPosition(fen) {
-    // fen като "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-    const parts = fen.split(' ');
-    const rows = parts[0].split('/');
-    let sqIdx = 0;
-    for (let r=0; r<8; r++) {
-      let rowStr = rows[r];
-      for (let i=0; i<rowStr.length; i++) {
-        const c = rowStr[i];
-        if (isDigit(c)) {
-          let emptyCount = parseInt(c);
-          for (let j=0; j<emptyCount; j++) {
-            squares[sqIdx].textContent = '';
-            sqIdx++;
-          }
-        } else {
-          squares[sqIdx].textContent = PIECES[c] || '';
-          sqIdx++;
-        }
-      }
-    }
-  }
-
-  function isDigit(c) {
-    return c >= '0' && c <= '9';
-  }
-
-  // Проста шахматна логика за ходове чрез Chess.js може да е много сложна,
-  // затова тук ще ползваме библиотека chess.js в минимален вид (вградена).
-
-  // Минимална вградена chess логика за зареждане на PGN и превръщане в ходове
-  // За опростяване ще ползваме малка част от chess.js код, адаптиран тук.
-
-  // Вместо това ще използваме библиотека Chess.js като вграден код (малко разширена версия)
-  // За да не ти усложнявам, ще сложа библиотеката chess.js вътре
-
-  // ---- chess.js код: START ----
-// Начало на библиотеката chess.js (кратка версия)
-
-function Chess(fen) {
-  const BLACK = 'b';
-  const WHITE = 'w';
-  const PAWN = 'p';
-  const KNIGHT = 'n';
-  const BISHOP = 'b';
-  const ROOK = 'r';
-  const QUEEN = 'q';
-  const KING = 'k';
-
-  let board = [];
-  let turn = WHITE;
-  let history = [];
-
-  function resetBoard() {
-    board = [
-      ['r','n','b','q','k','b','n','r'],
-      ['p','p','p','p','p','p','p','p'],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['P','P','P','P','P','P','P','P'],
-      ['R','N','B','Q','K','B','N','R']
-    ];
-    turn = WHITE;
-    history = [];
-  }
-
-  resetBoard();
-
-  this.load = function(fenStr) {
-    // Прочита FEN и задава board и turn
-    if(!fenStr) return false;
-    const parts = fenStr.split(' ');
-    if(parts.length < 2) return false;
-    const rows = parts[0].split('/');
-    if(rows.length !== 8) return false;
-    board = [];
-    for(let r=0; r<8; r++) {
-      const row = [];
-      let rowStr = rows[r];
-      for(let i=0; i<rowStr.length; i++) {
-        const c = rowStr[i];
-        if(isDigit(c)) {
-          const emptyCount = parseInt(c);
-          for(let j=0; j<emptyCount; j++) {
-            row.push('');
-          }
-        } else {
-          row.push(c);
-        }
-      }
-      if(row.length !== 8) return false;
-      board.push(row);
-    }
-    turn = parts[1];
-    history = [];
-    return true;
-  };
-
-  this.fen = function() {
-    let fenStr = '';
-    for(let r=0; r<8; r++) {
-      let empty = 0;
-      for(let c=0; c<8; c++) {
-        if(board[r][c] === '') empty++;
-        else {
-          if(empty > 0) { fenStr += empty; empty = 0; }
-          fenStr += board[r][c];
-        }
-      }
-      if(empty > 0) fenStr += empty;
-      if(r !== 7) fenStr += '/';
-    }
-    fenStr += ' ' + turn + ' KQkq - 0 1';
-    return fenStr;
-  };
-
-  this.board = function() {
-    return board;
-  };
-
-  this.turn = function() {
-    return turn;
-  };
-
-  this.reset = resetBoard;
-
-  // За PGN парсване и ходове - няма тук (защото е сложно),
-  // ще зареждаме само начална
+</body>
+</html>
