@@ -1,57 +1,90 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Veso's PGN Viewer - Основно</title>
-<style>
-  body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-  textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-  button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-  button:hover { background: #555; }
-  #board { width: 400px; margin-top: 20px; }
-</style>
-
-<!-- Важни библиотеки -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veso's PGN Viewer 🤠</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #444;
+      font-family: monospace;
+    }
+    button {
+      margin: 10px 5px 5px 0;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/www/css/chessboard.css" />
 </head>
 <body>
+  <h2>Veso's PGN Viewer 🤠</h2>
 
-<h2>Veso's PGN Viewer 🤠</h2>
+  <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br>
+  <button id="loadBtn">Зареди партията</button>
+  <button id="shareBtn">Сподели във Facebook</button>
 
-<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
+  <div id="board"></div>
 
-<button id="loadBtn">Зареди партията</button>
-<button id="shareBtn">Сподели във Facebook</button>
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/www/js/chessboard.js"></script>
 
-<div id="board"></div>
+  <script>
+    const board = Chessboard('board', { draggable: false, position: 'start' });
+    const chess = new Chess();
+    let moves = [], index = 0;
 
-<script>
-  const board = Chessboard('board', { draggable: false, position: 'start' });
-  const chess = new Chess();
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const pgnText = document.getElementById('pgn').value;
+      const ok = chess.load_pgn(pgnText);
+      if (!ok) {
+        alert('Невалиден PGN!');
+        return;
+      }
+      moves = chess.history();
+      index = 0;
+      chess.reset();
+      board.position(chess.fen());
+      playMoves();
+    });
 
-  document.getElementById('loadBtn').addEventListener('click', () => {
-    const pgnText = document.getElementById('pgn').value.trim();
-    if (!pgnText) {
-      alert('Моля, постави PGN партия в полето!');
-      return;
+    function playMoves() {
+      if (index >= moves.length) return;
+      setTimeout(() => {
+        chess.move(moves[index]);
+        board.position(chess.fen());
+        index++;
+        playMoves();
+      }, 800);
     }
-    const loaded = chess.load_pgn(pgnText);
-    if (!loaded) {
-      alert('Невалиден PGN формат!');
-      return;
-    }
-    board.position(chess.fen());
-  });
 
-  document.getElementById('shareBtn').addEventListener('click', () => {
-    const url = encodeURIComponent(window.location.href);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
-  });
-</script>
-
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      const url = encodeURIComponent(window.location.href);
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '', 'width=600,height=400');
+    });
+  </script>
 </body>
 </html>
