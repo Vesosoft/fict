@@ -2,32 +2,16 @@
 <html lang="bg">
 <head>
 <meta charset="UTF-8" />
-<title>Test Chessboard</title>
+<title>JS Test</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  body { background: #121212; color: white; font-family: sans-serif; padding: 20px; }
-  #board { width: 360px; margin: 20px auto; }
-  button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/0.3.0/css/chessboard-0.3.0.min.css" />
 </head>
-<body>
-
-<h2>Test Chessboard</h2>
-
-<button id="btn">Покажи начална позиция</button>
-
-<div id="board"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/0.3.0/js/chessboard-0.3.0.min.js"></script>
-
+<body style="background:#121212; color:#eee; font-family:sans-serif; padding:20px;">
+<h2>Тест за JavaScript</h2>
+<button id="testBtn">Натисни ме</button>
 <script>
-  var board = Chessboard('board', { position: 'start' });
-  document.getElementById('btn').addEventListener('click', function() {
-    board.start();
-    alert('Дъската е заредена!');
-  });
+  document.getElementById('testBtn').onclick = function() {
+    alert('JavaScript работи!');
+  };
 </script>
-
 </body>
 </html>
