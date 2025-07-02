@@ -1,86 +1,106 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="utf-8"/>
-  <title>PGN Viewer – Без външни библиотеки</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Veso's PGN Viewer</title>
   <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding:20px; max-width:480px; margin:auto; }
-    textarea { width:100%; height:150px; background:#1e1e1e; color:#f0f0f0; padding:10px; margin-bottom:10px; border:1px solid #444; font-family:monospace; }
-    button { color:#fff; background:#333; border:none; padding:10px 15px; margin-right:5px; margin-bottom:10px; border-radius:5px; cursor:pointer; }
-    button:hover { background:#555; }
-    .board { display:grid; grid-template: repeat(8,40px)/repeat(8,40px); margin:10px auto; }
-    .light { background:#f0d9b5; }
-    .dark { background:#b58863; }
-    .piece { font-size:32px; text-align:center; line-height:40px; }
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button, select { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover, select:hover { background: #555; }
+    #board { width: 400px; margin-top: 20px; }
+    #langSelect { float: right; }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
 </head>
 <body>
-  <h2>PGN Viewer – Без библиотеки</h2>
-  <textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br>
+
+  <select id="langSelect">
+    <option value="bg">🇧🇬 BG</option>
+    <option value="ua">🇺🇦 UA</option>
+    <option value="en">🇬🇧 EN</option>
+  </select>
+
+  <h2 id="title">Veso's PGN Viewer 🤠</h2>
+
+  <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
   <button id="loadBtn">Зареди партията</button>
   <button id="shareBtn">Сподели във Facebook</button>
-  <div class="board" id="board"></div>
+
+  <div id="board"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
 
   <script>
-  // Unicode фигури
-  const PIECES = {P:'♙',N:'♘',B:'♗',R:'♖',Q:'♕',K:'♔',p:'♟',n:'♞',b:'♝',r:'♜',q:'♛',k:'♚'};
-  const boardEl = document.getElementById('board');
+    let board = null;
+    let chess = new Chess();
 
-  // Създаване на празна дъска
-  function createBoard() {
-    boardEl.innerHTML = '';
-    const divs = [];
-    for(let r=7; r>=0; r--) for(let c=0; c<8; c++){
-      const sq = document.createElement('div');
-      sq.className = (r + c) % 2 === 0 ? 'light' : 'dark';
-      const pieceEl = document.createElement('div');
-      pieceEl.className = 'piece';
-      sq.appendChild(pieceEl);
-      boardEl.appendChild(sq);
-      divs.push(pieceEl);
+    function initBoard() {
+      board = Chessboard('board', {
+        draggable: false,
+        position: 'start'
+      });
     }
-    return divs;
-  }
 
-  const squares = createBoard();
-
-  // Рисува позиция от FEN
-  function drawFen(fen) {
-    const rows = fen.split(' ')[0].split('/');
-    let idx = 0;
-    for(const row of rows){
-      for(const ch of row){
-        if(/\d/.test(ch)){
-          for(let i=0;i<+ch;i++){ squares[idx].textContent = ''; idx++; }
-        } else { squares[idx].textContent = PIECES[ch] || ''; idx++; }
+    function loadPGN() {
+      const pgn = document.getElementById('pgn').value;
+      if (chess.load_pgn(pgn)) {
+        board.position(chess.fen());
+      } else {
+        alert(currentLang === 'bg' ? 'Невалиден PGN!' : currentLang === 'ua' ? 'Некоректний PGN!' : 'Invalid PGN!');
       }
     }
-  }
 
-  // Пример енкодер за PGN до FEN (проста начална позиция или предупреждение)
-  function pgnToFen(pgn){
-    if(!pgn.trim()) return null;
-    return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-  }
+    function shareFB() {
+      const u = encodeURIComponent(window.location.href);
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + u, '', 'width=600,height=400');
+    }
 
-  document.getElementById('loadBtn').onclick = () => {
-    const pgn = document.getElementById('pgn').value;
-    const fen = pgnToFen(pgn);
-    if(!fen) return alert('Невалиден PGN!');
-    drawFen(fen);
-  };
+    const langData = {
+      bg: {
+        title: "Veso's PGN Viewer 🤠",
+        placeholder: "Постави тук PGN партията си...",
+        load: "Зареди партията",
+        share: "Сподели във Facebook"
+      },
+      ua: {
+        title: "Переглядач партій Veso 🤠",
+        placeholder: "Встав сюди свою партію (PGN)...",
+        load: "Завантажити партію",
+        share: "Поділитися у Facebook"
+      },
+      en: {
+        title: "Veso's PGN Viewer 🤠",
+        placeholder: "Paste your PGN game here...",
+        load: "Load Game",
+        share: "Share on Facebook"
+      }
+    };
 
-  document.getElementById('shareBtn').onclick = e => {
-    e.preventDefault();
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u=' +
-      encodeURIComponent(window.location.href),
-      '_blank','width=600,height=400');
-  };
+    let currentLang = 'bg';
 
-  // Начална позиция при първо зареждане
-  drawFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    function updateLang(lang) {
+      currentLang = lang;
+      const data = langData[lang];
+      document.getElementById('title').innerText = data.title;
+      document.getElementById('pgn').placeholder = data.placeholder;
+      document.getElementById('loadBtn').innerText = data.load;
+      document.getElementById('shareBtn').innerText = data.share;
+    }
+
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      updateLang(e.target.value);
+    });
+
+    document.getElementById('loadBtn').addEventListener('click', loadPGN);
+    document.getElementById('shareBtn').addEventListener('click', shareFB);
+
+    window.addEventListener('load', () => {
+      initBoard();
+    });
   </script>
+
 </body>
 </html>
