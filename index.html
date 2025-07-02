@@ -3,115 +3,69 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Veso's PGN Viewer - Самостоятелен</title>
+<title>Veso's PGN Viewer</title>
 <style>
   body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
   textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
   button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
   button:hover { background: #555; }
   #board { width: 400px; margin-top: 20px; }
-  /* Минимален стил за дъска */
-  .chessboard { width: 400px; height: 400px; margin: 20px 0; background: linear-gradient(45deg, #769656 25%, #769656 75%, #eeeed2 75%, #eeeed2 100%); background-size: 80px 80px; position: relative; }
-  .square { width: 50px; height: 50px; float: left; }
-  .square.light { background: #eeeed2; }
-  .square.dark { background: #769656; }
-  .piece { position: absolute; width: 50px; height: 50px; background-size: contain; background-repeat: no-repeat; pointer-events: none; }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 </head>
 <body>
 
-<h2>Veso's PGN Viewer 🤠 (Самостоятелен)</h2>
+<h2>Veso's PGN Viewer 🤠</h2>
 
 <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
+
 <button id="loadBtn">Зареди партията</button>
-<button id="shareBtn">Сподели във Facebook</button>
+<button id="prevBtn">Предишен ход</button>
+<button id="nextBtn">Следващ ход</button>
 
 <div id="board"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
 <script>
-// Минимална шахматна дъска (без библиотеки)
-// Шахматни фигури в Unicode
-const piecesUnicode = {
-  P: "♙", N: "♘", B: "♗", R: "♖", Q: "♕", K: "♔",
-  p: "♟", n: "♞", b: "♝", r: "♜", q: "♛", k: "♚"
-};
+  const board = Chessboard('board', { draggable: false, position: 'start' });
+  const chess = new Chess();
+  let moves = [];
+  let idx = 0;
 
-// Създаване на 8x8 дъска
-function createBoard() {
-  const board = document.getElementById('board');
-  board.innerHTML = '';
-  board.className = 'chessboard';
-  for(let rank=8; rank>=1; rank--) {
-    for(let file=1; file<=8; file++) {
-      const square = document.createElement('div');
-      square.className = 'square ' + ((rank + file) % 2 === 0 ? 'light' : 'dark');
-      square.id = `square-${file}${rank}`;
-      board.appendChild(square);
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    const pgnText = document.getElementById('pgn').value.trim();
+    if (!pgnText) {
+      alert('Моля, постави PGN текст.');
+      return;
     }
-  }
-}
-
-// Показва фигури според позиция в FEN
-function renderPosition(fen) {
-  const board = document.getElementById('board');
-  // Премахва стари фигури
-  [...board.querySelectorAll('.piece')].forEach(el => el.remove());
-
-  const parts = fen.split(' ');
-  if(parts.length < 1) return;
-  const rows = parts[0].split('/');
-  if(rows.length !== 8) return;
-
-  for(let r=0; r<8; r++) {
-    let file = 1;
-    for(const ch of rows[r]) {
-      if(!isNaN(ch)) {
-        file += parseInt(ch);
-      } else {
-        const piece = document.createElement('div');
-        piece.className = 'piece';
-        piece.style.top = `${(7 - r) * 50}px`;
-        piece.style.left = `${(file - 1) * 50}px`;
-        piece.textContent = piecesUnicode[ch] || '';
-        board.appendChild(piece);
-        file++;
-      }
+    const loadSuccess = chess.load_pgn(pgnText);
+    if (!loadSuccess) {
+      alert('Невалиден PGN!');
+      return;
     }
-  }
-}
+    moves = chess.history();
+    idx = 0;
+    chess.reset();
+    board.position(chess.fen());
+  });
 
-// Прости функции за игра
-// Тук няма пълна логика за шахмат, само зареждаме партията от PGN и показваме позицията на последния ход
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (idx < moves.length) {
+      chess.move(moves[idx]);
+      idx++;
+      board.position(chess.fen());
+    }
+  });
 
-// Зареждаме PGN и конвертираме в FEN с помощта на minimal Chess.js port
-// Вместо да ползваме библиотеки, ще използваме много опростена имплементация за зареждане на начална позиция
-
-// За целите на демото: просто показваме начална позиция, а ако PGN не е празен, показваме просто позиция след първия ход (hardcoded)
-
-document.getElementById('loadBtn').onclick = () => {
-  const pgn = document.getElementById('pgn').value.trim();
-  if(!pgn) {
-    alert('Постави PGN, моля!');
-    return;
-  }
-  // За пример: ако PGN съдържа ход 1.e4 показваме съответната позиция (твърдо кодирано)
-  if(pgn.includes('1.e4')) {
-    renderPosition('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1');
-  } else {
-    // Показваме начална позиция
-    renderPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-  }
-};
-
-document.getElementById('shareBtn').onclick = (e) => {
-  e.preventDefault();
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '', 'width=600,height=400');
-};
-
-// Създаваме дъската при зареждане
-createBoard();
-renderPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (idx > 0) {
+      chess.undo();
+      idx--;
+      board.position(chess.fen());
+    }
+  });
 </script>
 
 </body>
