@@ -53,34 +53,36 @@
 
   <div id="board"></div>
 
-  <!-- Скриптове -->
+  <!-- JS библиотеки -->
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chessboardjs@0.3.0/dist/chessboard.min.js"></script>
 
   <script>
-    const board = Chessboard('board', {
-      draggable: false,
-      position: 'start'
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+      const board = Chessboard('board', {
+        draggable: false,
+        position: 'start'
+      });
 
-    const chess = new Chess();
+      const chess = new Chess();
 
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgnText = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgnText)) {
-        board.position(chess.fen());
-      } else {
-        alert('Невалиден PGN!');
-      }
-    });
+      document.getElementById('loadBtn').addEventListener('click', () => {
+        const pgnText = document.getElementById('pgn').value;
+        if (chess.load_pgn(pgnText)) {
+          board.position(chess.fen());
+        } else {
+          alert('Невалиден PGN!');
+        }
+      });
 
-    document.getElementById('shareBtn').addEventListener('click', () => {
-      const url = encodeURIComponent(window.location.href);
-      window.open(
-        'https://www.facebook.com/sharer/sharer.php?u=' + url,
-        '',
-        'width=600,height=400'
-      );
+      document.getElementById('shareBtn').addEventListener('click', () => {
+        const url = encodeURIComponent(window.location.href);
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u=' + url,
+          '',
+          'width=600,height=400'
+        );
+      });
     });
   </script>
 
