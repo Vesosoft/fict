@@ -32,16 +32,13 @@
 <div id="board"></div>
 
 <script src="libs/chess.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
+<script src="libs/chessboard-0.3.0.js"></script>
 
 <script>
-  // Създаваме обект Chess и дъската
   const chess = new Chess();
   const board = Chessboard('board', { position: 'start', draggable: false });
 
-  // Масив с ходовете на партията
   let moves = [];
-  // Индекс на текущия ход
   let currentMove = 0;
 
   const pgnTextarea = document.getElementById('pgn');
@@ -51,7 +48,6 @@
   const moveNumberDiv = document.getElementById('moveNumber');
 
   function updateBoard() {
-    // Възстановяваме позицията по текущия ход
     chess.reset();
     for(let i = 0; i < currentMove; i++) {
       chess.move(moves[i]);
@@ -60,36 +56,35 @@
     moveNumberDiv.textContent = `Ход: ${currentMove}`;
   }
 
-  loadBtn.onclick = () => {
-    const pgnText = pgnTextarea.value.trim();
-    if (!pgnText) {
-      alert('Моля, постави валидна PGN партия.');
+  loadBtn.addEventListener('click', () => {
+    const pgn = pgnTextarea.value.trim();
+    if (!pgn) {
+      alert('Моля, постави PGN партията в полето.');
       return;
     }
-    const loaded = chess.load_pgn(pgnText);
+    const loaded = chess.load_pgn(pgn);
     if (!loaded) {
-      alert('Грешка при зареждане на PGN!');
+      alert('Грешка при зареждане на PGN.');
       return;
     }
-    // Вземаме ходовете от историята
     moves = chess.history();
     currentMove = 0;
     updateBoard();
-  };
+  });
 
-  prevBtn.onclick = () => {
-    if (currentMove > 0) {
+  prevBtn.addEventListener('click', () => {
+    if(currentMove > 0) {
       currentMove--;
       updateBoard();
     }
-  };
+  });
 
-  nextBtn.onclick = () => {
-    if (currentMove < moves.length) {
+  nextBtn.addEventListener('click', () => {
+    if(currentMove < moves.length) {
       currentMove++;
       updateBoard();
     }
-  };
+  });
 </script>
 
 </body>
