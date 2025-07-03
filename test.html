@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="UTF-8" />
-<title>Тестова дъска v0.3.0</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-  #board { width: 360px; margin: 20px auto; }
-</style>
-<link rel="stylesheet" href="https://unpkg.com/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Veso Test</title>
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.css">
+  <style>
+    body { background: #111; color: #eee; font-family: sans-serif; padding: 20px; }
+    #board { width: 400px; }
+  </style>
 </head>
 <body>
 
-<h2>Тестова дъска с chessboardjs v0.3.0</h2>
-
+<h2>Тестова дъска</h2>
 <div id="board"></div>
 
-<script src="https://unpkg.com/chessboardjs@0.3.0/dist/chessboard-0.3.0.min.js"></script>
+<script src="libs/chessboard-0.3.0.js"></script>
 <script>
-  var board = Chessboard('board', { position: 'start' });
+  const board = Chessboard('board', 'start');
 </script>
 
 </body>
