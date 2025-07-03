@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
     textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-    button { margin-top: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
     button:hover { background: #555; }
     #board { width: 400px; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>Veso's PGN Viewer 🤠</h2>
-  <textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br>
-  <button id="loadBtn">Зареди партията</button>
-  <div id="board"></div>
 
-  <script src="libs/chess.js"></script>
-  <script src="libs/chessboard-0.3.0.min.js"></script>
+<h2>Veso's PGN Viewer 🤠</h2>
 
-  <script>
-    let board = Chessboard('board', { position: 'start' });
-    let game = new Chess();
+<textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
+<button id="loadBtn">Зареди партията</button>
 
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgnText = document.getElementById('pgn').value;
-      const loadSuccess = game.load_pgn(pgnText);
-      if (loadSuccess) {
-        board.position(game.fen());
-        alert('Партията е заредена успешно!');
-      } else {
-        alert('Грешен или празен PGN!');
-      }
-    });
-  </script>
+<div id="board"></div>
+
+<!-- JS библиотеки -->
+<script src="libs/chess.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
+
+<script>
+  const board = Chessboard('board', { position: 'start', draggable: false });
+  const chess = new Chess();
+
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    const pgn = document.getElementById('pgn').value;
+    if (chess.load_pgn(pgn)) {
+      board.position(chess.fen());
+    } else {
+      alert('Невалиден PGN!');
+    }
+  });
+</script>
+
 </body>
 </html>
