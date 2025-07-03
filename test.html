@@ -1,22 +1,54 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Veso Test</title>
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.css">
+  <meta charset="UTF-8" />
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { background: #111; color: #eee; font-family: sans-serif; padding: 20px; }
-    #board { width: 400px; }
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
+    #board { width: 400px; height: 400px; margin-top: 20px; display: grid; grid-template: repeat(8, 1fr) / repeat(8, 1fr); border: 2px solid #888; }
+    .square { width: 100%; height: 100%; }
+    .light { background: #f0d9b5; }
+    .dark { background: #b58863; }
   </style>
 </head>
 <body>
 
-<h2>Тестова дъска</h2>
+<h2>Veso PGN Viewer 🤠</h2>
+
+<textarea id="pgn" placeholder="Постави PGN партията си..."></textarea><br />
+<button id="loadBtn">Зареди партията</button>
+
 <div id="board"></div>
 
-<script src="libs/chessboard-0.3.0.js"></script>
 <script>
-  const board = Chessboard('board', 'start');
+  // Минимална дъска
+  function drawEmptyBoard() {
+    const board = document.getElementById("board");
+    board.innerHTML = "";
+    for (let rank = 0; rank < 8; rank++) {
+      for (let file = 0; file < 8; file++) {
+        const square = document.createElement("div");
+        square.className = "square " + ((rank + file) % 2 === 0 ? "light" : "dark");
+        board.appendChild(square);
+      }
+    }
+  }
+
+  drawEmptyBoard(); // показваме стартова дъска
+
+  // Минимален парсър за PGN (само показва съобщение)
+  document.getElementById("loadBtn").addEventListener("click", () => {
+    const pgnText = document.getElementById("pgn").value.trim();
+    if (pgnText) {
+      alert("PGN е приет! (но парсърът не е имплементиран още)");
+    } else {
+      alert("Моля, постави PGN код.");
+    }
+  });
 </script>
 
 </body>
