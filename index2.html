@@ -11,6 +11,7 @@
     button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
     button:hover { background: #555; }
     #board { width: 400px; margin-top: 20px; }
+    #moveNumber { margin-top: 10px; font-size: 18px; }
   </style>
 </head>
 <body>
@@ -18,24 +19,66 @@
 <h2>Veso's PGN Viewer 🤠</h2>
 
 <textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
+
 <button id="loadBtn">Зареди партията</button>
+<button id="prevBtn">⬅️ Предишен ход</button>
+<button id="nextBtn">➡️ Следващ ход</button>
+
+<div id="moveNumber">Ход: 0</div>
 
 <div id="board"></div>
 
-<!-- JS библиотеки -->
 <script src="libs/chess.js"></script>
 <script src="libs/chessboard-0.3.0.min.js"></script>
 
 <script>
-  const board = Chessboard('board', { position: 'start', draggable: false });
   const chess = new Chess();
+  const board = Chessboard('board', { position: 'start', draggable: false });
 
-  document.getElementById('loadBtn').addEventListener('click', () => {
-    const pgn = document.getElementById('pgn').value;
-    if (chess.load_pgn(pgn)) {
-      board.position(chess.fen());
-    } else {
+  let moves = [];
+  let currentMove = 0;
+
+  const pgnTextarea = document.getElementById('pgn');
+  const loadBtn = document.getElementById('loadBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const moveNumberDiv = document.getElementById('moveNumber');
+
+  function updateBoard() {
+    chess.reset();
+    for (let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+    moveNumberDiv.textContent = `Ход: ${currentMove}`;
+  }
+
+  loadBtn.addEventListener('click', () => {
+    const pgn = pgnTextarea.value.trim();
+    if (!pgn) {
+      alert('Постави PGN първо!');
+      return;
+    }
+    if (!chess.load_pgn(pgn)) {
       alert('Невалиден PGN!');
+      return;
+    }
+    moves = chess.history();
+    currentMove = 0;
+    updateBoard();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentMove > 0) {
+      currentMove--;
+      updateBoard();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
     }
   });
 </script>
