@@ -1,85 +1,50 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Veso's PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Тест дъска с бутони</title>
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.css">
   <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #555; }
-    #board { width: 400px; margin-top: 20px; }
-    #moveNumber { margin-top: 10px; font-size: 18px; }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    button {
+      margin: 10px 10px 0 0;
+      padding: 10px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
-<h2>Veso's PGN Viewer 🤠</h2>
+<h2>Тест: дъска + 2 бутона</h2>
 
-<textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
-
-<button id="loadBtn">Зареди партията</button>
-<button id="prevBtn">⬅️ Предишен ход</button>
-<button id="nextBtn">➡️ Следващ ход</button>
-
-<div id="moveNumber">Ход: 0</div>
+<button id="testBtn1">Бутон 1</button>
+<button id="testBtn2">Бутон 2</button>
 
 <div id="board"></div>
 
 <script src="libs/chess.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
+<script src="libs/chessboard-0.3.0.js"></script>
 <script>
-  const chess = new Chess();
-  const board = Chessboard('board', { position: 'start', draggable: false });
+  const board = Chessboard('board', { position: 'start' });
 
-  let moves = [];
-  let currentMove = 0;
-
-  const pgnTextarea = document.getElementById('pgn');
-  const loadBtn = document.getElementById('loadBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const moveNumberDiv = document.getElementById('moveNumber');
-
-  function updateBoard() {
-    chess.reset();
-    for (let i = 0; i < currentMove; i++) {
-      chess.move(moves[i]);
-    }
-    board.position(chess.fen());
-    moveNumberDiv.textContent = `Ход: ${currentMove}`;
-  }
-
-  loadBtn.addEventListener('click', () => {
-    const pgn = pgnTextarea.value.trim();
-    if (!pgn) {
-      alert('Постави PGN първо!');
-      return;
-    }
-    if (!chess.load_pgn(pgn)) {
-      alert('Невалиден PGN!');
-      return;
-    }
-    moves = chess.history();
-    currentMove = 0;
-    updateBoard();
+  document.getElementById('testBtn1').addEventListener('click', () => {
+    alert('Бутон 1 е натиснат');
   });
 
-  prevBtn.addEventListener('click', () => {
-    if (currentMove > 0) {
-      currentMove--;
-      updateBoard();
-    }
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (currentMove < moves.length) {
-      currentMove++;
-      updateBoard();
-    }
+  document.getElementById('testBtn2').addEventListener('click', () => {
+    alert('Бутон 2 е натиснат');
   });
 </script>
 
