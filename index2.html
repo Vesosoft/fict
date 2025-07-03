@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Минимален PGN Viewer</title>
+  <meta charset="UTF-8">
+  <title>Veso's PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea, button { font-size: 16px; margin-top: 10px; }
-    textarea { width: 100%; height: 100px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; }
-    button { background: #333; color: white; padding: 10px 15px; border: none; border-radius: 5px; }
-    #board { width: 300px; margin-top: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button { margin-top: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
+    #board { width: 400px; margin-top: 20px; }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css" />
 </head>
 <body>
-  <h2>Мини дъска</h2>
-  <textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
+  <h2>Veso's PGN Viewer 🤠</h2>
+  <textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br>
   <button id="loadBtn">Зареди партията</button>
   <div id="board"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
-  <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
+  <!-- Локални библиотеки -->
+  <script src="libs/chess.js"></script>
+  <script src="libs/chessboard-0.3.0.min.js"></script>
+
   <script>
-    const board = Chessboard('board', { position: 'start' });
+    const board = Chessboard('board', { position: 'start', draggable: false });
     const chess = new Chess();
+    let moves = [], index = 0;
 
     document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgn = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgn)) {
+      const pgnText = document.getElementById('pgn').value;
+      if (chess.load_pgn(pgnText)) {
+        moves = chess.history();
+        index = 0;
         board.position(chess.fen());
+        alert("Партията е заредена!");
       } else {
-        alert("Невалиден PGN!");
+        alert("Грешка в PGN!");
       }
     });
   </script>
