@@ -2,60 +2,143 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Дъска два пъти - без изчезване</title>
+  <title>Veso's PGN Viewer с авто ходове</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
-    .chessboard {
-      width: 320px;
-      height: 320px;
-      display: flex;
-      flex-wrap: wrap;
-      border: 2px solid #333;
-      margin: 20px auto;
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea {
+      width: 100%; height: 150px;
+      background: #1e1e1e; color: #f0f0f0;
+      padding: 10px; border: 1px solid #444;
+      font-family: monospace;
+      background-image: linear-gradient(90deg, #444 1px, transparent 1px);
+      background-size: 20px 20px;
     }
-    .square {
-      width: 40px;
-      height: 40px;
+    button {
+      margin: 10px 10px 10px 0;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333; color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
     }
-    .square.white {
-      background: #eee;
-    }
-    .square.black {
-      background: #777;
-    }
+    button:hover { background: #555; }
+    #board { width: 400px; margin-top: 20px; cursor: pointer; }
+    #status { margin-top: 10px; font-size: 18px; }
   </style>
 </head>
 <body>
 
+<h2>Veso's PGN Viewer 🤠</h2>
+
+<textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
+
+<button id="loadBtn">Зареди партията</button>
+<button id="prevBtn">⬅️ Назад</button>
+<button id="nextBtn">➡️ Напред</button>
+<button id="autoBtn">▶ AUTO</button>
+
+<div id="status">Ход: 0</div>
 <div id="board"></div>
 
+<script src="libs/chess.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
+
 <script>
-  (function() {
-    function Chessboard(id) {
-      this.element = document.getElementById(id);
+  const board = Chessboard('board', { position: 'start', draggable: false });
+  const chess = new Chess();
+
+  let moves = [];
+  let currentMove = 0;
+  let autoPlayInterval = null;
+
+  const pgnTextarea = document.getElementById('pgn');
+  const loadBtn = document.getElementById('loadBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const autoBtn = document.getElementById('autoBtn');
+  const statusDiv = document.getElementById('status');
+  const boardDiv = document.getElementById('board');
+
+  function updateStatus() {
+    statusDiv.textContent = `Ход: ${currentMove} / ${moves.length}`;
+  }
+
+  function updateBoard() {
+    chess.reset();
+    for(let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
     }
+    board.position(chess.fen());
+    updateStatus();
+  }
 
-    Chessboard.prototype.render = function() {
-      this.element.innerHTML = ''; // Изчистваме предишното съдържание
-      this.element.className = 'chessboard';
-      for(let i=0; i<64; i++) {
-        let square = document.createElement('div');
-        square.className = 'square ' + ((Math.floor(i/8)+i) % 2 === 0 ? 'white' : 'black');
-        this.element.appendChild(square);
-      }
-    };
+  loadBtn.addEventListener('click', () => {
+    const pgn = pgnTextarea.value.trim();
+    if (!chess.load_pgn(pgn)) {
+      alert('Невалиден PGN!');
+      return;
+    }
+    moves = chess.history();
+    currentMove = 0;
+    updateBoard();
+  });
 
-    window.Chessboard = Chessboard;
-  })();
+  prevBtn.addEventListener('click', () => {
+    if (currentMove > 0) {
+      currentMove--;
+      updateBoard();
+      stopAutoPlay();
+    }
+  });
 
-  const board = new Chessboard('board');
+  nextBtn.addEventListener('click', () => {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+      stopAutoPlay();
+    }
+  });
 
-  // Първо изрисуваме дъската
-  board.render();
+  function autoPlay() {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+    } else {
+      stopAutoPlay();
+    }
+  }
 
-  // Второ извикване на render() - през няколко милисекунди, просто да се изпълни отново
-  setTimeout(() => {
-    board.render();
-  }, 100);
+  function startAutoPlay() {
+    if (!autoPlayInterval) {
+      autoPlayInterval = setInterval(autoPlay, 1000);
+      autoBtn.textContent = '⏸ СПРИ';
+    }
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+      autoBtn.textContent = '▶ AUTO';
+    }
+  }
+
+  autoBtn.addEventListener('click', () => {
+    if (autoPlayInterval) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  boardDiv.addEventListener('click', () => {
+    stopAutoPlay();
+  });
+
 </script>
 
 </body>
