@@ -1,43 +1,14 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-  <meta charset="UTF-8" />
-  <title>Прост PGN Viewer</title>
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
-  <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 120px; background: #222; color: #eee; font-family: monospace; }
-    button { margin-top: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #555; }
-    #board { width: 400px; margin-top: 20px; }
-  </style>
-</head>
-<body>
+<script src="libs/chess.js"></script>
+<script src="libs/chessboard-0.3.0.js"></script>
 
-  <h2>Прост PGN Viewer</h2>
+<script>
+  const board = Chessboard('board', { position: 'start', draggable: false });
+  const chess = new Chess();
 
-  <textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
-  <button id="loadBtn">Зареди партията</button>
-
-  <div id="board"></div>
-
-  <!-- ВАЖНО: първо chess.js, после chessboard.js -->
-  <script src="libs/chess.js"></script>
-  <script src="libs/chessboard-0.3.0.min.js"></script>
-
-  <script>
-    const board = Chessboard('board', { position: 'start', draggable: false });
-    const chess = new Chess();
-
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const pgnText = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgnText)) {
-        board.position(chess.fen());
-      } else {
-        alert('Невалиден PGN!');
-      }
-    });
-  </script>
-
-</body>
-</html>
+  document.getElementById('loadBtn').addEventListener('click', function () {
+    const pgnText = document.getElementById('pgn').value;
+    chess.load_pgn(pgnText);
+    const newPosition = chess.fen();
+    board.position(newPosition);
+  });
+</script>
