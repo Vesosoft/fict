@@ -2,143 +2,89 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Veso's PGN Viewer с авто ходове</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тест на шахматна дъска с бутони</title>
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea {
-      width: 100%; height: 150px;
-      background: #1e1e1e; color: #f0f0f0;
-      padding: 10px; border: 1px solid #444;
-      font-family: monospace;
-      background-image: linear-gradient(90deg, #444 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
+    #board { width: 400px; margin-top: 20px; }
     button {
-      margin: 10px 10px 10px 0;
+      margin: 5px;
       padding: 10px 15px;
       font-size: 16px;
-      background: #333; color: #fff;
+      background: #333;
+      color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      user-select: none;
     }
-    button:hover { background: #555; }
-    #board { width: 400px; margin-top: 20px; cursor: pointer; }
-    #status { margin-top: 10px; font-size: 18px; }
+  </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <title>Тест на шахматна дъска с бутони</title>
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <style>
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    #board { width: 400px; margin-top: 20px; }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<h2>Veso's PGN Viewer 🤠</h2>
+<h2>Тест на дъска с бутони</h2>
 
-<textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
+<button id="btn1">Бутон 1</button>
+<button id="btn2">Бутон 2</button>
+<button id="btn3">Бутон 3</button>
 
-<button id="loadBtn">Зареди партията</button>
-<button id="prevBtn">⬅️ Назад</button>
-<button id="nextBtn">➡️ Напред</button>
-<button id="autoBtn">▶ AUTO</button>
-
-<div id="status">Ход: 0</div>
 <div id="board"></div>
 
 <script src="libs/chess.js"></script>
 <script src="libs/chessboard-0.3.0.min.js"></script>
 
 <script>
+  // Инициализация на дъската
   const board = Chessboard('board', { position: 'start', draggable: false });
-  const chess = new Chess();
 
-  let moves = [];
-  let currentMove = 0;
-  let autoPlayInterval = null;
+  // Просто показваме че бутоните работят
+  document.getElementById('btn1').onclick = () => alert('Натиснат бутон 1');
+  document.getElementById('btn2').onclick = () => alert('Натиснат бутон 2');
+  document.getElementById('btn3').onclick = () => alert('Натиснат бутон 3');
+</script>
 
-  const pgnTextarea = document.getElementById('pgn');
-  const loadBtn = document.getElementById('loadBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const autoBtn = document.getElementById('autoBtn');
-  const statusDiv = document.getElementById('status');
-  const boardDiv = document.getElementById('board');
+</body>
+</html>
+<h2>Тест на дъска с бутони</h2>
 
-  function updateStatus() {
-    statusDiv.textContent = `Ход: ${currentMove} / ${moves.length}`;
-  }
+<button id="btn1">Бутон 1</button>
+<button id="btn2">Бутон 2</button>
+<button id="btn3">Бутон 3</button>
 
-  function updateBoard() {
-    chess.reset();
-    for(let i = 0; i < currentMove; i++) {
-      chess.move(moves[i]);
-    }
-    board.position(chess.fen());
-    updateStatus();
-  }
+<div id="board"></div>
 
-  loadBtn.addEventListener('click', () => {
-    const pgn = pgnTextarea.value.trim();
-    if (!chess.load_pgn(pgn)) {
-      alert('Невалиден PGN!');
-      return;
-    }
-    moves = chess.history();
-    currentMove = 0;
-    updateBoard();
-  });
+<script src="libs/chess.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
 
-  prevBtn.addEventListener('click', () => {
-    if (currentMove > 0) {
-      currentMove--;
-      updateBoard();
-      stopAutoPlay();
-    }
-  });
+<script>
+  // Инициализация на дъската
+  const board = Chessboard('board', { position: 'start', draggable: false });
 
-  nextBtn.addEventListener('click', () => {
-    if (currentMove < moves.length) {
-      currentMove++;
-      updateBoard();
-      stopAutoPlay();
-    }
-  });
-
-  function autoPlay() {
-    if (currentMove < moves.length) {
-      currentMove++;
-      updateBoard();
-    } else {
-      stopAutoPlay();
-    }
-  }
-
-  function startAutoPlay() {
-    if (!autoPlayInterval) {
-      autoPlayInterval = setInterval(autoPlay, 1000);
-      autoBtn.textContent = '⏸ СПРИ';
-    }
-  }
-
-  function stopAutoPlay() {
-    if (autoPlayInterval) {
-      clearInterval(autoPlayInterval);
-      autoPlayInterval = null;
-      autoBtn.textContent = '▶ AUTO';
-    }
-  }
-
-  autoBtn.addEventListener('click', () => {
-    if (autoPlayInterval) {
-      stopAutoPlay();
-    } else {
-      startAutoPlay();
-    }
-  });
-
-  boardDiv.addEventListener('click', () => {
-    stopAutoPlay();
-  });
-
+  // Просто показваме че бутоните работят
+  document.getElementById('btn1').onclick = () => alert('Натиснат бутон 1');
+  document.getElementById('btn2').onclick = () => alert('Натиснат бутон 2');
+  document.getElementById('btn3').onclick = () => alert('Натиснат бутон 3');
 </script>
 
 </body>
