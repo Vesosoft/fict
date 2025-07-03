@@ -85,6 +85,22 @@
     }
   });
 </script>
+<script>
+  const board = new Chessboard('board', { position: 'start', draggable: false });
+  const chess = new Chess();
 
+  const loadBtn = document.getElementById('loadBtn');
+  const pgnTextarea = document.getElementById('pgn');
+
+  loadBtn.addEventListener('click', () => {
+    const pgn = pgnTextarea.value;
+    const success = chess.load_pgn(pgn);
+    if (success) {
+      board.position(chess.fen());
+    } else {
+      alert('Невалиден PGN!');
+    }
+  });
+</script>
 </body>
 </html>
