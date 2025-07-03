@@ -1,1 +1,33 @@
-<script src="libs/chessboard-0.3.0.js"></script>
+/*! chessboard-0.3.0.min.js - simplified version */
+(function() {
+  function Chessboard(id, config) {
+    this.id = id;
+    this.position = config.position || 'start';
+    this.draggable = config.draggable || false;
+    this.element = document.getElementById(id);
+    this.render();
+  }
+
+  Chessboard.prototype.render = function() {
+    if (!this.element) {
+      console.error('Chessboard element not found');
+      return;
+    }
+    this.element.innerHTML = '';
+    this.element.className = 'chessboard';
+    for(let i=0; i<64; i++) {
+      let square = document.createElement('div');
+      square.className = 'square ' + ((Math.floor(i/8)+i) % 2 === 0 ? 'white' : 'black');
+      this.element.appendChild(square);
+    }
+  };
+
+  Chessboard.prototype.position = function(fen) {
+    // Просто показваме "start" позиц		ия - може да се доразвие
+    // За сега няма парсване на FEN, само нулев placeholder
+    // Идеята е да се имплементира постепенно
+    return;
+  };
+
+  window.Chessboard = Chessboard;
+})();
