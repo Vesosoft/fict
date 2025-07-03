@@ -19,24 +19,21 @@
   <button id="loadBtn">Зареди партията</button>
   <div id="board"></div>
 
-  <!-- Локални библиотеки -->
   <script src="libs/chess.js"></script>
   <script src="libs/chessboard-0.3.0.min.js"></script>
 
   <script>
-    const board = Chessboard('board', { position: 'start', draggable: false });
-    const chess = new Chess();
-    let moves = [], index = 0;
+    let board = Chessboard('board', { position: 'start' });
+    let game = new Chess();
 
     document.getElementById('loadBtn').addEventListener('click', () => {
       const pgnText = document.getElementById('pgn').value;
-      if (chess.load_pgn(pgnText)) {
-        moves = chess.history();
-        index = 0;
-        board.position(chess.fen());
-        alert("Партията е заредена!");
+      const loadSuccess = game.load_pgn(pgnText);
+      if (loadSuccess) {
+        board.position(game.fen());
+        alert('Партията е заредена успешно!');
       } else {
-        alert("Грешка в PGN!");
+        alert('Грешен или празен PGN!');
       }
     });
   </script>
