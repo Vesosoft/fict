@@ -49,6 +49,49 @@
   // Начално състояние
   renderBoard('start');
 </script>
+<div style="margin-top: 10px;">
+  <button id="prevBtn">⬅️ Предишен ход</button>
+  <button id="nextBtn">➡️ Следващ ход</button>
+</div>
 
+<script>
+  const chess = new Chess();
+  const board = new Chessboard('board', { position: 'start', draggable: false });
+
+  let moves = [];
+  let currentMove = 0;
+
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    const pgn = document.getElementById('pgn').value;
+    const valid = chess.load_pgn(pgn);
+    if (valid) {
+      moves = chess.history();
+      currentMove = 0;
+      chess.reset();
+      board.position(chess.fen());
+    } else {
+      alert("Невалиден PGN!");
+    }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentMove < moves.length) {
+      chess.move(moves[currentMove]);
+      currentMove++;
+      board.position(chess.fen());
+    }
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentMove > 0) {
+      currentMove--;
+      chess.reset();
+      for (let i = 0; i < currentMove; i++) {
+        chess.move(moves[i]);
+      }
+      board.position(chess.fen());
+    }
+  });
+</script>
 </body>
 </html>
