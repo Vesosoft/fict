@@ -2,105 +2,43 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Veso's PGN Viewer - Оптимизиран</title>
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <title>Veso's PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.css" />
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
     #board { width: 400px; margin-top: 20px; }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
 
-<h2>Veso's PGN Viewer</h2>
+<h2>Veso's PGN Viewer 🤠</h2>
 
-<textarea id="pgn" rows="8" cols="50" placeholder="Постави PGN тук..."></textarea><br/>
-
+<textarea id="pgn" placeholder="Постави PGN тук..."></textarea><br />
 <button id="loadBtn">Зареди партията</button>
-<button id="prevBtn">⬅️ Назад</button>
-<button id="nextBtn">➡️ Напред</button>
-<button id="autoBtn">AUTO</button>
 
 <div id="board"></div>
 
-<script src="libs/chess.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
+<!-- JS библиотеки -->
+<script src="libs/chess.min.js"></script>
+<script src="libs/chessboard-0.3.0.js"></script>
 
 <script>
-  const board = Chessboard('board', { position: 'start', draggable: false });
   const chess = new Chess();
+  const board = new Chessboard('board', { position: 'start', draggable: false });
 
-  let moves = [];
-  let currentMove = 0;
-  let autoPlayInterval = null;
-
-  const pgnTextarea = document.getElementById('pgn');
-  const loadBtn = document.getElementById('loadBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const autoBtn = document.getElementById('autoBtn');
-
-  function updateBoard() {
-    chess.reset();
-    for(let i = 0; i < currentMove; i++) {
-      chess.move(moves[i]);
-    }
-    board.position(chess.fen());
-  }
-
-  loadBtn.onclick = () => {
-    const pgn = pgnTextarea.value;
-    if(chess.load_pgn(pgn)) {
-      moves = chess.history();
-      currentMove = 0;
-      updateBoard();
+  document.getElementById('loadBtn').addEventListener('click', () => {
+    const pgn = document.getElementById('pgn').value;
+    const success = chess.load_pgn(pgn);
+    if (success) {
+      board.position(chess.fen());
     } else {
       alert('Невалиден PGN!');
     }
-  };
-
-  prevBtn.onclick = () => {
-    if(currentMove > 0) {
-      currentMove--;
-      updateBoard();
-    }
-  };
-
-  nextBtn.onclick = () => {
-    if(currentMove < moves.length) {
-      currentMove++;
-      updateBoard();
-    }
-  };
-
-  autoBtn.onclick = () => {
-    if(autoPlayInterval) {
-      clearInterval(autoPlayInterval);
-      autoPlayInterval = null;
-      autoBtn.textContent = 'AUTO';
-    } else {
-      autoBtn.textContent = 'СТОП';
-      autoPlayInterval = setInterval(() => {
-        if(currentMove < moves.length) {
-          currentMove++;
-          updateBoard();
-        } else {
-          clearInterval(autoPlayInterval);
-          autoPlayInterval = null;
-          autoBtn.textContent = 'AUTO';
-        }
-      }, 1000);
-    }
-  };
+  });
 </script>
 
 </body>
