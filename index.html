@@ -1,56 +1,13 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Veso's PGN Viewer</title>
-<style>
-  body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-  textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-  button { margin-top: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-  button:hover { background: #555; }
-  #board { width: 400px; margin-top: 20px; }
-</style>
-
-<!-- Важни файлове: -->
-<link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
-</head>
-<body>
-
-<h2>Veso's PGN Viewer 🤠</h2>
-
-<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
+<textarea id="pgn" placeholder="Постави PGN тук..."></textarea>
 <button id="loadBtn">Зареди партията</button>
 
-<div id="board"></div>
-
-<script src="libs/chess.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
 <script>
-  // Създаваме шахматната дъска
-  const board = Chessboard('board', { position: 'start', draggable: false });
-
-  // Създаваме шахматната логика
-  const chess = new Chess();
-
-  document.getElementById('loadBtn').addEventListener('click', () => {
-    const pgnText = document.getElementById('pgn').value.trim();
-    if (!pgnText) {
-      alert('Моля, постави валиден PGN в полето!');
-      return;
+  document.getElementById('loadBtn').addEventListener('click', function () {
+    const pgn = document.getElementById('pgn').value;
+    if (chess.load_pgn(pgn)) {
+      board.position(chess.fen());
+    } else {
+      alert('Невалидна PGN партия!');
     }
-
-    const loaded = chess.load_pgn(pgnText);
-    if (!loaded) {
-      alert('Невалиден PGN формат!');
-      return;
-    }
-
-    // Обновяваме позицията на дъската с последната позиция от PGN
-    board.position(chess.fen());
   });
 </script>
-
-</body>
-</html>
