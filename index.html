@@ -2,29 +2,7 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Тест на шахматна дъска с бутони</title>
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
-  <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    #board { width: 400px; margin-top: 20px; }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-  <meta charset="UTF-8" />
-  <title>Тест на шахматна дъска с бутони</title>
+  <title>Veso's PGN Viewer - Оптимизиран</title>
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
     body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
@@ -43,34 +21,14 @@
 </head>
 <body>
 
-<h2>Тест на дъска с бутони</h2>
+<h2>Veso's PGN Viewer</h2>
 
-<button id="btn1">Бутон 1</button>
-<button id="btn2">Бутон 2</button>
-<button id="btn3">Бутон 3</button>
+<textarea id="pgn" rows="8" cols="50" placeholder="Постави PGN тук..."></textarea><br/>
 
-<div id="board"></div>
-
-<script src="libs/chess.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
-<script>
-  // Инициализация на дъската
-  const board = Chessboard('board', { position: 'start', draggable: false });
-
-  // Просто показваме че бутоните работят
-  document.getElementById('btn1').onclick = () => alert('Натиснат бутон 1');
-  document.getElementById('btn2').onclick = () => alert('Натиснат бутон 2');
-  document.getElementById('btn3').onclick = () => alert('Натиснат бутон 3');
-</script>
-
-</body>
-</html>
-<h2>Тест на дъска с бутони</h2>
-
-<button id="btn1">Бутон 1</button>
-<button id="btn2">Бутон 2</button>
-<button id="btn3">Бутон 3</button>
+<button id="loadBtn">Зареди партията</button>
+<button id="prevBtn">⬅️ Назад</button>
+<button id="nextBtn">➡️ Напред</button>
+<button id="autoBtn">AUTO</button>
 
 <div id="board"></div>
 
@@ -78,13 +36,71 @@
 <script src="libs/chessboard-0.3.0.min.js"></script>
 
 <script>
-  // Инициализация на дъската
   const board = Chessboard('board', { position: 'start', draggable: false });
+  const chess = new Chess();
 
-  // Просто показваме че бутоните работят
-  document.getElementById('btn1').onclick = () => alert('Натиснат бутон 1');
-  document.getElementById('btn2').onclick = () => alert('Натиснат бутон 2');
-  document.getElementById('btn3').onclick = () => alert('Натиснат бутон 3');
+  let moves = [];
+  let currentMove = 0;
+  let autoPlayInterval = null;
+
+  const pgnTextarea = document.getElementById('pgn');
+  const loadBtn = document.getElementById('loadBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const autoBtn = document.getElementById('autoBtn');
+
+  function updateBoard() {
+    chess.reset();
+    for(let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+  }
+
+  loadBtn.onclick = () => {
+    const pgn = pgnTextarea.value;
+    if(chess.load_pgn(pgn)) {
+      moves = chess.history();
+      currentMove = 0;
+      updateBoard();
+    } else {
+      alert('Невалиден PGN!');
+    }
+  };
+
+  prevBtn.onclick = () => {
+    if(currentMove > 0) {
+      currentMove--;
+      updateBoard();
+    }
+  };
+
+  nextBtn.onclick = () => {
+    if(currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+    }
+  };
+
+  autoBtn.onclick = () => {
+    if(autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+      autoBtn.textContent = 'AUTO';
+    } else {
+      autoBtn.textContent = 'СТОП';
+      autoPlayInterval = setInterval(() => {
+        if(currentMove < moves.length) {
+          currentMove++;
+          updateBoard();
+        } else {
+          clearInterval(autoPlayInterval);
+          autoPlayInterval = null;
+          autoBtn.textContent = 'AUTO';
+        }
+      }, 1000);
+    }
+  };
 </script>
 
 </body>
