@@ -3,34 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <title>Шахматна дъска</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
   <style>
-    body { background: #121212; color: white; font-family: sans-serif; padding: 20px; }
-    #board { width: 400px; margin: 20px auto; }
-    textarea { width: 100%; height: 150px; background: #1e1e1e; color: white; border: 1px solid #444; }
-    button { padding: 10px 20px; margin-top: 10px; background: #333; color: white; border: none; }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #444;
+      font-family: monospace;
+    }
+    button {
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <h2>Тестова дъска</h2>
-  <textarea id="pgn" placeholder="Постави PGN тук"></textarea><br>
-  <button onclick="loadPGN()">Зареди партията</button>
+  <h2>Veso's PGN Viewer 🤠</h2>
+  <textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br>
+  <button id="loadBtn">Зареди партията</button>
+  <button id="shareBtn">Сподели във Facebook</button>
   <div id="board"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
   <script src="libs/chessboard-0.3.0.min.js"></script>
   <script>
-    const board = Chessboard('board', 'start');
+    const board = Chessboard('board', { draggable: false, position: 'start' });
     const chess = new Chess();
+    let moves = [], idx = 0;
 
-    function loadPGN() {
-      const pgn = document.getElementById('pgn').value;
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      let pgn = document.getElementById('pgn').value;
       if (chess.load_pgn(pgn)) {
+        moves = chess.history();
+        chess.reset();
+        idx = 0;
         board.position(chess.fen());
+        playMoves();
       } else {
-        alert("Грешен PGN!");
+        alert("Невалиден PGN!");
+      }
+    });
+
+    function playMoves() {
+      if (idx < moves.length) {
+        chess.move(moves[idx]);
+        board.position(chess.fen());
+        idx++;
+        setTimeout(playMoves, 800);
       }
     }
+
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      const url = encodeURIComponent(window.location.href);
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '', 'width=600,height=400');
+    });
   </script>
 </body>
 </html>
