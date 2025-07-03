@@ -1,54 +1,95 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Veso PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #555; }
-    #board { width: 400px; height: 400px; margin-top: 20px; display: grid; grid-template: repeat(8, 1fr) / repeat(8, 1fr); border: 2px solid #888; }
-    .square { width: 100%; height: 100%; }
-    .light { background: #f0d9b5; }
-    .dark { background: #b58863; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veso's PGN Viewer</title>
+<style>
+  body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+  textarea { width: 100%; height: 120px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+  button { margin: 5px 10px 5px 0; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+  button:hover { background: #555; }
+  #board { width: 400px; margin-top: 20px; }
+  #moveNumber { margin-top: 10px; font-size: 18px; }
+</style>
+<link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
 </head>
 <body>
 
-<h2>Veso PGN Viewer 🤠</h2>
+<h2>Veso's PGN Viewer 🤠</h2>
 
-<textarea id="pgn" placeholder="Постави PGN партията си..."></textarea><br />
+<textarea id="pgn" placeholder="Постави тук PGN партията си..."></textarea><br />
+
 <button id="loadBtn">Зареди партията</button>
+
+<div style="margin-top: 15px;">
+  <button id="prevBtn">⬅️ Предишен ход</button>
+  <button id="nextBtn">➡️ Следващ ход</button>
+</div>
+
+<div id="moveNumber">Ход: 0</div>
 
 <div id="board"></div>
 
+<script src="libs/chess.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
+
 <script>
-  // Минимална дъска
-  function drawEmptyBoard() {
-    const board = document.getElementById("board");
-    board.innerHTML = "";
-    for (let rank = 0; rank < 8; rank++) {
-      for (let file = 0; file < 8; file++) {
-        const square = document.createElement("div");
-        square.className = "square " + ((rank + file) % 2 === 0 ? "light" : "dark");
-        board.appendChild(square);
-      }
+  // Създаваме обект Chess и дъската
+  const chess = new Chess();
+  const board = Chessboard('board', { position: 'start', draggable: false });
+
+  // Масив с ходовете на партията
+  let moves = [];
+  // Индекс на текущия ход
+  let currentMove = 0;
+
+  const pgnTextarea = document.getElementById('pgn');
+  const loadBtn = document.getElementById('loadBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const moveNumberDiv = document.getElementById('moveNumber');
+
+  function updateBoard() {
+    // Възстановяваме позицията по текущия ход
+    chess.reset();
+    for(let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
     }
+    board.position(chess.fen());
+    moveNumberDiv.textContent = `Ход: ${currentMove}`;
   }
 
-  drawEmptyBoard(); // показваме стартова дъска
-
-  // Минимален парсър за PGN (само показва съобщение)
-  document.getElementById("loadBtn").addEventListener("click", () => {
-    const pgnText = document.getElementById("pgn").value.trim();
-    if (pgnText) {
-      alert("PGN е приет! (но парсърът не е имплементиран още)");
-    } else {
-      alert("Моля, постави PGN код.");
+  loadBtn.onclick = () => {
+    const pgnText = pgnTextarea.value.trim();
+    if (!pgnText) {
+      alert('Моля, постави валидна PGN партия.');
+      return;
     }
-  });
+    const loaded = chess.load_pgn(pgnText);
+    if (!loaded) {
+      alert('Грешка при зареждане на PGN!');
+      return;
+    }
+    // Вземаме ходовете от историята
+    moves = chess.history();
+    currentMove = 0;
+    updateBoard();
+  };
+
+  prevBtn.onclick = () => {
+    if (currentMove > 0) {
+      currentMove--;
+      updateBoard();
+    }
+  };
+
+  nextBtn.onclick = () => {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+    }
+  };
 </script>
 
 </body>
