@@ -6,13 +6,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
-    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
-    button { margin: 5px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #555; }
-    #board { width: 400px; margin-top: 20px; }
-    #intro { margin-bottom: 15px; padding: 10px; background: #1e1e1e; border: 1px solid #444; border-radius: 8px; }
-    #langSwitcher button { font-size: 14px; padding: 5px 10px; }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light {
+      background: #f9f9f9;
+      color: #222;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #444;
+      font-family: monospace;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light textarea {
+      background: #fff;
+      color: #000;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    button:hover {
+      background: #555;
+    }
+    body.light button {
+      background: #ddd;
+      color: #222;
+    }
+    body.light button:hover {
+      background: #bbb;
+    }
+    #board {
+      width: 400px;
+      margin-top: 20px;
+    }
+    #intro {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light #intro {
+      background: #eee;
+      border: 1px solid #ccc;
+      color: #222;
+    }
+    #langSwitcher select {
+      font-size: 16px;
+      padding: 5px 10px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    #langSwitcher select:hover {
+      background: #555;
+    }
+    body.light #langSwitcher select {
+      background: #ddd;
+      color: #222;
+    }
+    body.light #langSwitcher select:hover {
+      background: #bbb;
+    }
+    #themeToggleBtn {
+      font-size: 14px;
+      padding: 7px 12px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -20,12 +103,15 @@
 <h2>Veso's PGN Viewer 🤠</h2>
 
 <div id="langSwitcher">
-  <button onclick="setLang('bg')">🇧🇬</button>
-  <button onclick="setLang('ua')">🇺🇦</button>
-  <button onclick="setLang('cz')">🇨🇿</button>
-  <button onclick="setLang('pl')">🇵🇱</button>
-  <button onclick="setLang('ro')">🇷🇴</button>
-  <button onclick="setLang('en')">🇬🇧</button>
+  <select id="langSelect" aria-label="Избор на език">
+    <option value="bg" selected>🇧🇬 Български</option>
+    <option value="ua">🇺🇦 Українська</option>
+    <option value="cz">🇨🇿 Čeština</option>
+    <option value="pl">🇵🇱 Polski</option>
+    <option value="ro">🇷🇴 Română</option>
+    <option value="en">🇬🇧 English</option>
+  </select>
+  <button id="themeToggleBtn" aria-label="Смяна на тъмна/светла тема">🌙</button>
 </div>
 
 <div id="intro">
@@ -59,6 +145,8 @@ let autoInterval = null;
 
 const pgnTextarea = document.getElementById('pgn');
 const intro = document.getElementById('intro');
+const langSelect = document.getElementById('langSelect');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
 
 document.getElementById('loadBtn').onclick = () => {
   if (chess.load_pgn(pgnTextarea.value)) {
@@ -135,6 +223,38 @@ const intros = {
 function setLang(lang) {
   intro.textContent = intros[lang] || intros['en'];
 }
+
+// Свързваме смяната на езика с падащото меню
+langSelect.addEventListener('change', () => {
+  setLang(langSelect.value);
+});
+
+// Инициално задаване на езика според избора по подразбиране
+setLang(langSelect.value);
+
+// Задаване на тема от localStorage при зареждане
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    themeToggleBtn.textContent = '🌞';
+  } else {
+    document.body.classList.remove('light');
+    themeToggleBtn.textContent = '🌙';
+  }
+});
+
+// Функция за смяна на тема с запазване в localStorage
+themeToggleBtn.addEventListener('click', () => {
+  const isLight = document.body.classList.toggle('light');
+  if (isLight) {
+    themeToggleBtn.textContent = '🌞';
+    localStorage.setItem('theme', 'light');
+  } else {
+    themeToggleBtn.textContent = '🌙';
+    localStorage.setItem('theme', 'dark');
+  }
+});
 </script>
 
 </body>
