@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bg">
+<!DOCTYPE html><html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
@@ -34,51 +33,121 @@
     button:hover {
       background: #555;
     }
-    .chessboard {
-      border: 2px solid #444;
+    #board {
       width: 400px;
-      height: 400px;
-      background-color: #eee;
-      position: relative;
-      user-select: none;
+      margin-top: 20px;
     }
     .square {
       width: 12.5%;
       height: 12.5%;
       float: left;
       box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
     }
-    .white { background: #f0d9b5; }
-    .black { background: #b58863; }
+    .white {
+      background-color: #f0d9b5;
+    }
+    .black {
+      background-color: #b58863;
+    }
   </style>
 </head>
-<body>
+<body><h2>Veso's PGN Viewer 🤠</h2><textarea id="pgn" placeholder="Постави PGN тук...">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br /><button id="loadBtn">Зареди партията</button> <button id="prevBtn">⬅️ Назад</button> <button id="nextBtn">➡️ Напред</button> <button id="autoBtn">▶️ Авто</button>
 
-<h2>Veso's PGN Viewer 🤠</h2>
-
-<textarea id="pgn" placeholder="Постави PGN тук...">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
-<button id="loadBtn">Зареди партията</button>
-
-<div id="board"></div>
-
-<!-- Скриптове -->
-<script src="libs/chess.min.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
-<script>
+<div id="board"></div><script src="libs/chess.min.js"></script><script src="libs/chessboard-0.3.0.min.js"></script><script>
   const chess = new Chess();
   const board = new Chessboard('board', { position: 'start', draggable: false });
 
+  let moves = [];
+  let currentMove = 0;
+  let autoInterval = null;
+
   document.getElementById('loadBtn').addEventListener('click', () => {
     const pgn = document.getElementById('pgn').value;
-    const valid = chess.load_pgn(pgn);
-    if (valid) {
-      board.position(chess.fen());
+    if (chess.load_pgn(pgn)) {
+      moves = chess.history();
+      currentMove = 0;
+      updateBoard();
     } else {
       alert("Невалиден PGN!");
     }
   });
-</script>
 
-</body>
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentMove > 0) {
+      currentMove--;
+      updateBoard();
+    }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+    }
+  });
+
+  document.getElementById('autoBtn').addEventListener('click', () => {
+    if (autoInterval) {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    } else {
+      autoInterval = setInterval(() => {
+        if (currentMove < moves.length) {
+          currentMove++;
+          updateBoard();
+        } else {
+          clearInterval(autoInterval);
+          autoInterval = null;
+        }
+      }, 1000);
+    }
+  });
+
+  function updateBoard() {
+    chess.reset();
+    for (let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+  }
+
+  // Обновен метод position
+  Chessboard.prototype.position = function(fen) {
+    const rows = fen.split(' ')[0].split('/');
+    this.element.innerHTML = '';
+    for (let y = 0; y < 8; y++) {
+      let row = rows[y];
+      let x = 0;
+      for (let char of row) {
+        let count = parseInt(char);
+        if (isNaN(count)) count = 1;
+        for (let i = 0; i < count; i++) {
+          const square = document.createElement('div');
+          const isWhiteSquare = (y + x) % 2 === 0;
+          square.className = 'square ' + (isWhiteSquare ? 'white' : 'black');
+
+          if (isNaN(char)) {
+            square.textContent = fenSymbolToUnicode(char);
+            i = count;
+          }
+          this.element.appendChild(square);
+          x++;
+        }
+      }
+    }
+  };
+
+  function fenSymbolToUnicode(sym) {
+    const map = {
+      'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
+      'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
+    };
+    return map[sym] || '';
+  }
+</script></body>
 </html>
