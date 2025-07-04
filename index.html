@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bg">
+<!DOCTYPE html><html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
@@ -34,101 +33,122 @@
     button:hover {
       background: #555;
     }
-    .chessboard {
-      border: 2px solid #444;
+    #board {
       width: 400px;
-      height: 400px;
-      background-color: #eee;
-      position: relative;
-      user-select: none;
+      margin-top: 20px;
     }
     .square {
       width: 12.5%;
       height: 12.5%;
       float: left;
       box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
     }
-    .white { background: #f0d9b5; }
-    .black { background: #b58863; }
-    .square {
-  width: 12.5%;
-  height: 12.5%;
-  float: left;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.white {
-  background-color: #f0d9b5;
-}
-
-.black {
-  background-color: #b58863;
-      }
+    .white {
+      background-color: #f0d9b5;
+    }
+    .black {
+      background-color: #b58863;
+    }
   </style>
 </head>
-<body>
+<body><h2>Veso's PGN Viewer 🤠</h2><textarea id="pgn" placeholder="Постави PGN тук...">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br /><button id="loadBtn">Зареди партията</button> <button id="prevBtn">⬅️ Назад</button> <button id="nextBtn">➡️ Напред</button> <button id="autoBtn">▶️ Авто</button>
 
-<h2>Veso's PGN Viewer 🤠</h2>
-
-<textarea id="pgn" placeholder="Постави PGN тук...">[Event "Online Game"]
-[Site "Checkmate Chess"]
-[Date "2025.6.30"]
-[Round "1"]
-[White "DamianGuzman"]
-[Black "Veso-Ignatov73"]
-[Result "0-1"]
-[TimeControl "1800"]
-[WhiteElo "2000"]
-[BlackElo "2336"]
-[Time "21:45:01"]
-1. Nb1-c3 d7-d5
-2. d2-d4 c7-c6
-3. e2-e4 d5xe4
-4. Nc3xe4 Bc8-f5
-5. f2-f3 e7-e6
-6. Bc1-g5 Bf8-e7
-7. Bg5xe7 Qd8xe7
-8. g2-g4 Bf5xe4
-9. f3xe4 Qe7-h4+
-10. Ke1-e2 Ng8-f6
-11. Ng1-f3 Qh4xg4
-12. h2-h3 Qg4xe4+
-13. Ke2-f2 Nb8-d7
-14. Qd1-d3 Qe4-f4
-15. b2-b3 Nd7-c5
-16. d4xc5 Ra8-d8
-17. Qd3-e3 Nf6-e4+
-18. Kf2-e2 Ne4-g3+
-19. Ke2-f2 Ng3xh1+
-20. Kf2-e1 Qf4xe3+
-</textarea><br />
-<button id="loadBtn">Зареди партията</button>
-
-<div id="board"></div>
-
-<!-- Скриптове -->
-<script src="libs/chess.min.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
-<script>
+<div id="board"></div><script src="libs/chess.min.js"></script><script src="libs/chessboard-0.3.0.min.js"></script><script>
   const chess = new Chess();
   const board = new Chessboard('board', { position: 'start', draggable: false });
 
+  let moves = [];
+  let currentMove = 0;
+  let autoInterval = null;
+
   document.getElementById('loadBtn').addEventListener('click', () => {
     const pgn = document.getElementById('pgn').value;
-    const valid = chess.load_pgn(pgn);
-    if (valid) {
-      board.position(chess.fen());
+    if (chess.load_pgn(pgn)) {
+      moves = chess.history();
+      currentMove = 0;
+      updateBoard();
     } else {
       alert("Невалиден PGN!");
     }
   });
-</script>
 
-</body>
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentMove > 0) {
+      currentMove--;
+      updateBoard();
+    }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentMove < moves.length) {
+      currentMove++;
+      updateBoard();
+    }
+  });
+
+  document.getElementById('autoBtn').addEventListener('click', () => {
+    if (autoInterval) {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    } else {
+      autoInterval = setInterval(() => {
+        if (currentMove < moves.length) {
+          currentMove++;
+          updateBoard();
+        } else {
+          clearInterval(autoInterval);
+          autoInterval = null;
+        }
+      }, 1000);
+    }
+  });
+
+  function updateBoard() {
+    chess.reset();
+    for (let i = 0; i < currentMove; i++) {
+      chess.move(moves[i]);
+    }
+    board.position(chess.fen());
+  }
+
+  // Обновен метод position
+  Chessboard.prototype.position = function(fen) {
+    const rows = fen.split(' ')[0].split('/');
+    this.element.innerHTML = '';
+    for (let y = 0; y < 8; y++) {
+      let row = rows[y];
+      let x = 0;
+      for (let char of row) {
+        let count = parseInt(char);
+        if (isNaN(count)) count = 1;
+        for (let i = 0; i < count; i++) {
+          const square = document.createElement('div');
+          const isWhiteSquare = (y + x) % 2 === 0;
+          square.className = 'square ' + (isWhiteSquare ? 'white' : 'black');
+
+          if (isNaN(char)) {
+            square.textContent = fenSymbolToUnicode(char);
+            i = count;
+          }
+          this.element.appendChild(square);
+          x++;
+        }
+      }
+    }
+  };
+
+  function fenSymbolToUnicode(sym) {
+    const map = {
+      'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
+      'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
+    };
+    return map[sym] || '';
+  }
+</script></body>
+</html></body>
 </html>
