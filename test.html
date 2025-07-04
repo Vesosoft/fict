@@ -1,179 +1,141 @@
-<!DOCTYPE html><html lang="bg">
+<!DOCTYPE html>
+<html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
-    body {
-      background: #121212;
-      color: #eee;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-      background: #1e1e1e;
-      color: #f0f0f0;
-      padding: 10px;
-      border: 1px solid #444;
-      font-family: monospace;
-    }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #555;
-    }
-    #board {
-      width: 400px;
-      margin-top: 20px;
-    }
-    .square {
-      width: 12.5%;
-      height: 12.5%;
-      float: left;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      font-weight: bold;
-    }
-    .white {
-      background-color: #f0d9b5;
-    }
-    .black {
-      background-color: #b58863;
-    }
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button { margin: 5px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
+    #board { width: 400px; margin-top: 20px; }
+    #intro { margin-bottom: 15px; padding: 10px; background: #1e1e1e; border: 1px solid #444; border-radius: 8px; }
+    #langSwitcher button { font-size: 14px; padding: 5px 10px; }
   </style>
 </head>
-<body>  
-	<h2>Veso's PGN Viewer 🤠</h2>
-  <textarea id="pgn" placeholder="Постави PGN тук...">1. e4-e5 2. Nf3-Nc6 3. Bb5-a6</textarea><br />
-                                                                                                      
-                                                                                                      
-  	<button id="loadBtn">Зареди партията</button> 
-  	<button id="prevBtn">⬅️ Назад</button>
-  	<button id="nextBtn">➡️ Напред</button>
-  	<button id="autoBtn">▶️ Авто</button>
-    <button id="saveBtn">💾 Запази партията</button>
+<body>
+
+<h2>Veso's PGN Viewer 🤠</h2>
+
+<div id="langSwitcher">
+  <button onclick="setLang('bg')">🇧🇬</button>
+  <button onclick="setLang('ua')">🇺🇦</button>
+  <button onclick="setLang('cz')">🇨🇿</button>
+  <button onclick="setLang('pl')">🇵🇱</button>
+  <button onclick="setLang('ro')">🇷🇴</button>
+  <button onclick="setLang('en')">🇬🇧</button>
+</div>
+
+<div id="intro">
+  Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺
+</div>
+
+<textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
+
+<div>
+  <button id="loadBtn">Зареди партията</button>
+  <button id="clearBtn">Изчисти</button>
+  <button id="prevBtn">⬅️ Назад</button>
+  <button id="nextBtn">➡️ Напред</button>
+  <button id="autoBtn">▶️ Auto</button>
+  <button id="saveBtn">💾 Запази</button>
+</div>
 
 <div id="board"></div>
-  <script src="libs/chess.min.js"></script>
-  <script src="libs/chessboard-0.3.0.min.js"></script><script>
-  const chess = new Chess();
-  const board = new Chessboard('board', { position: 'start', draggable: false });
 
-  let moves = [];
-  let currentMove = 0;
-  let autoInterval = null;
+<!-- Скриптове -->
+<script src="libs/chess.min.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
 
-  document.getElementById('loadBtn').addEventListener('click', () => {
-    const pgn = document.getElementById('pgn').value;
-    if (chess.load_pgn(pgn)) {
-      moves = chess.history();
-      currentMove = 0;
-      updateBoard();
-    } else {
-      alert("Невалиден PGN!");
-    }
-  });
-
-  document.getElementById('prevBtn').addEventListener('click', () => {
-    if (currentMove > 0) {
-      currentMove--;
-      updateBoard();
-    }
-  });
-
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    if (currentMove < moves.length) {
-      currentMove++;
-      updateBoard();
-    }
-  });
-
-  document.getElementById('autoBtn').addEventListener('click', () => {
-    if (autoInterval) {
-      clearInterval(autoInterval);
-      autoInterval = null;
-    } else {
-      autoInterval = setInterval(() => {
-        if (currentMove < moves.length) {
-          currentMove++;
-          updateBoard();
-        } else {
-          clearInterval(autoInterval);
-          autoInterval = null;
-        }
-      }, 1000);
-    }
-  });
-
-  function updateBoard() {
-    chess.reset();
-    for (let i = 0; i < currentMove; i++) {
-      chess.move(moves[i]);
-    }
-    board.position(chess.fen());
-  }
-
-  // Обновен метод position
-  Chessboard.prototype.position = function(fen) {
-    const rows = fen.split(' ')[0].split('/');
-    this.element.innerHTML = '';
-    for (let y = 0; y < 8; y++) {
-      let row = rows[y];
-      let x = 0;
-      for (let char of row) {
-        let count = parseInt(char);
-        if (isNaN(count)) count = 1;
-        for (let i = 0; i < count; i++) {
-          const square = document.createElement('div');
-          const isWhiteSquare = (y + x) % 2 === 0;
-          square.className = 'square ' + (isWhiteSquare ? 'white' : 'black');
-
-          if (isNaN(char)) {
-            square.textContent = fenSymbolToUnicode(char);
-            i = count;
-          }
-          this.element.appendChild(square);
-          x++;
-        }
-      }
-    }
-  };
-
-  function fenSymbolToUnicode(sym) {
-    const map = {
-  	    'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
-      'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
-    };
-    return map[sym] || '';
-  }
-</script>
 <script>
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    const pgn = document.getElementById('pgn').value;
-    const blob = new Blob([pgn], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
+const chess = new Chess();
+const board = new Chessboard('board', { position: 'start', draggable: false });
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'veso_game.pgn';
-    a.click();
+let moves = [];
+let currentMove = 0;
+let autoInterval = null;
 
-    URL.revokeObjectURL(url); // почисти ресурса
-  });
+const pgnTextarea = document.getElementById('pgn');
+const intro = document.getElementById('intro');
+
+document.getElementById('loadBtn').onclick = () => {
+  if (chess.load_pgn(pgnTextarea.value)) {
+    moves = chess.history();
+    currentMove = 0;
+    updateBoard();
+  } else {
+    alert("Невалиден PGN!");
+  }
+};
+
+document.getElementById('clearBtn').onclick = () => {
+  pgnTextarea.value = '';
+  chess.reset();
+  board.position('start');
+};
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentMove > 0) currentMove--;
+  updateBoard();
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentMove < moves.length) currentMove++;
+  updateBoard();
+};
+
+document.getElementById('autoBtn').onclick = () => {
+  if (autoInterval) {
+    clearInterval(autoInterval);
+    autoInterval = null;
+    document.getElementById('autoBtn').textContent = '▶️ Auto';
+  } else {
+    autoInterval = setInterval(() => {
+      if (currentMove < moves.length) {
+        currentMove++;
+        updateBoard();
+      } else {
+        clearInterval(autoInterval);
+        document.getElementById('autoBtn').textContent = '▶️ Auto';
+        autoInterval = null;
+      }
+    }, 1000);
+    document.getElementById('autoBtn').textContent = '⏸️ Спри';
+  }
+};
+
+document.getElementById('saveBtn').onclick = () => {
+  const blob = new Blob([pgnTextarea.value], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'game.pgn';
+  a.click();
+};
+
+function updateBoard() {
+  chess.reset();
+  for (let i = 0; i < currentMove; i++) {
+    chess.move(moves[i]);
+  }
+  board.position(chess.fen());
+}
+
+// Езикови текстове
+const intros = {
+  bg: "Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺",
+  ua: "Ласкаво просимо до переглядача PGN від Весо! Вставте партію у форматі PGN і переглядайте хід за ходом. Смачного! 🍺",
+  cz: "Vítejte v PGN prohlížeči od Vesa! Vložte partii ve formátu PGN a sledujte ji tah po tahu. Na zdraví! 🍺",
+  pl: "Witamy w przeglądarce PGN Veso! Wklej partię w formacie PGN i oglądaj ruch po ruchu. Na zdrowie! 🍺",
+  ro: "Bine ați venit la vizualizatorul PGN al lui Veso! Introduceți o partidă PGN și urmăriți-o pas cu pas. Noroc! 🍺",
+  en: "Welcome to Veso's PGN Viewer! Paste your PGN game and watch it move by move. Enjoy! 🍺"
+};
+
+function setLang(lang) {
+  intro.textContent = intros[lang] || intros['en'];
+}
 </script>
+
 </body>
 </html>
