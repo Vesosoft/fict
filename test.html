@@ -131,7 +131,6 @@
 
 <div id="board"></div>
 
-<!-- Скриптове -->
 <script src="libs/chess.min.js"></script>
 <script src="libs/chessboard-0.3.0.min.js"></script>
 
@@ -148,20 +147,55 @@ const intro = document.getElementById('intro');
 const langSelect = document.getElementById('langSelect');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 
+const intros = {
+  bg: "Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺",
+  ua: "Ласкаво просимо до переглядача PGN від Весо! Вставте партію у форматі PGN і переглядайте хід за ходом. Смачного! 🍺",
+  cz: "Vítejte v PGN prohlížeči od Vesa! Vložte partii ve formátu PGN a sledujte ji tah po tahu. Na zdraví! 🍺",
+  pl: "Witamy w przeglądarce PGN Veso! Wklej partię w formacie PGN i oglądaj ruch po ruchu. Na zdrowie! 🍺",
+  ro: "Bine ați venit la vizualizatorul PGN al lui Veso! Introduceți o partidă PGN și urmăriți-o pas cu pas. Noroc! 🍺",
+  en: "Welcome to Veso's PGN Viewer! Paste your PGN game and watch it move by move. Enjoy! 🍺"
+};
+
+const btnTexts = {
+  bg: { load: "Зареди партията", clear: "Изчисти", prev: "⬅️ Назад", next: "➡️ Напред", auto: "▶️ Auto", stop: "⏸️ Спри", save: "💾 Запази" },
+  ua: { load: "Завантажити партію", clear: "Очистити", prev: "⬅️ Назад", next: "➡️ Вперед", auto: "▶️ Авто", stop: "⏸️ Стоп", save: "💾 Зберегти" },
+  cz: { load: "Načíst partii", clear: "Vyčistit", prev: "⬅️ Zpět", next: "➡️ Další", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Uložit" },
+  pl: { load: "Wczytaj partię", clear: "Wyczyść", prev: "⬅️ Wstecz", next: "➡️ Dalej", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Zapisz" },
+  ro: { load: "Încarcă partida", clear: "Curăță", prev: "⬅️ Înapoi", next: "➡️ Următor", auto: "▶️ Auto", stop: "⏸️ Oprește", save: "💾 Salvează" },
+  en: { load: "Load Game", clear: "Clear", prev: "⬅️ Prev", next: "➡️ Next", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Save" }
+};
+
+function setLang(lang) {
+  intro.textContent = intros[lang] || intros['en'];
+  const texts = btnTexts[lang] || btnTexts['en'];
+  document.getElementById('loadBtn').textContent = texts.load;
+  document.getElementById('clearBtn').textContent = texts.clear;
+  document.getElementById('prevBtn').textContent = texts.prev;
+  document.getElementById('nextBtn').textContent = texts.next;
+  document.getElementById('saveBtn').textContent = texts.save;
+  document.getElementById('autoBtn').textContent = autoInterval ? texts.stop : texts.auto;
+}
+
 document.getElementById('loadBtn').onclick = () => {
-  if (chess.load_pgn(pgnTextarea.value)) {
-    moves = chess.history();
-    currentMove = 0;
-    updateBoard();
-  } else {
-    alert("Невалиден PGN!");
-  }
+  const pgn = pgnTextarea.value.trim();
+  if (!pgn) return alert("Моля, въведете PGN.");
+  if (!chess.load_pgn(pgn)) return alert("Невалиден PGN!");
+  moves = chess.history();
+  currentMove = 0;
+  updateBoard();
 };
 
 document.getElementById('clearBtn').onclick = () => {
   pgnTextarea.value = '';
   chess.reset();
   board.position('start');
+  moves = [];
+  currentMove = 0;
+  if (autoInterval) {
+    clearInterval(autoInterval);
+    autoInterval = null;
+    setLang(langSelect.value);
+  }
 };
 
 document.getElementById('prevBtn').onclick = () => {
@@ -175,10 +209,12 @@ document.getElementById('nextBtn').onclick = () => {
 };
 
 document.getElementById('autoBtn').onclick = () => {
+  const lang = langSelect.value;
+  const texts = btnTexts[lang] || btnTexts['en'];
   if (autoInterval) {
     clearInterval(autoInterval);
     autoInterval = null;
-    document.getElementById('autoBtn').textContent = '▶️ Auto';
+    document.getElementById('autoBtn').textContent = texts.auto;
   } else {
     autoInterval = setInterval(() => {
       if (currentMove < moves.length) {
@@ -186,11 +222,11 @@ document.getElementById('autoBtn').onclick = () => {
         updateBoard();
       } else {
         clearInterval(autoInterval);
-        document.getElementById('autoBtn').textContent = '▶️ Auto';
         autoInterval = null;
+        document.getElementById('autoBtn').textContent = texts.auto;
       }
     }, 1000);
-    document.getElementById('autoBtn').textContent = '⏸️ Спри';
+    document.getElementById('autoBtn').textContent = texts.stop;
   }
 };
 
@@ -210,51 +246,16 @@ function updateBoard() {
   board.position(chess.fen());
 }
 
-// Езикови текстове
-const intros = {
-  bg: "Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺",
-  ua: "Ласкаво просимо до переглядача PGN від Весо! Вставте партію у форматі PGN і переглядайте хід за ходом. Смачного! 🍺",
-  cz: "Vítejte v PGN prohlížeči od Vesa! Vložte partii ve formátu PGN a sledujte ji tah po tahu. Na zdraví! 🍺",
-  pl: "Witamy w przeglądarce PGN Veso! Wklej partię w formacie PGN i oglądaj ruch po ruchu. Na zdrowie! 🍺",
-  ro: "Bine ați venit la vizualizatorul PGN al lui Veso! Introduceți o partidă PGN și urmăriți-o pas cu pas. Noroc! 🍺",
-  en: "Welcome to Veso's PGN Viewer! Paste your PGN game and watch it move by move. Enjoy! 🍺"
-};
-
-function setLang(lang) {
-  intro.textContent = intros[lang] || intros['en'];
-}
-
-// Свързваме смяната на езика с падащото меню
 langSelect.addEventListener('change', () => {
   setLang(langSelect.value);
 });
 
-// Инициално задаване на езика според избора по подразбиране
-setLang(langSelect.value);
+themeToggleBtn.onclick = () => {
+  document.body.classList.toggle('light');
+  themeToggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+};
 
-// Задаване на тема от localStorage при зареждане
-document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light');
-    themeToggleBtn.textContent = '🌞';
-  } else {
-    document.body.classList.remove('light');
-    themeToggleBtn.textContent = '🌙';
-  }
-});
-
-// Функция за смяна на тема с запазване в localStorage
-themeToggleBtn.addEventListener('click', () => {
-  const isLight = document.body.classList.toggle('light');
-  if (isLight) {
-    themeToggleBtn.textContent = '🌞';
-    localStorage.setItem('theme', 'light');
-  } else {
-    themeToggleBtn.textContent = '🌙';
-    localStorage.setItem('theme', 'dark');
-  }
-});
+setLang('bg');
 </script>
 
 </body>
