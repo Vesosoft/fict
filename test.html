@@ -56,9 +56,20 @@
     }
   </style>
 </head>
-<body><h2>Veso's PGN Viewer 🤠</h2><textarea id="pgn" placeholder="Постави PGN тук...">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br /><button id="loadBtn">Зареди партията</button> <button id="prevBtn">⬅️ Назад</button> <button id="nextBtn">➡️ Напред</button> <button id="autoBtn">▶️ Авто</button>
+<body>  
+	<h2>Veso's PGN Viewer 🤠</h2>
+  <textarea id="pgn" placeholder="Постави PGN тук...">1. e4-e5 2. Nf3-Nc6 3. Bb5-a6</textarea><br />
+                                                                                                      
+                                                                                                      
+  	<button id="loadBtn">Зареди партията</button> 
+  	<button id="prevBtn">⬅️ Назад</button>
+  	<button id="nextBtn">➡️ Напред</button>
+  	<button id="autoBtn">▶️ Авто</button>
+    <button id="saveBtn">💾 Запази партията</button>
 
-<div id="board"></div><script src="libs/chess.min.js"></script><script src="libs/chessboard-0.3.0.min.js"></script><script>
+<div id="board"></div>
+  <script src="libs/chess.min.js"></script>
+  <script src="libs/chessboard-0.3.0.min.js"></script><script>
   const chess = new Chess();
   const board = new Chessboard('board', { position: 'start', draggable: false });
 
@@ -144,10 +155,25 @@
 
   function fenSymbolToUnicode(sym) {
     const map = {
-      'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
+  	    'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
       'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
     };
     return map[sym] || '';
   }
-</script></body>
+</script>
+<script>
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const pgn = document.getElementById('pgn').value;
+    const blob = new Blob([pgn], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'veso_game.pgn';
+    a.click();
+
+    URL.revokeObjectURL(url); // почисти ресурса
+  });
+</script>
+</body>
 </html>
