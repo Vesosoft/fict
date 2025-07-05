@@ -1,6 +1,3 @@
-alue);
-</script></body>
-</html>
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -14,82 +11,31 @@ alue);
       color: #eee;
       font-family: sans-serif;
       padding: 20px;
-      transition: background 0.3s, color 0.3s;
-    }
-    body.light {
-      background: #f9f9f9;
-      color: #222;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-      background: #1e1e1e;
-      color: #f0f0f0;
-      padding: 10px;
-      border: 1px solid #444;
-      font-family: monospace;
-      transition: background 0.3s, color 0.3s;
-    }
-    body.light textarea {
-      background: #fff;
-      color: #000;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-    button:hover {
-      background: #555;
-    }
-    body.light button {
-      background: #ddd;
-      color: #222;
-    }
-    body.light button:hover {
-      background: #bbb;
     }
     #board {
       width: 400px;
       margin-top: 20px;
     }
-    #intro {
-      margin-bottom: 15px;
-      padding: 10px;
+    textarea {
+      width: 100%;
+      height: 100px;
       background: #1e1e1e;
-      border: 1px solid #444;
-      border-radius: 8px;
-      transition: background 0.3s, color 0.3s;
+      color: #f0f0f0;
+      padding: 10px;
+      margin-bottom: 10px;
     }
-    body.light #intro {
-      background: #eee;
-      border: 1px solid #ccc;
-      color: #222;
-    }
-    #langSwitcher select {
+    button {
+      margin: 5px;
+      padding: 8px 12px;
       font-size: 16px;
-      padding: 5px 10px;
-      background: #333;
+      background: #444;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    body.light #langSwitcher select {
-      background: #ddd;
-      color: #222;
-    }
-    #themeToggleBtn {
-      font-size: 14px;
-      padding: 7px 12px;
-      margin-left: 10px;
+    button:hover {
+      background: #666;
     }
   </style>
 </head>
@@ -97,171 +43,39 @@ alue);
 
 <h2>Veso's PGN Viewer 🤠</h2>
 
-<div id="langSwitcher">
-  <select id="langSelect">
-    <option value="bg" selected>🇧🇬 Български</option>
-    <option value="ua">🇺🇦 Українська</option>
-    <option value="cz">🇨🇿 Čeština</option>
-    <option value="pl">🇵🇱 Polski</option>
-    <option value="ro">🇷🇴 Română</option>
-    <option value="en">🇬🇧 English</option>
-  </select>
-  <button id="themeToggleBtn">🌙</button>
-</div>
-
-<div id="intro">
-  Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺
-</div>
-
 <textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
 
-<div>
-  <button id="loadBtn">Зареди партията</button>
-  <button id="clearBtn">Изчисти</button>
-  <button id="prevBtn">⬅️ Назад</button>
-  <button id="nextBtn">➡️ Напред</button>
-  <button id="autoBtn">▶️ Auto</button>
-  <button id="saveBtn">💾 Запази</button>
-</div>
-
+<button id="loadBtn">Зареди партията</button>
 <div id="board"></div>
 
 <script src="libs/chess.min.js"></script>
 <script src="libs/chessboard-0.3.0.min.js"></script>
-
 <script>
-const chess = new Chess();
-let board = new Chessboard('board', {
-  position: 'start',
-  draggable: false,
-  showNotation: true,
-  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
-});
-board = new Chessboard('board', {
-  position: 'start',
-  draggable: false,
-  showNotation: true
-});
+  const board = Chessboard('board', {
+    position: 'start',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
+    showNotation: true,
+    draggable: false
+  });
 
-board.cfg.pieceTheme = 'libs/img/chesspieces/wikipedia/{piece}.png';
-board.position('start');
-  
-let moves = [];
-let currentMove = 0;
-let autoInterval = null;
+  const chess = new Chess();
 
-const pgnTextarea = document.getElementById('pgn');
-const intro = document.getElementById('intro');
-const langSelect = document.getElementById('langSelect');
-const themeToggleBtn = document.getElementById('themeToggleBtn');
+  document.getElementById('loadBtn').onclick = () => {
+    const pgn = document.getElementById('pgn').value.trim();
+    if (!pgn) return alert("Моля, въведете PGN.");
+    if (!chess.load_pgn(pgn)) return alert("Невалиден PGN!");
 
-const intros = {
-  bg: "Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺",
-  ua: "Ласкаво просимо до переглядача PGN від Весо! Вставте партію у форматі PGN і переглядайте хід за ходом. Смачного! 🍺",
-  cz: "Vítejte v PGN prohlížeči od Vesa! Vložte partii ve formátu PGN a sledujte ji tah po tahu. Na zdraví! 🍺",
-  pl: "Witamy w przeglądarce PGN Veso! Wklej partię w formacie PGN i oglądaj ruch po ruchu. Na zdrowie! 🍺",
-  ro: "Bine ați venit la vizualizatorul PGN al lui Veso! Introduceți o partidă PGN și urmăriți-o pas cu pas. Noroc! 🍺",
-  en: "Welcome to Veso's PGN Viewer! Paste your PGN game and watch it move by move. Enjoy! 🍺"
-};
+    const moves = chess.history();
+    chess.reset();
 
-const btnTexts = {
-  bg: { load: "Зареди партията", clear: "Изчисти", prev: "⬅️ Назад", next: "➡️ Напред", auto: "▶️ Auto", stop: "⏸️ Спри", save: "💾 Запази" },
-  ua: { load: "Завантажити партію", clear: "Очистити", prev: "⬅️ Назад", next: "➡️ Вперед", auto: "▶️ Авто", stop: "⏸️ Стоп", save: "💾 Зберегти" },
-  cz: { load: "Načíst partii", clear: "Vyčistit", prev: "⬅️ Zpět", next: "➡️ Další", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Uložit" },
-  pl: { load: "Wczytaj partię", clear: "Wyczyść", prev: "⬅️ Wstecz", next: "➡️ Dalej", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Zapisz" },
-  ro: { load: "Încarcă partida", clear: "Curăță", prev: "⬅️ Înapoi", next: "➡️ Următor", auto: "▶️ Auto", stop: "⏸️ Oprește", save: "💾 Salvează" },
-  en: { load: "Load Game", clear: "Clear", prev: "⬅️ Prev", next: "➡️ Next", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Save" }
-};
+    for (let move of moves) {
+      chess.move(move);
+    }
 
-function setLang(lang) {
-  intro.textContent = intros[lang] || intros['en'];
-  const texts = btnTexts[lang] || btnTexts['en'];
-  document.getElementById('loadBtn').textContent = texts.load;
-  document.getElementById('clearBtn').textContent = texts.clear;
-  document.getElementById('prevBtn').textContent = texts.prev;
-  document.getElementById('nextBtn').textContent = texts.next;
-  document.getElementById('saveBtn').textContent = texts.save;
-  document.getElementById('autoBtn').textContent = autoInterval ? texts.stop : texts.auto;
-}
+    board.position(chess.fen());
 
-document.getElementById('loadBtn').onclick = () => {
-  const pgn = pgnTextarea.value.trim();
-  if (!pgn) return alert(btnTexts[langSelect.value]?.load || "Please enter PGN.");
-  if (!chess.load_pgn(pgn)) return alert("Невалиден PGN!");
-  moves = chess.history();
-  currentMove = 0;
-  updateBoard();
-};
-
-document.getElementById('clearBtn').onclick = () => {
-  pgnTextarea.value = '';
-  chess.reset();
-  board.position('start');
-  moves = [];
-  currentMove = 0;
-  if (autoInterval) {
-    clearInterval(autoInterval);
-    autoInterval = null;
-    setLang(langSelect.value);
-  }
-};
-
-document.getElementById('prevBtn').onclick = () => {
-  if (currentMove > 0) currentMove--;
-  updateBoard();
-};
-
-document.getElementById('nextBtn').onclick = () => {
-  if (currentMove < moves.length) currentMove++;
-  updateBoard();
-};
-
-document.getElementById('autoBtn').onclick = () => {
-  const lang = langSelect.value;
-  const texts = btnTexts[lang] || btnTexts['en'];
-  if (autoInterval) {
-    clearInterval(autoInterval);
-    autoInterval = null;
-    document.getElementById('autoBtn').textContent = texts.auto;
-  } else {
-    autoInterval = setInterval(() => {
-      if (currentMove < moves.length) {
-        currentMove++;
-        updateBoard();
-      } else {
-        clearInterval(autoInterval);
-        autoInterval = null;
-        document.getElementById('autoBtn').textContent = texts.auto;
-      }
-    }, 1000);
-    document.getElementById('autoBtn').textContent = texts.stop;
-  }
-};
-
-document.getElementById('saveBtn').onclick = () => {
-  const blob = new Blob([pgnTextarea.value], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'game.pgn';
-  a.click();
-};
-
-function updateBoard() {
-  chess.reset();
-  for (let i = 0; i < currentMove; i++) {
-    chess.move(moves[i]);
-  }
-  board.position(chess.fen());
-}
-
-langSelect.addEventListener('change', () => setLang(langSelect.value));
-
-themeToggleBtn.onclick = () => {
-  document.body.classList.toggle('light');
-  themeToggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
-};
-
-setLang('bg');
+    console.log("Фигурата трябва да се зареди от:", board.cfg.pieceTheme.replace('{piece}', 'wQ'));
+  };
 </script>
 
 </body>
