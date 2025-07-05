@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bg">
+<!DOCTYPE html><html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
@@ -98,13 +97,9 @@
     }
   </style>
 </head>
-<body>
-
-<h2>Veso's PGN Viewer 🤠</h2>
-
-<div id="langSwitcher">
+<body><h2>Veso's PGN Viewer 🤠</h2><div id="langSwitcher">
   <select id="langSelect" aria-label="Избор на език">
-    <option value="bg" selected>🇧🇬 Български</option>
+    <option value="bg" selected>�ퟧ Български</option>
     <option value="ua">🇺🇦 Українська</option>
     <option value="cz">🇨🇿 Čeština</option>
     <option value="pl">🇵🇱 Polski</option>
@@ -112,31 +107,23 @@
     <option value="en">🇬🇧 English</option>
   </select>
   <button id="themeToggleBtn" aria-label="Смяна на тъмна/светла тема">🌙</button>
-</div>
-
-<div id="intro">
+</div><div id="intro">
   Добре дошли в PGN Viewer-а на Весо! Въведете партия в PGN формат и я гледайте ход по ход. Насладете се! 🍺
-</div>
-
-<textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br />
-
-<div>
+</div><textarea id="pgn">1. e4 e5 2. Nf3 Nc6 3. Bb5 a6</textarea><br /><div>
   <button id="loadBtn">Зареди партията</button>
   <button id="clearBtn">Изчисти</button>
   <button id="prevBtn">⬅️ Назад</button>
   <button id="nextBtn">➡️ Напред</button>
   <button id="autoBtn">▶️ Auto</button>
   <button id="saveBtn">💾 Запази</button>
-</div>
-
-<div id="board"></div>
-
-<script src="libs/chess.min.js"></script>
-<script src="libs/chessboard-0.3.0.min.js"></script>
-
-<script>
+</div><div id="board"></div><script src="libs/chess.min.js"></script><script src="libs/chessboard-0.3.0.min.js"></script><script>
 const chess = new Chess();
-const board = new Chessboard('board', { position: 'start', draggable: false });
+let board = new Chessboard('board', {
+  position: 'start',
+  draggable: false,
+  showNotation: true,
+  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+});
 
 let moves = [];
 let currentMove = 0;
@@ -165,6 +152,15 @@ const btnTexts = {
   en: { load: "Load Game", clear: "Clear", prev: "⬅️ Prev", next: "➡️ Next", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Save" }
 };
 
+const errorTexts = {
+  bg: { empty: "Моля, въведете PGN.", invalid: "Невалиден PGN!" },
+  ua: { empty: "Будь ласка, введіть PGN.", invalid: "Невірний PGN!" },
+  cz: { empty: "Zadejte prosím PGN.", invalid: "Neplatný PGN!" },
+  pl: { empty: "Wprowadź PGN.", invalid: "Nieprawidłowy PGN!" },
+  ro: { empty: "Introduceți PGN.", invalid: "PGN invalid!" },
+  en: { empty: "Please enter PGN.", invalid: "Invalid PGN!" }
+};
+
 function setLang(lang) {
   intro.textContent = intros[lang] || intros['en'];
   const texts = btnTexts[lang] || btnTexts['en'];
@@ -176,13 +172,28 @@ function setLang(lang) {
   document.getElementById('autoBtn').textContent = autoInterval ? texts.stop : texts.auto;
 }
 
+langSelect.addEventListener('change', () => {
+  setLang(langSelect.value);
+});
+
 document.getElementById('loadBtn').onclick = () => {
+  const lang = langSelect.value;
   const pgn = pgnTextarea.value.trim();
-  if (!pgn) return alert("Моля, въведете PGN.");
-  if (!chess.load_pgn(pgn)) return alert("Невалиден PGN!");
-  moves = chess.history();
-  currentMove = 0;
-  updateBoard();
+
+  if (!pgn) {
+    alert(errorTexts[lang]?.empty || errorTexts['en'].empty);
+    return;
+  }
+
+  try {
+    chess.reset();
+    chess.loadPgn(pgn);
+    moves = chess.history();
+    currentMove = 0;
+    updateBoard();
+  } catch (e) {
+    alert(errorTexts[lang]?.invalid || errorTexts['en'].invalid);
+  }
 };
 
 document.getElementById('clearBtn').onclick = () => {
@@ -246,17 +257,13 @@ function updateBoard() {
   board.position(chess.fen());
 }
 
-langSelect.addEventListener('change', () => {
-  setLang(langSelect.value);
-});
-
+// Тема
 themeToggleBtn.onclick = () => {
   document.body.classList.toggle('light');
   themeToggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
 };
 
-setLang('bg');
-</script>
-
-</body>
+// Начало
+setLang(langSelect.value);
+</script></body>
 </html>
