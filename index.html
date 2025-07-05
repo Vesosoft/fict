@@ -137,7 +137,15 @@ let board = new Chessboard('board', {
   showNotation: true,
   pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
 });
+board = new Chessboard('board', {
+  position: 'start',
+  draggable: false,
+  showNotation: true
+});
 
+board.cfg.pieceTheme = 'libs/img/chesspieces/wikipedia/{piece}.png';
+board.position('start');
+  
 let moves = [];
 let currentMove = 0;
 let autoInterval = null;
