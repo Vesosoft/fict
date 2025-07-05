@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Chessboard 1.0.0</title>
+  <style>
+    #board {
+      width: 400px;
+      height: 400px;
+      border: 1px solid #333;
+    }
+    .chessboard .square {
+      width: 50px;
+      height: 50px;
+      float: left;
+    }
+    .chessboard .white { background: #eee; }
+    .chessboard .black { background: #666; }
+  </style>
+</head>
+<body>
+
+<div id="board"></div>
+
+<script src="libs/chessboard-1.0.0.js"></script>
+<script>
+  const board = new Chessboard('board', { position: 'start' });
+</script>
+
+</body>
+</html>
