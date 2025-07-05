@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Veso's PGN Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard.min.css" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
   <style>
     body {
       background: #121212;
@@ -25,7 +25,6 @@
       padding: 10px;
       border: 1px solid #444;
       font-family: monospace;
-      transition: background 0.3s, color 0.3s;
     }
     body.light textarea {
       background: #fff;
@@ -41,7 +40,6 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s, color 0.3s;
     }
     button:hover {
       background: #555;
@@ -63,7 +61,6 @@
       background: #1e1e1e;
       border: 1px solid #444;
       border-radius: 8px;
-      transition: background 0.3s, color 0.3s;
     }
     body.light #intro {
       background: #eee;
@@ -75,27 +72,16 @@
       padding: 5px 10px;
       background: #333;
       color: #fff;
-      border: none;
       border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-    #langSwitcher select:hover {
-      background: #555;
     }
     body.light #langSwitcher select {
       background: #ddd;
       color: #222;
     }
-    body.light #langSwitcher select:hover {
-      background: #bbb;
-    }
     #themeToggleBtn {
       font-size: 14px;
       padding: 7px 12px;
       margin-left: 10px;
-      vertical-align: middle;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -104,7 +90,7 @@
 <h2>Veso's PGN Viewer 🤠</h2>
 
 <div id="langSwitcher">
-  <select id="langSelect" aria-label="Избор на език">
+  <select id="langSelect">
     <option value="bg" selected>🇧🇬 Български</option>
     <option value="ua">🇺🇦 Українська</option>
     <option value="cz">🇨🇿 Čeština</option>
@@ -112,7 +98,7 @@
     <option value="ro">🇷🇴 Română</option>
     <option value="en">🇬🇧 English</option>
   </select>
-  <button id="themeToggleBtn" aria-label="Смяна на тъмна/светла тема">🌙</button>
+  <button id="themeToggleBtn">🌙</button>
 </div>
 
 <div id="intro">
@@ -123,6 +109,8 @@
 
 <div>
   <button id="loadBtn">Зареди партията</button>
+  <button id="uploadBtn">📂 Качи PGN</button>
+  <input type="file" id="fileInput" accept=".pgn" style="display: none;" />
   <button id="clearBtn">Изчисти</button>
   <button id="prevBtn">⬅️ Назад</button>
   <button id="nextBtn">➡️ Напред</button>
@@ -133,7 +121,7 @@
 <div id="board"></div>
 
 <script src="libs/chess.min.js"></script>
-<script src="libs/chessboard.min.js"></script>
+<script src="libs/chessboard-1.0.0.min.js"></script>
 
 <script>
 const chess = new Chess();
@@ -163,12 +151,12 @@ const intros = {
 };
 
 const btnTexts = {
-  bg: { load: "Зареди партията", clear: "Изчисти", prev: "⬅️ Назад", next: "➡️ Напред", auto: "▶️ Auto", stop: "⏸️ Спри", save: "💾 Запази" },
-  ua: { load: "Завантажити партію", clear: "Очистити", prev: "⬅️ Назад", next: "➡️ Вперед", auto: "▶️ Авто", stop: "⏸️ Стоп", save: "💾 Зберегти" },
-  cz: { load: "Načíst partii", clear: "Vyčistit", prev: "⬅️ Zpět", next: "➡️ Další", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Uložit" },
-  pl: { load: "Wczytaj partię", clear: "Wyczyść", prev: "⬅️ Wstecz", next: "➡️ Dalej", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Zapisz" },
-  ro: { load: "Încarcă partida", clear: "Curăță", prev: "⬅️ Înapoi", next: "➡️ Următor", auto: "▶️ Auto", stop: "⏸️ Oprește", save: "💾 Salvează" },
-  en: { load: "Load Game", clear: "Clear", prev: "⬅️ Prev", next: "➡️ Next", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Save" }
+  bg: { load: "Зареди партията", clear: "Изчисти", prev: "⬅️ Назад", next: "➡️ Напред", auto: "▶️ Auto", stop: "⏸️ Спри", save: "💾 Запази", upload: "📂 Качи PGN", invalid: "Невалиден PGN!", enter: "Моля, въведете PGN." },
+  ua: { load: "Завантажити партію", clear: "Очистити", prev: "⬅️ Назад", next: "➡️ Вперед", auto: "▶️ Авто", stop: "⏸️ Стоп", save: "💾 Зберегти", upload: "📂 Завантажити PGN", invalid: "Неправильний PGN!", enter: "Будь ласка, введіть PGN." },
+  cz: { load: "Načíst partii", clear: "Vyčistit", prev: "⬅️ Zpět", next: "➡️ Další", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Uložit", upload: "📂 Nahrát PGN", invalid: "Neplatný PGN!", enter: "Zadejte PGN, prosím." },
+  pl: { load: "Wczytaj partię", clear: "Wyczyść", prev: "⬅️ Wstecz", next: "➡️ Dalej", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Zapisz", upload: "📂 Wczytaj PGN", invalid: "Nieprawidłowy PGN!", enter: "Wprowadź PGN." },
+  ro: { load: "Încarcă partida", clear: "Curăță", prev: "⬅️ Înapoi", next: "➡️ Următor", auto: "▶️ Auto", stop: "⏸️ Oprește", save: "💾 Salvează", upload: "📂 Încarcă PGN", invalid: "PGN invalid!", enter: "Introduceți un PGN." },
+  en: { load: "Load Game", clear: "Clear", prev: "⬅️ Prev", next: "➡️ Next", auto: "▶️ Auto", stop: "⏸️ Stop", save: "💾 Save", upload: "📂 Upload PGN", invalid: "Invalid PGN!", enter: "Please enter PGN." }
 };
 
 function setLang(lang) {
@@ -179,16 +167,36 @@ function setLang(lang) {
   document.getElementById('prevBtn').textContent = texts.prev;
   document.getElementById('nextBtn').textContent = texts.next;
   document.getElementById('saveBtn').textContent = texts.save;
+  document.getElementById('uploadBtn').textContent = texts.upload;
   document.getElementById('autoBtn').textContent = autoInterval ? texts.stop : texts.auto;
+  document.getElementById('loadBtn').dataset.invalid = texts.invalid;
+  document.getElementById('loadBtn').dataset.enter = texts.enter;
 }
 
 document.getElementById('loadBtn').onclick = () => {
+  const lang = langSelect.value;
+  const texts = btnTexts[lang] || btnTexts['en'];
   const pgn = pgnTextarea.value.trim();
-  if (!pgn) return alert(intros[langSelect.value] ? "Моля, въведете PGN." : "Please enter PGN.");
-  if (!chess.load_pgn(pgn)) return alert(intros[langSelect.value] ? "Невалиден PGN!" : "Invalid PGN!");
+  if (!pgn) return alert(texts.enter);
+  if (!chess.load_pgn(pgn)) return alert(texts.invalid);
   moves = chess.history();
   currentMove = 0;
   updateBoard();
+};
+
+document.getElementById('uploadBtn').onclick = () => {
+  document.getElementById('fileInput').click();
+};
+
+document.getElementById('fileInput').onchange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      pgnTextarea.value = e.target.result;
+    };
+    reader.readAsText(file);
+  }
 };
 
 document.getElementById('clearBtn').onclick = () => {
@@ -237,4 +245,32 @@ document.getElementById('autoBtn').onclick = () => {
 };
 
 document.getElementById('saveBtn').onclick = () => {
-  const blob = new Blob([pgnTextarea.value], { type
+  const blob = new Blob([pgnTextarea.value], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'game.pgn';
+  a.click();
+};
+
+function updateBoard() {
+  chess.reset();
+  for (let i = 0; i < currentMove; i++) {
+    chess.move(moves[i]);
+  }
+  board.position(chess.fen());
+}
+
+langSelect.addEventListener('change', () => {
+  setLang(langSelect.value);
+});
+
+themeToggleBtn.onclick = () => {
+  document.body.classList.toggle('light');
+  themeToggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+};
+
+setLang('bg');
+</script>
+
+</body>
+</html>
