@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="bg">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Veso's PGN Viewer</title>
+  <title>Minimal Chessboard Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles/board.css" />
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <style>
+    body {
+      background: #1e1e1e;
+      color: white;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    #board {
+      width: 400px;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
-  <h2>Тест на дъската 🤠</h2>
-  <div id="board"></div>
-
-  <script src="libs/chess.min.js"></script>
-  <script src="libs/chessboard-1.0.0.js"></script>
-  <script src="components/board.js"></script>
-</body>
+  <h2>Minimal Demo: Veso's Board 🤠</h2>
+  <div id="board"></div>  <script src="libs/chess.min.js"></script>  <script src="libs/chessboard-1.0.0.js"></script>  <script>
+    const board = new Chessboard('board', {
+      position: 'start',
+      draggable: false,
+      showNotation: true,
+      pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'
+    });
+  </script></body>
 </html>
