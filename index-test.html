@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>PGN Board Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Test Board</title>
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
   <style>
     body {
-      background: #121212;
+      background: #222;
       color: #fff;
-      font-family: sans-serif;
-      text-align: center;
       padding: 20px;
+      font-family: sans-serif;
     }
     #board {
       width: 400px;
@@ -21,7 +19,7 @@
 </head>
 <body>
 
-<h2>🧪 PGN Viewer – Тест за дъската</h2>
+<h1>Тест за шахматна дъска</h1>
 <div id="board"></div>
 
 <script src="libs/chess.min.js"></script>
@@ -29,8 +27,6 @@
 <script>
   const board = Chessboard('board', {
     position: 'start',
-    draggable: false,
-    showNotation: true,
     pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
   });
 </script>
