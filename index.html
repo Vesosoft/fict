@@ -1,104 +1,20 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Минимална шахматна дъска</title>
-  <style>
-    .chessboard {
-      display: grid;
-      grid-template-columns: repeat(8, 80px);
-      grid-template-rows: repeat(8, 80px);
-      width: 640px;
-      height: 640px;
-      border: 2px solid #333;
-    }
-
-    .square {
-      width: 80px;
-      height: 80px;
-      box-sizing: border-box;
-    }
-
-    .white {
-      background-color: #f0d9b5;
-    }
-
-    .black {
-      background-color: #b58863;
-    }
-
-    .piece {
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Veso's PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<h2>Шахматна дъска</h2>
-<div id="board" class="chessboard"></div>
+<h2>Veso's PGN Viewer 🤠</h2>
+<div id="board"></div>
 
-<script>
-  function Chessboard(id, config) {
-    this.id = id;
-    this.positionFen = config.position || 'start';
-    this.element = document.getElementById(id);
-    this.render();
-    if (this.positionFen !== 'start') this.position(this.positionFen);
-  }
-
-  Chessboard.prototype.render = function () {
-    if (!this.element) {
-      console.error('Елементът за дъската не е намерен');
-      return;
-    }
-
-    this.element.innerHTML = '';
-    for (let i = 0; i < 64; i++) {
-      const square = document.createElement('div');
-      square.className = 'square ' + ((Math.floor(i / 8) + i) % 2 === 0 ? 'white' : 'black');
-      this.element.appendChild(square);
-    }
-  };
-
-  Chessboard.prototype.position = function (fen) {
-    const pieceMap = {
-      p: 'bP', r: 'bR', n: 'bN', b: 'bB', q: 'bQ', k: 'bK',
-      P: 'wP', R: 'wR', N: 'wN', B: 'wB', Q: 'wQ', K: 'wK'
-    };
-
-    const squares = this.element.children;
-    for (const sq of squares) sq.innerHTML = '';
-
-    const rows = fen.split(' ')[0].split('/');
-    for (let y = 0; y < 8; y++) {
-      let x = 0;
-      for (const ch of rows[y]) {
-        if (!isNaN(ch)) {
-          x += parseInt(ch);
-        } else {
-          const i = y * 8 + x;
-          const img = document.createElement('div');
-          img.className = 'piece';
-          const pieceCode = pieceMap[ch];
-          if (pieceCode) {
-            img.style.backgroundImage = `url('libs/img/chesspieces/wikipedia/${pieceCode}.png')`;
-          }
-          squares[i].appendChild(img);
-          x++;
-        }
-      }
-    }
-  };
-
-  // Примерна FEN позиция с 10 фигури
-  const board = new Chessboard('board', {
-    position: 'rnbqkbnr/ppp2ppp/8/3pp3/4P3/8/PPPP1PPP/RNBQKBNR'
-  });
-</script>
+<script src="libs/chess.min.js"></script>
+<script src="libs/chessboard-1.0.0.js"></script>
+<script type="module" src="js/board.js"></script>
 
 </body>
 </html>
