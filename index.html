@@ -2,29 +2,23 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Тестова шахматна дъска</title>
+  <title>Тестова дъска с PNG фигури</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
-    body {
-      background: #121212;
-      color: #eee;
-      font-family: sans-serif;
-      padding: 20px;
-    }
     .chessboard {
       width: 400px;
       height: 400px;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
+      border: 2px solid #333;
     }
     .square {
       width: 100%;
       height: 100%;
       position: relative;
     }
-    .square.white { background: #f0d9b5; }
-    .square.black { background: #b58863; }
+    .white { background: #f0d9b5; }
+    .black { background: #b58863; }
     .piece {
       width: 100%;
       height: 100%;
@@ -36,18 +30,39 @@
 </head>
 <body>
 
-<h2>Шахматна дъска</h2>
-<div id="board"></div>
+<h2>Тестова дъска с PNG фигури</h2>
+<div class="chessboard" id="board"></div>
 
-<script src="libs/chess.min.js"></script>
-<script src="libs/chessboard-1.0.0.min.js"></script>
 <script>
-  const board = new Chessboard('board', {
-    position: 'start',
-    draggable: false,
-    showNotation: true,
-    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'
-  });
+  const pieceTheme = 'libs/img/chesspieces/wikipedia/{piece}.png';
+  const position = {
+    a2: 'wP', b2: 'wP', c2: 'wP',
+    d1: 'wQ', e1: 'wK',
+    a7: 'bP', b7: 'bP', c7: 'bP',
+    d8: 'bQ', e8: 'bK'
+  };
+
+  const boardEl = document.getElementById('board');
+  const files = ['a','b','c','d','e','f','g','h'];
+
+  for (let rank = 8; rank >= 1; rank--) {
+    for (let file = 0; file < 8; file++) {
+      const square = document.createElement('div');
+      const squareColor = (file + rank) % 2 === 0 ? 'white' : 'black';
+      square.className = `square ${squareColor}`;
+
+      const coord = files[file] + rank;
+      const piece = position[coord];
+      if (piece) {
+        const img = document.createElement('div');
+        img.className = 'piece';
+        img.style.backgroundImage = `url('${pieceTheme.replace('{piece}', piece)}')`;
+        square.appendChild(img);
+      }
+
+      boardEl.appendChild(square);
+    }
+  }
 </script>
 
 </body>
