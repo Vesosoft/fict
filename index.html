@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Шахматна дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
+  <meta charset="UTF-8" />
+  <title>Дъска с фигури</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
   <style>
     body {
       background: #121212;
-      color: #eee;
+      color: white;
       font-family: sans-serif;
       padding: 20px;
     }
@@ -18,17 +19,22 @@
   </style>
 </head>
 <body>
-  <h2>Тестова шахматна дъска с PNG фигури</h2>
-  <div id="board"></div>
 
-  <script src="libs/chessboard-1.0.0.min.js"></script>
-  <script>
-    const board = new Chessboard('board', {
-      position: 'start',
-      draggable: false,
-      showNotation: true,
-      pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
-    });
-  </script>
+<h2>Шахматна дъска на Весо 🤠</h2>
+<div id="board"></div>
+
+<!-- Скриптове -->
+<script src="libs/chess.min.js"></script>
+<script src="libs/chessboard-0.3.0.min.js"></script>
+
+<script>
+  const board = Chessboard('board', {
+    position: 'start',
+    draggable: false,
+    showNotation: true,
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+  });
+</script>
+
 </body>
 </html>
