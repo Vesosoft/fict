@@ -3,58 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <title>PGN Viewer</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="favicon.ico">
   <style>
     body {
-      background: #f0f0f0;
       font-family: sans-serif;
+      background-color: #f8f8f8;
+      color: #222;
       text-align: center;
+      margin: 0;
+      padding: 0;
     }
+
     #board {
       width: 400px;
       height: 400px;
       margin: 20px auto;
     }
+
     .controls {
-      margin: 10px auto;
+      margin-top: 15px;
       display: flex;
       justify-content: center;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 10px;
     }
-    .controls button {
-      padding: 8px 12px;
+
+    .controls button, .controls select {
+      padding: 6px 12px;
       font-size: 14px;
+      cursor: pointer;
       border-radius: 6px;
       border: none;
-      background: #2b2b2b;
+      background-color: #2c3e50;
       color: white;
-      cursor: pointer;
     }
+
     .controls button:hover {
-      background: #444;
+      background-color: #34495e;
+    }
+
+    .theme-dark {
+      background-color: #1e1e1e;
+      color: white;
+    }
+
+    .theme-dark .controls button {
+      background-color: #555;
+    }
+
+    .theme-dark .controls button:hover {
+      background-color: #777;
     }
   </style>
 </head>
 <body>
-
-  <h1>PGN Viewer</h1>
+  <h2>PGN Viewer</h2>
   <div id="board"></div>
 
   <div class="controls">
     <button onclick="loadPGN()">Зареди PGN</button>
     <button onclick="clearBoard()">Изчисти</button>
-    <button onclick="prevMove()">◀ Назад</button>
-    <button onclick="nextMove()">Напред ▶</button>
-    <button onclick="autoPlay()">▶ Авто</button>
-    <button onclick="savePGN()">💾 Запази</button>
+    <button onclick="prevMove()">◀</button>
+    <button onclick="nextMove()">▶</button>
+    <button onclick="autoPlay()">Авто</button>
+    <button onclick="savePGN()">💾</button>
+    <button onclick="toggleTheme()">🌓</button>
+    <select onchange="switchLang(this.value)">
+      <option value="bg">BG</option>
+      <option value="en">EN</option>
+    </select>
   </div>
 
-  <script src="libs/chessboard-1.0.0.min.js"></script>
+  <!-- Зависимости -->
   <script src="libs/chess.min.js"></script>
+  <script src="libs/chessboard-1.0.0.min.js"></script>
+
+  <!-- Логика -->
   <script src="js/board.js"></script>
   <script src="js/pgn-loader.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/lang.js"></script>
+
+  <!-- Бутони -->
   <script src="buttons/load.js"></script>
   <script src="buttons/clear.js"></script>
   <script src="buttons/prev.js"></script>
