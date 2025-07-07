@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Veso's PGN Viewer - minimal</title>
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <style>
+    body { background: #121212; color: #eee; font-family: sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; background: #1e1e1e; color: #f0f0f0; padding: 10px; border: 1px solid #444; font-family: monospace; }
+    button { margin-top: 10px; margin-right: 10px; padding: 10px 15px; font-size: 16px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
+  </style>
+</head>
+<body>
+
+  <h2>Veso's PGN Viewer - минимален тест 🤠</h2>
+
+  <textarea id="pgn" placeholder="Постави тук PGN..."></textarea><br />
+  <button id="loadBtn">Зареди партията</button>
+
+  <div id="board"></div>
+
+  <script src="libs/chessboard-0.3.0.min.js"></script>
+  <script>
+    const board = new Chessboard('board', { draggable: false, position: 'start' });
+
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      alert('Бутон "Зареди партията" натиснат. Тук може да добавим парсване.');
+    });
+  </script>
+
+</body>
+</html>
