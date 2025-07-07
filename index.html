@@ -2,38 +2,25 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>PGN Viewer</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <title>Тестова дъска</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
   <style>
     #board {
       width: 400px;
       height: 400px;
-      margin: 20px auto;
-    }
-    #controls {
-      text-align: center;
-      margin-top: 10px;
-    }
-    button {
-      font-size: 18px;
-      padding: 6px 12px;
-      margin: 0 5px;
+      margin: 40px auto;
     }
   </style>
 </head>
 <body>
-  <h2 style="text-align: center;">Зареди PGN партия</h2>
-  <input type="file" id="pgnInput" accept=".pgn" />
   <div id="board"></div>
 
-  <div id="controls">
-    <button id="prevBtn">⬅️</button>
-    <button id="nextBtn">➡️</button>
-  </div>
-
-  <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
-  <script type="module" src="js/main.js"></script>
+  <script>
+    const board = new Chessboard('board', {
+      position: 'start',
+      draggable: false
+    });
+  </script>
 </body>
 </html>
