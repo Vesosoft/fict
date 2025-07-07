@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тестова дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Шахматна дъска</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
     #board {
       width: 400px;
       height: 400px;
-      margin: 40px auto;
+      margin: 20px auto;
     }
   </style>
 </head>
@@ -19,7 +19,9 @@
   <script>
     const board = new Chessboard('board', {
       position: 'start',
-      draggable: false
+      draggable: false,
+      pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
+      showNotation: true
     });
   </script>
 </body>
