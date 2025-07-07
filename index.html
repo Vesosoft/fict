@@ -2,13 +2,42 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>PGN Viewer</title>
+  <title>Тестова дъска</title>
   <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
     #board {
       width: 400px;
       height: 400px;
       margin: 20px auto;
+    }
+    .square {
+      width: 12.5%;
+      height: 12.5%;
+      float: left;
+      position: relative;
+    }
+    .white {
+      background: #eee;
+    }
+    .black {
+      background: #666;
+    }
+    .piece {
+      width: 100%;
+      height: 100%;
+    }
+    .rank-label, .file-label {
+      position: absolute;
+      font-size: 10px;
+      color: black;
+    }
+    .rank-label {
+      top: 2px;
+      left: 2px;
+    }
+    .file-label {
+      bottom: 2px;
+      right: 2px;
     }
   </style>
 </head>
@@ -20,7 +49,6 @@
     const board = Chessboard('board', {
       position: 'start',
       pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
-      draggable: false,
       showNotation: true
     });
   </script>
