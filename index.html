@@ -2,27 +2,64 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Шахматна дъска</title>
+  <title>PGN Viewer</title>
   <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <style>
+    body {
+      background: #f0f0f0;
+      font-family: sans-serif;
+      text-align: center;
+    }
     #board {
       width: 400px;
       height: 400px;
       margin: 20px auto;
     }
+    .controls {
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .controls button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: none;
+      background: #2b2b2b;
+      color: white;
+      cursor: pointer;
+    }
+    .controls button:hover {
+      background: #444;
+    }
   </style>
 </head>
 <body>
+
+  <h1>PGN Viewer</h1>
   <div id="board"></div>
 
+  <div class="controls">
+    <button onclick="loadPGN()">Зареди PGN</button>
+    <button onclick="clearBoard()">Изчисти</button>
+    <button onclick="prevMove()">◀ Назад</button>
+    <button onclick="nextMove()">Напред ▶</button>
+    <button onclick="autoPlay()">▶ Авто</button>
+    <button onclick="savePGN()">💾 Запази</button>
+  </div>
+
   <script src="libs/chessboard-1.0.0.min.js"></script>
-  <script>
-    const board = new Chessboard('board', {
-      position: 'start',
-      draggable: false,
-      pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
-      showNotation: true
-    });
-  </script>
+  <script src="libs/chess.min.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/pgn-loader.js"></script>
+  <script src="buttons/load.js"></script>
+  <script src="buttons/clear.js"></script>
+  <script src="buttons/prev.js"></script>
+  <script src="buttons/next.js"></script>
+  <script src="buttons/auto.js"></script>
+  <script src="buttons/save.js"></script>
 </body>
 </html>
