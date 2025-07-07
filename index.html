@@ -2,34 +2,38 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PGN Viewer</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <style>
     #board {
       width: 400px;
+      height: 400px;
       margin: 20px auto;
     }
     #controls {
       text-align: center;
-      margin-top: 15px;
-    }
-    input[type="file"] {
       margin-top: 10px;
+    }
+    button {
+      font-size: 18px;
+      padding: 6px 12px;
+      margin: 0 5px;
     }
   </style>
 </head>
 <body>
+  <h2 style="text-align: center;">Зареди PGN партия</h2>
+  <input type="file" id="pgnInput" accept=".pgn" />
   <div id="board"></div>
 
   <div id="controls">
-    <input type="file" id="pgnInput" accept=".pgn" />
+    <button id="prevBtn">⬅️</button>
+    <button id="nextBtn">➡️</button>
   </div>
 
-  <script src="libs/chessboard-1.0.0.min.js"></script>
   <script src="libs/chess.min.js"></script>
-  <script src="js/board.js" type="module"></script>
-  <script src="js/pgn-loader.js" type="module"></script>
+  <script src="libs/chessboard-1.0.0.min.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
