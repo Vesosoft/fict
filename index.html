@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Тестова дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
-  <link rel="stylesheet" href="style/board.css">
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
   <style>
     #board {
       width: 400px;
@@ -15,7 +14,8 @@
 </head>
 <body>
   <div id="board"></div>
-  <script src="libs/chessboard-1.0.0.js"></script>
+
+  <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
     const board = new Chessboard('board', {
       position: 'start',
