@@ -2,8 +2,8 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Тестова дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
+  <title>PGN Viewer</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
     #board {
       width: 400px;
@@ -17,13 +17,12 @@
 
   <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
-    const board = new Chessboard('board', {
+    const board = Chessboard('board', {
       position: 'start',
       pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
       draggable: false,
       showNotation: true
     });
   </script>
-  <script type="module" src="js/board.js"></script>
 </body>
 </html>
