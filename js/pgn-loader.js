@@ -1,50 +1,37 @@
-import { renderBoard } from './board.js';
+// js/pgn-loader.js
+import { board } from './board.js';
 
 const chess = new Chess();
 
-let moves = [];
-let currentMoveIndex = 0;
-let containerIdGlobal = null;
+document.getElementById('pgnInput').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-export function loadPGN(pgnText, containerId) {
-  if (!chess.load_pgn(pgnText)) {
-    console.error('Невалиден PGN!');
-    return false;
-  }
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const pgn = e.target.result;
+    const loaded = chess.load_pgn(pgn);
 
-  containerIdGlobal = containerId;
-  moves = chess.history();
-  currentMoveIndex = 0;
+    if (!loaded) {
+      alert('Невалиден PGN файл.');
+      return;
+    }
 
-  // Показваме началната позиция
-  renderCurrentPosition();
+    const moves = chess.history();
+    chess.reset();
+    board.position(chess.fen());
 
-  return true;
-}
+    let i = 0;
+    const nextMove = () => {
+      if (i >= moves.length) return;
+      chess.move(moves[i]);
+      board.position(chess.fen());
+      i++;
+      setTimeout(nextMove, 700); // автоматично проиграване
+    };
 
-function renderCurrentPosition() {
-  chess.reset();
-  for (let i = 0; i < currentMoveIndex; i++) {
-    chess.move(moves[i]);
-  }
-  renderBoard(containerIdGlobal, chess.fen());
-}
+    nextMove();
+  };
 
-export function nextMove() {
-  if (currentMoveIndex < moves.length) {
-    currentMoveIndex++;
-    renderCurrentPosition();
-  }
-}
-
-export function prevMove() {
-  if (currentMoveIndex > 0) {
-    currentMoveIndex--;
-    renderCurrentPosition();
-  }
-}
-
-export function resetMoves() {
-  currentMoveIndex = 0;
-  renderCurrentPosition();
-}
+  reader.readAsText(file);
+});
