@@ -1,9 +1,13 @@
-import { Chess } from '../libs/chess.min.js'; // ако chess.js е модул
-// ако не — този ред не е нужен
+/* css/style.css */
+body {
+  background-color: #f8f8f8;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-const board = Chessboard('board', {
-  position: 'start',
-  draggable: false,
-  showNotation: true,
-  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
-});
+#board {
+  margin: 30px auto;
+  width: 400px;
+  height: 400px;
+}
