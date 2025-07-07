@@ -1,9 +1,12 @@
-import { Chess } from '../libs/chess.min.js'; // ако chess.js е модул
-// ако не — този ред не е нужен
+// board.js НАЧАЛО
 
-const board = Chessboard('board', {
+import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
+export const board = Chessboard('board', {
   position: 'start',
   draggable: false,
   showNotation: true,
   pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
 });
+
+// board.js КРАЙ
