@@ -1,81 +1,35 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тестова дъска</title>
-
-  <!-- СТИЛОВЕ -->
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/board.css" />
-
+  <meta charset="UTF-8">
+  <title>Veso's PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
   <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 20px;
+    }
     #board {
       width: 400px;
-      height: 400px;
-      margin: 20px auto;
-    }
-
-    .controls {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .controls button, .controls select {
-      margin: 2px;
-      padding: 6px 10px;
-      font-size: 14px;
+      margin: auto;
     }
   </style>
 </head>
 <body>
-<TABLE BORDER="1" ALIGHT="CENTER" WIGHT="400" HEIGHT="400" ROWS="0">
-  <TD><!-- ШАХМАТНА ДЪСКА -->
+  <h1>Добре дошъл в PGN Viewer-а на Вес!</h1>
   <div id="board"></div>
-  </TD>  
-</TABLE>
-  <!-- БУТОНИ -->
-  <div class="controls">
-    <button onclick="loadPGN()">Зареди PGN</button>
-    <button onclick="clearBoard()">Изчисти</button>
-    <button onclick="prevMove()">◀</button>
-    <button onclick="nextMove()">▶</button>
-    <button onclick="autoPlay()">Авто</button>
-    <button onclick="savePGN()">💾</button>
-    <button onclick="toggleTheme()">🌓</button>
-    <button onclick="flipBoard()">🔄</button>
-    <select onchange="switchLang(this.value)">
-      <option value="bg">BG</option>
-      <option value="en">EN</option>
-    </select>
-  </div>
 
-  <!-- БИБЛИОТЕКИ -->
-  <script src="libs/chess.min.js"></script> <!-- Логика за шаха -->
-  <script src="libs/chessboard-1.0.0.min.js"></script> <!-- Визуализация на дъската -->
-
-  <!-- ОСНОВНИ СКРИПТОВЕ -->
-  <script src="js/board.js"></script> <!-- Инициализация на дъската -->
-  <script src="js/pgn-loader.js"></script> <!-- Зареждане и парсване на PGN -->
-  <script src="js/buttons.js"></script> <!-- Общи бутони -->
-  <script src="js/lang.js"></script> <!-- Езикова поддръжка -->
-  <script src="js/theme.js"></script> <!-- Тъмна/светла тема -->
-
-  <!-- ОТДЕЛНИ БУТОНИ -->
-  <script src="buttons/load.js"></script>
-  <script src="buttons/clear.js"></script>
-  <script src="buttons/prev.js"></script>
-  <script src="buttons/next.js"></script>
-  <script src="buttons/auto.js"></script>
-  <script src="buttons/save.js"></script>
-  <script src="buttons/flip.js"></script>
-
-  <!-- ЗАПАЗВАНЕ на ориентацията -->
+  <script src="libs/chess.min.js"></script>
+  <script src="libs/chessboard-0.3.0.min.js"></script>
   <script>
-    // При презареждане се възстановява ориентацията от localStorage
-    const savedOrientation = localStorage.getItem('boardOrientation') || 'white';
-    board.orientation(savedOrientation);
+    const board = ChessBoard('board', {
+      draggable: true,
+      position: 'start'
+    });
   </script>
-
 </body>
 </html>
