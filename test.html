@@ -254,14 +254,14 @@ themeToggleBtn.onclick = () => {
 
 setLang('bg');
 </script>
-// <script src="./js/loadfile.js" defer></script>
+
 <script>
 (function () {
   const container = document.getElementById('console-container');
   if (!container) return;
 
   const originalLog = console.log;
-  const originalError = console.error;
+  const originalError =, console.error;
   const originalWarn = console.warn;
 
   function appendToConsole(type, msg) {
