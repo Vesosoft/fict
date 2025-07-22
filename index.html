@@ -2,16 +2,15 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Veso's PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Шахматна дъска (0.3.0)</title>
   <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
   <style>
     body {
-      background-color: #121212;
+      background: #121212;
       color: #eee;
       font-family: sans-serif;
       text-align: center;
-      padding-top: 20px;
+      padding: 2rem;
     }
     #board {
       width: 400px;
@@ -20,16 +19,17 @@
   </style>
 </head>
 <body>
-  <h1>Добре дошъл в PGN Viewer-а на Вес!</h1>
+  <h1>Дъска с фигури</h1>
   <div id="board"></div>
 
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-0.3.0.min.js"></script>
   <script>
-    const board = Chessboard ('board', {
-      draggable: true,
-      position: 'start'
-    });
+    const config = {
+      position: 'start',
+      draggable: true
+    };
+    const board = ChessBoard('board', config);
   </script>
 </body>
 </html>
