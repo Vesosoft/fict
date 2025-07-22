@@ -253,6 +253,42 @@ themeToggleBtn.onclick = () => {
 
 setLang('bg');
 </script>
+<script src="./js/loadfile.js" defer></script>
+<script>
+(function () {
+  const container = document.getElementById('console-container');
+  if (!container) return;
 
+  const originalLog = console.log;
+  const originalError = console.error;
+  const originalWarn = console.warn;
+
+  function appendToConsole(type, msg) {
+    const line = document.createElement('div');
+    line.style.margin = '2px 0';
+    if (type === 'error') line.style.color = '#f55';
+    if (type === 'warn') line.style.color = '#ff0';
+    line.textContent = `[${type.toUpperCase()}] ${msg}`;
+    container.appendChild(line);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  console.log = function (...args) {
+    originalLog.apply(console, args);
+    appendToConsole('log', args.join(' '));
+  };
+
+  console.error = function (...args) {
+    originalError.apply(console, args);
+    appendToConsole('error', args.join(' '));
+  };
+
+  console.warn = function (...args) {
+    originalWarn.apply(console, args);
+    appendToConsole('warn', args.join(' '));
+  };
+})();
+</script>
+  
 </body>
 </html>
