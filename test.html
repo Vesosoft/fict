@@ -121,14 +121,14 @@
   <button id="saveBtn">💾 Запази</button>
 </div>
 
-<div id="board"></div>
+  <div id="board" style="width: 400px"></div>
 
 <script src="libs/chess.min.js"></script>
 <script src="libs/chessboard-0.3.0.min.js"></script>
 
 <script>
 const chess = new Chess();
-<!-- let board = new Chessboard -->
+// <!-- let board = new Chessboard -->
   let board = Chessboard(document.getElementById('board'), {
   position: 'start',
   draggable: false,
