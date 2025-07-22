@@ -32,7 +32,7 @@
   top: 1px;
 }
 .piece-417db {
-  background-image: url("img/chesspieces/wikipedia/{piece}.png");
+  background-image: url("libs/img/chesspieces/wikipedia/{piece}.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
