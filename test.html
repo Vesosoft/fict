@@ -34,7 +34,7 @@
     }
     button {
       margin: 5px;
-      padding: 10px 15px;
+      padding: 10px 15px;	
       font-size: 16px;
       background: #333;
       color: #fff;
@@ -128,8 +128,8 @@
 
 <script>
 const chess = new Chess();
-// <!-- let board = new Chessboard -->
-  let board = Chessboard(document.getElementById('board', {
+ let board = new Chessboard('board'
+//  let board = Chessboard(document.getElementById('board', {
   position: 'start',
   draggable: false,
   showNotation: true,
