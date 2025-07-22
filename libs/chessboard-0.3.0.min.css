@@ -1,23 +1,42 @@
 /* chessboard-0.3.0.min.css */
-.chessboard {
-  border: 2px solid #444;
-  width: 400px;
-  height: 400px;
-  background-color: #eee;
-  position: relative;
-  user-select: none;
-  display: block;
-  clear: both;
+.board-b72b1 {
+  border: 2px solid #404040;
+  box-sizing: content-box;
+  display: inline-block;
 }
-.square {
-  width: 12.5%;
-  height: 12.5%;
+.square-55d63 {
   float: left;
-  box-sizing: border-box;
+  position: relative;
+  text-align: center;
 }
-.square.white {
+.white-1e1d7 {
   background-color: #f0d9b5;
+  color: #b58863;
 }
-.square.black {
+.black-3c85d {
   background-color: #b58863;
+  color: #f0d9b5;
+}
+.highlight1-32417,
+.highlight2-9c5d2 {
+  background-color: #a9a9a9;
+}
+.alpha-d2270 {
+  bottom: 1px;
+  position: absolute;
+  right: 3px;
+}
+.numeric-fc462 {
+  left: 2px;
+  position: absolute;
+  top: 1px;
+}
+.piece-417db {
+  background-image: url("img/chesspieces/wikipedia/{piece}.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: move;
+  height: 100%;
+  width: 100%;
 }
