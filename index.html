@@ -1,36 +1,15 @@
-<!DOCTYPE html>
-<html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Шахматна дъска (0.3.0)</title>
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css">
-  <style>
-    body {
-      background: #121212;
-      color: #eee;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 2rem;
-    }
-    #board {
-      width: 400px;
-      margin: auto;
-    }
-  </style>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
 </head>
 <body>
-
-  <h1>Дъска с фигури</h1>
   <div id="board" style="width: 400px"></div>
-	
+
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
-    const config = {
-      position: 'start',
-      draggable: true
-    };
-    const board = Chessboard.init('board', config);
+    const board = Chessboard('board', {
+      draggable: true,
+      position: 'start'
+    });
   </script>
 </body>
-</html>
