@@ -1,19 +1,17 @@
-// main.js
+// js/main.js
 
 import { Chess } from '../libs/chess.min.js'
-import { initBoard } from './board.js'
+import { board } from './board.js'
 import { initControls } from './controls.js'
 import { loadPGNFromFile } from './pgn-loader.js'
 
 let game = new Chess()
-let board = null
 
-// Основна инициализация
+// Функция за инициализация на приложението
 function initApp() {
-  board = initBoard(game)
   initControls(game, board)
-  loadPGNFromFile(board)
+  loadPGNFromFile(game, board)
 }
 
-// Стартиране на инициализацията при зареждане на страницата
+// Стартиране при зареждане на страницата
 document.addEventListener('DOMContentLoaded', initApp)
