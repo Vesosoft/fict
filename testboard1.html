@@ -1,47 +1,40 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Veso's PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css">
+  <meta charset="UTF-8" />
+  <title>Шахматна дъска</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
   <style>
     body {
-      background: #121212;
-      color: #eee;
+      background: #111;
+      color: white;
       font-family: sans-serif;
-      padding: 20px;
       text-align: center;
+      padding: 2rem;
     }
     #board {
-      width: 350px;
-      margin: 20px auto;
+      width: 400px;
+      margin: auto;
     }
     button {
-      background: #333;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-    button:hover {
-      background: #555;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
     }
   </style>
 </head>
 <body>
-  <h2>Шахматна дъска</h2>
+  <h1>Veso Board</h1>
   <div id="board"></div>
-  <button onclick="board.flip()">Обръщане</button>
+  <button onclick="board.flip()">Flip Board</button>
 
+  <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.js"></script>
   <script>
     const board = Chessboard('board', {
-      position: 'start',
       pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
-      showNotation: true
+      position: 'start',
+      showNotation: true,
     });
   </script>
 </body>
