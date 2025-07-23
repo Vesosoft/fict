@@ -1,26 +1,37 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chessboard Test</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Тестова дъска</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
     #board {
       width: 400px;
       margin: 50px auto;
     }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+    }
   </style>
 </head>
-<body style="background:#111;color:#eee;font-family:sans-serif;text-align:center">
+<body>
   <h2>Тестова дъска</h2>
   <div id="board"></div>
+  <button onclick="board.flip()">🔄 Завърти</button>
 
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
-    const board = Chessboard('board', {
-      position: 'start'
-    });
+    let board;
+    window.onload = function () {
+      board = Chessboard('board', {
+        position: 'start',
+        draggable: true
+      });
+    };
   </script>
 </body>
 </html>
