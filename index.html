@@ -1,15 +1,35 @@
+<!DOCTYPE html>
+<html lang="bg">
 <head>
+  <meta charset="UTF-8">
+  <title>Шахматна дъска</title>
   <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 1em;
+      text-align: center;
+    }
+    #board {
+      width: 400px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-  <div id="board" style="width: 400px"></div>
+  <h1>PGN Viewer</h1>
+  <div id="board"></div>
 
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
-    const board = Chessboard.init('board',
-                             {
-                     position: 'start'
-                             });
+    const board = Chessboard('board', {
+      position: 'start',
+      showNotation: true,
+      draggable: true
+    });
   </script>
 </body>
+</html>
