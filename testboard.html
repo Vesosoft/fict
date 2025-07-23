@@ -5,33 +5,45 @@
   <title>Тестова дъска</title>
   <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
-    #board {
-      width: 400px;
-      margin: 50px auto;
-    }
     body {
       background: #121212;
       color: #eee;
       font-family: sans-serif;
       text-align: center;
     }
+    #board {
+      width: 400px;
+      margin: 30px auto;
+    }
   </style>
 </head>
 <body>
-  <h2>Тестова дъска</h2>
+  <h2>🎯 Тестова дъска – v1.0.0</h2>
   <div id="board"></div>
-  <button onclick="board.flip()">🔄 Завърти</button>
+  <button onclick="flipBoard()">🔄 Завърти дъската</button>
 
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
     let board;
+    let orientation = 'white';
+
     window.onload = function () {
-      board = Chessboard('board', {
+      board = Chessboard.init('board', {
+        draggable: true,
         position: 'start',
-        draggable: true
+        orientation: orientation
       });
     };
+
+    function flipBoard() {
+      orientation = (orientation === 'white') ? 'black' : 'white';
+      board = Chessboard.init('board', {
+        draggable: true,
+        position: 'start',
+        orientation: orientation
+      });
+    }
   </script>
 </body>
 </html>
