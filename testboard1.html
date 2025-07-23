@@ -2,31 +2,30 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Шахматна дъска</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <title>Само дъска</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
     body {
-      background: #222;
+      background: #121212;
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
     #board {
-      width: 90vmin;
-      max-width: 600px;
+      width: 100%;
+      max-width: 480px;
     }
   </style>
 </head>
 <body>
   <div id="board"></div>
-
-  <script src="libs/chessboard-1.0.0.js"></script>
+  <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
     const board = Chessboard('board', {
-      position: 'start'
+      position: 'start',
+      coordinates: true
     });
   </script>
 </body>
