@@ -1,49 +1,34 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Тестова дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
+  <meta charset="UTF-8" />
+  <title>Шахматна дъска</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
   <style>
     body {
-      background: #121212;
-      color: #eee;
+      background: #fff;
+      color: #000;
       font-family: sans-serif;
       text-align: center;
+      padding-top: 20px;
     }
     #board {
       width: 400px;
-      margin: 30px auto;
+      margin: auto;
     }
   </style>
 </head>
 <body>
-  <h2>🎯 Тестова дъска – v1.0.0</h2>
+  <h2>Работеща шахматна дъска с фигури</h2>
   <div id="board"></div>
-  <button onclick="flipBoard()">🔄 Завърти дъската</button>
 
   <script src="libs/chess.min.js"></script>
-  <script src="libs/chessboard-1.0.0.min.js"></script>
+  <script src="libs/chessboard-1.0.0.js"></script>
   <script>
-    let board;
-    let orientation = 'white';
-
-    window.onload = function () {
-      board = Chessboard.init('board', {
-        draggable: true,
-        position: 'start',
-        orientation: orientation
-      });
-    };
-
-    function flipBoard() {
-      orientation = (orientation === 'white') ? 'black' : 'white';
-      board = Chessboard.init('board', {
-        draggable: true,
-        position: 'start',
-        orientation: orientation
-      });
-    }
+    const board = Chessboard('board', {
+      draggable: true,
+      position: 'start'
+    });
   </script>
 </body>
 </html>
