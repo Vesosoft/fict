@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Тестова дъска</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
   <style>
-    body {
-      background: #222;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #board {
-      width: 400px;
-      margin: 20px auto;
-    }
+    #board { width: 400px; margin: 20px auto; }
   </style>
 </head>
 <body>
-  <h1>Шахматна дъска</h1>
   <div id="board"></div>
 
-  <script src="libs/chessboard-1.0.0.js"></script>
+  <script src="libs/chess.min.js"></script>
+  <script src="libs/chessboard-1.0.0.min.js"></script>
   <script>
     window.onload = function () {
-      const board = Chessboard('board', {
-        position: 'start',
-        pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'
+      var board = Chessboard('board', {
+        draggable: true,
+        position: 'start'
       });
     };
   </script>
