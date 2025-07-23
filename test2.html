@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тест на фигури</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
+  <meta charset="UTF-8">
+  <title>Flip Test</title>
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css">
   <style>
-    body { background: #111; padding: 30px; }
-    #board { width: 400px; }
+    #board {
+      width: 400px;
+      margin: 20px auto;
+    }
   </style>
 </head>
-<body>
+<body style="background: #121212; color: #eee; text-align: center;">
 
-<h2 style="color: #eee;">Тест: Шахматна дъска с фигури</h2>
-<div id="board"></div>
+  <h2>Тест: Завъртане на дъската</h2>
+  <div id="board"></div>
+  <button onclick="board.flip()">🔄 Завърти дъската</button>
 
-<script src="libs/chessboard-0.3.0.min.js"></script>
-<script>
-  const board = Chessboard('board', {
-    position: 'start',
-    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
-    showNotation: true
-  });
-</script>
-
+  <script src="libs/chess.min.js"></script>
+  <script src="libs/chessboard-1.0.0.js"></script>
+  <script>
+    const board = Chessboard('board', {
+      draggable: true,
+      position: 'start'
+    });
+  </script>
 </body>
-</html>			
+</html>
