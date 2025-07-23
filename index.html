@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>Шахматна дъска</title>
+  <meta charset="UTF-8" />
+  <title>Veso's PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css" />
   <style>
     body {
       background: #121212;
       color: #eee;
       font-family: sans-serif;
-      padding: 1em;
       text-align: center;
+      padding: 1em;
     }
     #board {
       width: 400px;
-      margin: 0 auto;
+      margin: 1em auto;
+    }
+    input {
+      margin-top: 1em;
     }
   </style>
 </head>
 <body>
   <h1>PGN Viewer</h1>
   <div id="board"></div>
+  <input type="file" id="pgnInput" accept=".pgn" />
 
+  <!-- Скриптове -->
   <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.min.js"></script>
-  <script>
-    const board = Chessboard('board', {
-      position: 'start',
-      showNotation: true,
-      draggable: true
-    });
-  </script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
