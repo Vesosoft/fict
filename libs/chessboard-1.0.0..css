@@ -1,0 +1,49 @@
+/* chessboard-1.0.0.css */
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+.square {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.square.light {
+  background-color: #f0d9b5;
+}
+
+.square.dark {
+  background-color: #b58863;
+}
+
+.piece {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+.notation {
+  position: absolute;
+  font-size: 0.6em;
+  color: #444;
+  font-family: sans-serif;
+  pointer-events: none;
+}
+
+.notation.file {
+  bottom: 2px;
+  right: 4px;
+}
+
+.notation.rank {
+  top: 2px;
+  left: 4px;
+  }
