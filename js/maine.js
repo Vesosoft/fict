@@ -1,36 +1,8 @@
 // js/maine.js
+import { initBoard } from './board.js';
+import { setupRotateButton } from '../butons/flipButton.js';
 
-import { Chess } from '../libs/chess.min.js'
-import { initBoard } from './board.js'
-import { initButons } from './butons.js'
-import { setupRotateButton } from './butons/rotate.js';
-
-// Инициализация на обекта за игра
-let game = new Chess()
-let board = null
-
-// Главна функция за инициализация
-function initApp() {
-  board = initBoard(game)
-  initButons(game, board)
-  setupRotateButton(board)
-}
-
-// Стартиране при зареждане на страницата
-document.addEventListener('DOMContentLoaded', initApp)
-
-/* import { initBoard } from './board.js'
-import { initButons } from './butons.js'
-import { setupRotateButton } from '../butons/flipButton.js'
-
-// Инициализация на обекта за игра (вече е глобален от chess.min.js)
-let game = new Chess()
-let board = null
-
-function initApp() {
-  board = initBoard(game)
-  initButons(game, board)
-  setupRotateButton(board)
-}
-
-document.addEventListener('DOMContentLoaded', initApp)**/
+document.addEventListener('DOMContentLoaded', () => {
+  const board = initBoard();
+  setupRotateButton(board);
+});
