@@ -1,16 +1,19 @@
 // js/board.js
-let board = null;
+import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
 export function createBoard(containerId) {
-  const config = {
-    draggable: true,
+  const boardElement = document.getElementById(containerId);
+  if (!boardElement) {
+    console.error(`Не е намерен елемент с ID '${containerId}'`);
+    return;
+  }
+
+  const board = new Chessboard(boardElement, {
     position: 'start',
-    showNotation: true
-  };
+    coordinates: true,
+    responsive: true,
+    draggable: true, // ако искаш да местиш фигури с мишката
+  });
 
-  board = Chessboard(containerId, config);
-}
-
-export function flipBoard() {
-  if (board) board.flip();
+  window.board = board; // достъпен в конзолата за тест
 }
