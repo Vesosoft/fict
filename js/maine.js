@@ -1,5 +1,5 @@
 // js/maine.js
-import { initBoard } from './board.js';
+import { createBoard } from './board.js';
 import { setupRotateButton } from '../butons/flipButton.js';
 
 document.addEventListener('DOMContentLoaded', () => {
