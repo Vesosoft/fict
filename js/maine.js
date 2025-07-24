@@ -18,3 +18,19 @@ function initApp() {
 
 // Стартиране при зареждане на страницата
 document.addEventListener('DOMContentLoaded', initApp)
+
+/* import { initBoard } from './board.js'
+import { initButons } from './butons.js'
+import { setupRotateButton } from '../butons/flipButton.js'
+
+// Инициализация на обекта за игра (вече е глобален от chess.min.js)
+let game = new Chess()
+let board = null
+
+function initApp() {
+  board = initBoard(game)
+  initButons(game, board)
+  setupRotateButton(board)
+}
+
+document.addEventListener('DOMContentLoaded', initApp)**/
