@@ -1,10 +1,7 @@
-import { loadPGNFromFile } from './pgn-loader.js';
+import { createBoard } from './board.js';
+import { setupRotateButton } from '../butons/flipButton.js';
 
-const board = Chessboard('board', {
-  position: 'start',
-  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
-  draggable: false,
-  showNotation: true
+document.addEventListener('DOMContentLoaded', () => {
+  createBoard('board');
+  setupRotateButton();
 });
-
-loadPGNFromFile(board);
