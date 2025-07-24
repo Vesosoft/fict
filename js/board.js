@@ -1,9 +1,16 @@
 // js/board.js
-export function initBoard() {
-  return Chessboard('board', {
-    position: 'start',
+let board = null;
+
+export function createBoard(containerId) {
+  const config = {
     draggable: true,
-    pieceTheme: '../libs/img/chesspieces/wikipedia/{piece}.png',
+    position: 'start',
     showNotation: true
-  });
+  };
+
+  board = Chessboard(containerId, config);
+}
+
+export function flipBoard() {
+  if (board) board.flip();
 }
