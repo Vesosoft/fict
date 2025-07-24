@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="bg">
 <head>
-  <meta charset="utf-8">
-  <title>Дъска</title>
+  <meta charset="UTF-8">
+  <title>Шахматна дъска</title>
   <link rel="stylesheet" href="../libs/chessboard-1.0.0.css">
+  <style>
+    body {
+      margin: 0;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  </style>
 </head>
-<body style="background:#121212; color:white">
-  <div id="board" style="width: 400px; margin: auto;"></div>
+<body>
+  <div id="board" style="width: 400px;"></div>
+  <script type="module">
+    import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
-  <script src="../libs/chessboard-1.0.0.js"></script>
-  <script>
-    const board = Chessboard('board', {
+    const board = new Chessboard(document.getElementById('board'), {
       position: 'start',
-      draggable: true
+      pieceTheme: '../libs/img/chesspieces/wikipedia/{piece}.png',
+      orientation: 'white'
     });
   </script>
 </body>
