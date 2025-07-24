@@ -2,25 +2,22 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Шахматна дъска</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <title>Veso's Frame Test</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background-color: #121212;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 0;
+      background: #111;
       height: 100vh;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
 <body>
-  <div id="board" style="width: 400px; max-width: 90vmin;"></div>
-
-  <script src="libs/chessboard-1.0.0.js"></script>
-  <script src="libs/chess.min.js"></script>
-  <script type="module" src="js/maine.js"></script>
+  <iframe src="frame/board.html" title="Chessboard Frame"></iframe>
 </body>
 </html>
