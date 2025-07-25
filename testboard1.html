@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Veso PGN Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/chessboard.css" />
   <style>
     body {
       background: #121212;
@@ -12,46 +13,39 @@
       margin: 0;
       padding: 0;
     }
-    header {
-      padding: 1rem;
-      text-align: center;
-      background: #1e1e1e;
-      font-size: 1.2rem;
-    }
-    #controls {
-      padding: 0.5rem;
-      text-align: center;
-    }
-    iframe {
-      display: block;
+
+    #board {
       width: 100%;
       max-width: 400px;
-      height: 400px;
-      margin: 1rem auto;
+      margin: 2rem auto;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #333;
+      color: #fff;
       border: none;
-      box-shadow: 0 0 10px #000;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #555;
     }
   </style>
 </head>
 <body>
-
-  <header>Veso PGN Viewer</header>
-
-  <div id="controls">
-    <!-- Тук ще добавим бутони по-късно -->
-    <button onclick="rotateBoard()">🔄 Завърти дъската</button>
+  <div id="board"></div>
+  <div class="controls">
+    <button id="flip">Завърти дъската</button>
   </div>
 
-  <iframe id="boardFrame" src="frame/board.html"></iframe>
-
-  <script>
-    function rotateBoard() {
-      const frame = document.getElementById('boardFrame');
-      frame.contentWindow.postMessage({ type: 'rotate' }, '*');
-    }
-
-    // Тук по-късно можем да добавим още управление
-  </script>
-
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
