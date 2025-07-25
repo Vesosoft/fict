@@ -1,41 +1,57 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <title>PGN Viewer - Frame</title>
+  <meta charset="UTF-8" />
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      margin: 0;
       background: #121212;
       color: #eee;
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background: #222;
-      padding: 10px;
+      padding: 1rem;
       text-align: center;
-      font-size: 18px;
+      background: #1e1e1e;
+      font-size: 1.2rem;
+    }
+    #controls {
+      padding: 0.5rem;
+      text-align: center;
     }
     iframe {
-      flex-grow: 1;
+      display: block;
       width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 1rem auto;
       border: none;
-    }
-    footer {
-      background: #222;
-      padding: 10px;
-      text-align: center;
+      box-shadow: 0 0 10px #000;
     }
   </style>
 </head>
 <body>
-  <header>🔘 Език | 🌗 Тема | ♟️ Бутон за зареждане</header>
 
-  <iframe src="board.html"></iframe>
+  <header>Veso PGN Viewer</header>
 
-  <footer>📥 Запази партията | ⏪◀️▶️⏩</footer>
+  <div id="controls">
+    <!-- Тук ще добавим бутони по-късно -->
+    <button onclick="rotateBoard()">🔄 Завърти дъската</button>
+  </div>
+
+  <iframe id="boardFrame" src="frame/board.html"></iframe>
+
+  <script>
+    function rotateBoard() {
+      const frame = document.getElementById('boardFrame');
+      frame.contentWindow.postMessage({ type: 'rotate' }, '*');
+    }
+
+    // Тук по-късно можем да добавим още управление
+  </script>
+
 </body>
 </html>
