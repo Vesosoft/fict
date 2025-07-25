@@ -1,19 +1,29 @@
-// js/board.js
-import { Chessboard } from '../libs/chessboard-1.0.0.js';
+import { Chess } from "../libs/chess.min.js";
+import { drawBoard, updateBoard } from "./draw.js";
+
+export let game;
+export let boardOrientation = "white";
 
 export function createBoard(containerId) {
-  const boardElement = document.getElementById(containerId);
-  if (!boardElement) {
-    console.error(`Не е намерен елемент с ID '${containerId}'`);
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  drawBoard(container, boardOrientation);
+  game = new Chess();
+}
+
+export function resetBoard(containerId) {
+  createBoard(containerId);
+}
+
+export function flipBoard(containerId) {
+  boardOrientation = boardOrientation === "white" ? "black" : "white";
+  updateBoard(containerId, game, boardOrientation);
+}
+
+export function loadPGN(pgn, containerId) {
+  if (!game.load_pgn(pgn)) {
+    alert("Невалиден PGN.");
     return;
   }
-
-  const board = new Chessboard(boardElement, {
-    position: 'start',
-    coordinates: true,
-    responsive: true,
-    draggable: true, // ако искаш да местиш фигури с мишката
-  });
-
-  window.board = board; // достъпен в конзолата за тест
+  updateBoard(containerId, game, boardOrientation);
 }
