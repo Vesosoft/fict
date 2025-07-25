@@ -1,9 +1,20 @@
 // grotate.js
-import { flipBoard } from '../js/board.js';
+// js/rotate.js
 
-export function setupRotateButton(buttonId) {
-  const button = document.getElementById(buttonId);
-  if (button) {
-    button.addEventListener('click', flipBoard);
-  }
+export function addRotateButton(board) {
+  const button = document.createElement('button');
+  button.textContent = '🔁 Завърти дъската';
+  button.id = 'rotateBtn';
+  button.style.margin = '10px';
+  button.style.padding = '6px 12px';
+  button.style.fontSize = '16px';
+
+  let orientation = 'white';
+
+  button.addEventListener('click', () => {
+    orientation = orientation === 'white' ? 'black' : 'white';
+    board.orientation(orientation);
+  });
+
+  document.getElementById('controls').appendChild(button);
 }
