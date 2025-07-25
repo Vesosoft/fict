@@ -1,10 +1,14 @@
 // butons/rotate.js
-export function setupRotate(board) {
-  const rotateBtn = document.getElementById('rotateBtn');
-  if (!rotateBtn) return;
+import { board } from '../js/board.js';
+
+export function setupRotateButton(buttonId) {
+  const rotateBtn = document.getElementById(buttonId);
+  if (!rotateBtn || !board) return;
+
+  let isFlipped = false;
 
   rotateBtn.addEventListener('click', () => {
-    const currentOrientation = board.orientation();
-    board.orientation(currentOrientation === 'white' ? 'black' : 'white');
+    isFlipped = !isFlipped;
+    board.orientation(isFlipped ? 'black' : 'white');
   });
 }
