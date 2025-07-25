@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-  <meta charset="UTF-8" />
-  <title>Board Only</title>
-  <link rel="stylesheet" href="../libs/chessboard-1.0.0.css" />
-  <style>
-    body {
-      margin: 0;
-      background: #121212;
-    }
-    #board {
-      width: 100%;
-      max-width: 400px;
-      margin: 1rem auto;
-    }
-  </style>
-</head>
-<body>
+<!-- components/board.html -->
+<div id="board-container" class="p-2">
+  <div id="board" class="mx-auto"></div>
+</div>
 
-  <div id="board"></div>
+<script type="module">
+  import { Chess } from '../libs/chess.min.js';
+  import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
-  <script src="../libs/chess.js"></script>
-  <script src="../libs/chessboard-1.0.0.js"></script>
-  <script>
-    const board = Chessboard('board', {
-      position: 'start',
-      pieceTheme: '../imgs/chesspieces/wikipedia/{piece}.png'
-    });
+  const boardElement = document.getElementById('board');
+  const board = Chessboard(boardElement, {
+    position: 'start',
+    sprite: {
+      url: '../libs/img/chesspieces/wikipedia/{piece}',
+      size: 40,
+      cache: false
+    },
+    coordinates: true,
+    responsive: true
+  });
 
-    window.addEventListener('message', (event) => {
-      if (event.data.type === 'rotate') {
-        board.flip();
-      }
-    });
-  </script>
-
-</body>
-</html>
+  // За експортиране при нужда
+  window.board = board;
+</script>
