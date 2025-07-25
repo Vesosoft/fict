@@ -1,29 +1,23 @@
-import { Chess } from "../libs/chess.min.js";
-import { drawBoard, updateBoard } from "./draw.js";
+// js/board.js
 
-export let game;
-export let boardOrientation = "white";
+// Глобална променлива за дъската
+let board = null;
 
-export function createBoard(containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  drawBoard(container, boardOrientation);
-  game = new Chess();
+// Функция за създаване и връщане на дъската
+export function createBoard(elementId) {
+  if (board) return board; // ако вече е създадена, не я създаваме пак
+
+  board = Chessboard(elementId, {
+    draggable: true,
+    position: 'start',
+    pieceTheme: 'images/chesspieces/wikipedia/{piece}.png',
+    showNotation: true,
+  });
+
+  return board;
 }
 
-export function resetBoard(containerId) {
-  createBoard(containerId);
-}
-
-export function flipBoard(containerId) {
-  boardOrientation = boardOrientation === "white" ? "black" : "white";
-  updateBoard(containerId, game, boardOrientation);
-}
-
-export function loadPGN(pgn, containerId) {
-  if (!game.load_pgn(pgn)) {
-    alert("Невалиден PGN.");
-    return;
-  }
-  updateBoard(containerId, game, boardOrientation);
+// Връщане на текущата дъска (ако е нужно някъде другаде)
+export function getBoard() {
+  return board;
 }
