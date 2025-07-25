@@ -1,4 +1,3 @@
-
 // js/main.js
 
 import { createBoard } from './board.js';
@@ -6,13 +5,9 @@ import { setupRotateButton } from '../butons/rotate.js';
 import { setupControls } from './controls.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const boardContainer = document.getElementById('board-container');
-  if (boardContainer) {
-    const board = createBoard('board-container');
-    setupControls(board);
-    setupRotateButton();
-  }
+  loadBoard();
 });
+
 async function loadBoard() {
   const container = document.getElementById('board-container');
 
@@ -22,14 +17,11 @@ async function loadBoard() {
     const html = await response.text();
     container.innerHTML = html;
 
-    // след зареждане можеш да активираш JS за дъската, ако има такъв
-    import('./board.js').then(module => {
-      module.initBoard(); // ако имаш такава функция
-    }).catch(console.error);
+    const board = createBoard('board-container');
+    setupControls(board);
+    setupRotateButton();
 
   } catch (err) {
     container.innerHTML = `<p style="color:red;">${err.message}</p>`;
   }
 }
-
-loadBoard();
