@@ -1,31 +1,33 @@
-/* chessboard-1.0.0.css */
-
-.board {
-  width: 400px;
-  height: 400px;
+/* Стилове за контейнера на дъската */
+.chessboard {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  border: 2px solid #333;
+  border: 2px solid #888;
 }
 
+/* Едно поле */
 .square {
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
+  position: relative;
 }
 
-.square.light {
+/* Цветове на квадратчетата */
+.white {
   background-color: #f0d9b5;
 }
-
-.square.dark {
+.black {
   background-color: #b58863;
 }
 
+/* Стилове за фигурите */
 .piece {
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
 }
