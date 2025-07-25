@@ -1,22 +1,41 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Veso's Frame</title>
+  <meta charset="UTF-8">
+  <title>PGN Viewer - Frame</title>
   <style>
-    html, body {
+    body {
       margin: 0;
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
       height: 100vh;
-      background: #111;
+    }
+    header {
+      background: #222;
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
     }
     iframe {
+      flex-grow: 1;
       width: 100%;
-      height: 100%;
       border: none;
+    }
+    footer {
+      background: #222;
+      padding: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <iframe src="frame/board.html" title="Chessboard"></iframe>
+  <header>🔘 Език | 🌗 Тема | ♟️ Бутон за зареждане</header>
+
+  <iframe src="board.html"></iframe>
+
+  <footer>📥 Запази партията | ⏪◀️▶️⏩</footer>
 </body>
 </html>
