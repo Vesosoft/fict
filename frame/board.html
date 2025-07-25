@@ -2,29 +2,46 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Шахматна дъска</title>
+  <title>Дъска</title>
   <link rel="stylesheet" href="../libs/chessboard-1.0.0.css">
   <style>
     body {
       margin: 0;
-      background: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #333;
+    }
+    #board {
+      width: 100%;
       height: 100vh;
     }
   </style>
 </head>
 <body>
-  <div id="board" style="width: 400px;"></div>
-  <script type="module">
-    import { Chessboard } from '../libs/chessboard-1.0.0.js';
-
-    const board = new Chessboard(document.getElementById('board'), {
+  <div id="board"></div>
+  <script src="../libs/chess.min.js"></script>
+  <script src="../libs/chessboard-1.0.0.js"></script>
+  <script>
+    const board = Chessboard('board', {
+      draggable: true,
       position: 'start',
-      pieceTheme: '../libs/img/chesspieces/wikipedia/{piece}.png',
-      orientation: 'white'
+      pieceTheme: '../imgs/{piece}.svg'
     });
+
+    window.addEventListener('message', (e) => {
+      const msg = e.data;
+      if (msg.type === 'move') {
+        board.move(msg.move);
+      } else if (msg.type === 'loadFen') {
+        board.position(msg.fen);
+      } else if (msg.type === 'reset') {
+        board.start();
+      }
+    });
+
+    window.boardAPI = {
+      move: (move) => board.move(move),
+      position: (fen) => board.position(fen),
+      reset: () => board.start()
+    };
   </script>
 </body>
 </html>
