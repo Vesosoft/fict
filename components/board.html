@@ -1,25 +1,42 @@
-<!-- components/board.html -->
-<div id="board-container" class="p-2">
-  <div id="board" class="mx-auto"></div>
-</div>
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <title>Шахматна дъска</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <style>
+    body {
+      background: #1c1c1c;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 1rem;
+    }
+    #board {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
 
-<script type="module">
-  import { Chess } from '../libs/chess.min.js';
-  import { Chessboard } from '../libs/chessboard-1.0.0.js';
+  <h1>Шахматна дъска</h1>
+  <div id="board"></div>
+  <button id="flip">Завърти дъската</button>
 
-  const boardElement = document.getElementById('board');
-  const board = Chessboard(boardElement, {
-    position: 'start',
-    sprite: {
-      url: '../libs/img/chesspieces/wikipedia/{piece}.png',
-      size: 40,
-      cache: false
-    },
-    coordinates: true,
-    responsive: true
-  });
+  <script src="libs/chess.js"></script>
+  <script src="libs/chessboard-1.0.0.js"></script>
+  <script>
+    const board = Chessboard('board', {
+      draggable: true,
+      position: 'start'
+    });
 
-  // За експортиране при нужда
-  window.board = board;
-          </script>
-
+    document.getElementById('flip').addEventListener('click', () => {
+      board.flip();
+    });
+  </script>
+</body>
+</html>
