@@ -1,4 +1,5 @@
-import { flipBoard } from '../js/board.js';
+// grotate.js
+  import { flipBoard } from '../js/board.js';
 
 export function setupRotateButton(buttonId) {
   const button = document.getElementById(buttonId);
