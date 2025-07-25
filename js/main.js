@@ -4,11 +4,7 @@ import { createBoard } from './board.js';
 import { setupRotateButton } from '../butons/rotate.js';
 import { setupControls } from './controls.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadBoard();
-});
-
-async function loadBoard() {
+document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('board-container');
 
   try {
@@ -17,11 +13,11 @@ async function loadBoard() {
     const html = await response.text();
     container.innerHTML = html;
 
-    const board = createBoard('board-container');
+    const board = createBoard('board'); // Важно: ID от board.html!
     setupControls(board);
     setupRotateButton();
 
   } catch (err) {
     container.innerHTML = `<p style="color:red;">${err.message}</p>`;
   }
-}
+});
