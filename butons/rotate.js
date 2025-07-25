@@ -1,20 +1,10 @@
-// grotate.js
-// js/rotate.js
+// butons/rotate.js
+export function setupRotate(board) {
+  const rotateBtn = document.getElementById('rotateBtn');
+  if (!rotateBtn) return;
 
-export function addRotateButton(board) {
-  const button = document.createElement('button');
-  button.textContent = '🔁 Завърти дъската';
-  button.id = 'rotateBtn';
-  button.style.margin = '10px';
-  button.style.padding = '6px 12px';
-  button.style.fontSize = '16px';
-
-  let orientation = 'white';
-
-  button.addEventListener('click', () => {
-    orientation = orientation === 'white' ? 'black' : 'white';
-    board.orientation(orientation);
+  rotateBtn.addEventListener('click', () => {
+    const currentOrientation = board.orientation();
+    board.orientation(currentOrientation === 'white' ? 'black' : 'white');
   });
-
-  document.getElementById('controls').appendChild(button);
 }
