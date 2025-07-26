@@ -2,11 +2,12 @@ export let board = null;
 
 export function createBoard() {
   board = Chessboard('board', {
-    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
     position: 'start',
     showNotation: true
   });
 }
+
 /*// js/board.js
 
 // Глобална променлива за дъската
