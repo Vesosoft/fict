@@ -1,11 +1,23 @@
-import { createBoard } from './board.js';
-import { setupButtons } from './buons.js';
+export function setupButtons(board) {
+  const flipButton = document.getElementById('flipButton');
+
+  if (flipButton) {
+    flipButton.addEventListener('click', () => {
+      board.flip();
+    });
+  } else {
+    console.warn("Flip button not found.");
+  }
+}
+
+/*import { createBoard } from './board.js';
+import { setupButtons } from './butons.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   createBoard();
   setupButtons();
 });
-
+*/
 /*import { createControlButtons } from './butons.js';
 
 const board = Chessboard('board', {
