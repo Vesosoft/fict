@@ -1,4 +1,4 @@
-import { createBoard } from './board.js'
+import { initBoard } from './board.js'
 import { initControls } from './controls.js'
 
 document.addEventListener('DOMContentLoaded', () => {
