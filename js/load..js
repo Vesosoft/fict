@@ -1,4 +1,16 @@
-import { game, updateBoard } from './board.js';
+import { createBoard } from './board.js';
+
+export function setupLoadButton(loadButtonId = 'loadBtn') {
+  const button = document.getElementById(loadButtonId);
+  if (!button) return;
+
+  button.addEventListener('click', () => {
+    createBoard(); // Създава дъската в контейнера с ID "board"
+    console.log('Шахматната дъска беше заредена.');
+  });
+}
+
+/*import { game, updateBoard } from './board.js';
 
 export function loadPGN() {
   const pgnText = document.getElementById('pgn-input')?.value?.trim();
@@ -17,3 +29,4 @@ export function loadPGN() {
 
   updateBoard();
 }
+*/
