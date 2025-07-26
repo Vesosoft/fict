@@ -1,4 +1,18 @@
-let board = null;
+
+import { Chessboard } from "../libs/chessboard-1.0.0.js";
+
+export let board = null;
+
+export function initBoard(containerId = "board") {
+  board = Chessboard(containerId, {
+    position: "start",
+    showNotation: true,
+    pieceTheme: "../libs/img/chesspieces/wikipedia/{piece}.png"
+  });
+}
+
+
+/*let board = null;
 
 export function createBoard() {
   const boardElement = document.getElementById('board');
@@ -21,7 +35,7 @@ export function getBoard() {
   return board;
 }
 
-
+*/
 
 /*export function createBoard() {
   const boardElement = document.getElementById('board');
