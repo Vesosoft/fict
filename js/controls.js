@@ -1,4 +1,12 @@
-// js/controls.js
+export function initControls(board) {
+  const flipBtn = document.getElementById('flip')
+  if (flipBtn) {
+    flipBtn.addEventListener('click', () => {
+      board.flip()
+    })
+  }
+}
+/*// js/controls.js
 
 export function setupControls(board) {
   const input = document.getElementById('pgnInput');
@@ -20,3 +28,4 @@ export function setupControls(board) {
     reader.readAsText(file);
   });
 }
+*/
