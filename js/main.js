@@ -1,4 +1,19 @@
-export function setupButtons(board) {
+// js/main.js
+let board = null;
+
+document.addEventListener("DOMContentLoaded", function () {
+  board = Chessboard('board', {
+    draggable: true,
+    position: 'start'
+  });
+
+  const flipBtn = document.getElementById('flipButton');
+  if (flipBtn) {
+    flipBtn.addEventListener('click', () => board.flip());
+  }
+});
+
+/*export function setupButtons(board) {
   const flipButton = document.getElementById('flipButton');
 
   if (flipButton) {
@@ -9,7 +24,7 @@ export function setupButtons(board) {
     console.warn("Flip button not found.");
   }
 }
-
+*/
 /*import { createBoard } from './board.js';
 import { setupButtons } from './butons.js';
 
