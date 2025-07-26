@@ -1,11 +1,8 @@
-import { initBoard } from './board.js'
-import { initFlipButton } from './flipButton.js'
+import { createBoard } from './board.js';
+import { setupFlipButton } from './flipButton.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const board = initBoard()
-  initFlipButton(board)
-})
-
+createBoard();
+setupFlipButton();
 /*// main.js
 import { createBoard } from './board.js';
 import { setupControls } from './controls.js';
