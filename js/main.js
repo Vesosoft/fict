@@ -1,4 +1,22 @@
-let board = null;
+import { setupLoadButton } from './js/load.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+  setupLoadButton();
+});
+
+/*	import { initBoard } from './board.js';
+import { loadPGN } from './load.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+  initBoard();
+
+  const loadBtn = document.getElementById('load-btn');
+  if (loadBtn) {
+    loadBtn.addEventListener('click', loadPGN);
+  }
+});
+*/
+/* let board = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   board = Chessboard('board', {
@@ -13,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     flipButton.addEventListener('click', () => board.flip());
   }
 });
-
+*/
 // js/main.js
 /*let board = null;
 
