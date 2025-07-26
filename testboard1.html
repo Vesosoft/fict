@@ -3,36 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <title>Veso PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
   <style>
     body {
-      background: #121212;
+      margin: 0;
+      background: #1e1e1e;
       color: #eee;
       font-family: sans-serif;
-      text-align: center;
     }
     #board {
-      width: 350px;
+      width: 100%;
+      max-width: 480px;
       margin: 20px auto;
     }
     #controls {
-      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
-    buton {
-      margin-top: 10px;
-      padding: 8px 12px;
+    button {
+      padding: 6px 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: #eee;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    #console {
+      background: #111;
+      color: #0f0;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      max-width: 480px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <h2>Veso Chessboard</h2>
-  <div id="board"></div>
+
   <div id="controls">
-    <button id="flipButton">Завърти дъската</button>
+    <button id="loadPGN">Зареди партията</button>
+    <button id="flipBoard">Завърти</button>
   </div>
 
+  <div id="board"></div>
+
+  <div id="console">Готово. Натисни "Зареди партията".</div>
+
+  <!-- Скриптове -->
   <script src="libs/chessboard-1.0.0.js"></script>
-  <script type="module" src="js/main.js"></script>
+  <script src="js/chessboard-1.0.0.js"></script>
+
+  <!-- Основни -->
+  <script src="js/board.js"></script>
+  <script src="js/flip.js"></script>
+  <script src="js/pgn-loader.js"></script>
+  <script src="js/controls.js"></script>
+  <script src="js/butons.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Бутони поотделно -->
+  <script src="butons/load.js"></script>
+  <script src="butons/flipBtn.js"></script>
+  <script src="butons/next.js"></script>
+  <script src="butons/prev.js"></script>
+  <script src="butons/save.js"></script>
+  <script src="butons/rotate.js"></script>
+  <script src="butons/clear.js"></script>
+  <script src="butons/auto.js"></script>
+
+  <!-- Компоненти -->
+  <script type="module" src="components/board.js"></script>
+
 </body>
 </html>
