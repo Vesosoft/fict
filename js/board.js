@@ -1,4 +1,13 @@
-// js/board.js
+let board = null
+
+export function initBoard() {
+  board = Chessboard('board', {
+    draggable: true,
+    position: 'start',
+  })
+  return board
+}
+/*// js/board.js
 
 // Глобална променлива за дъската
 let board = null;
@@ -21,4 +30,4 @@ pieceTheme: 'https://vesosoft.github.io/fict/libs/img/chesspieces/wikipedia/{pie
 // Връщане на текущата дъска (ако е нужно някъде другаде)
 export function getBoard() {
   return board;
-}
+} */
