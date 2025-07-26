@@ -1,4 +1,12 @@
-import { createControlButtons } from './butons.js';
+import { createBoard } from './board.js';
+import { setupButtons } from './buttons.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+  createBoard();
+  setupButtons();
+});
+
+/*import { createControlButtons } from './butons.js';
 
 const board = Chessboard('board', {
   draggable: true,
@@ -7,7 +15,7 @@ const board = Chessboard('board', {
 });
 
 createControlButtons(board);
-
+*/
 /* import { createBoard } from './board.js';
 import { setupFlipButton } from './js/Buttons.js';
 
