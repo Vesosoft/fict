@@ -1,5 +1,5 @@
 import { createBoard } from './board.js';
-import { setupButtons } from './buttons.js';
+import { setupButtons } from './buons.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   createBoard();
