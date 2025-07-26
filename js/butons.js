@@ -1,4 +1,16 @@
-export function createControlButtons(board) {
+export function setupButtons() {
+  document.getElementById('flipButton')?.addEventListener('click', () => {
+    if (window.chessboard) {
+      window.chessboard.flip();
+    } else {
+      console.warn("Board not initialized");
+    }
+  });
+
+  // Добави и други бутони по същия начин
+}
+
+/*export function createControlButtons(board) {
   const container = document.getElementById('controls');
 
   const flipBtn = document.createElement('button');
@@ -6,7 +18,7 @@ export function createControlButtons(board) {
   flipBtn.onclick = () => board.flip();
   container.appendChild(flipBtn);
 }
-
+*/
 /*import { setupAuto } from '../butons/auto.js';
 import { setupClear } from '../butons/clear.js';
 import { setupLoad } from '../butons/load.js';
