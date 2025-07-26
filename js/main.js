@@ -1,5 +1,5 @@
 import { createBoard } from './board.js';
-import { setupFlipButton } from './flipButton.js';
+import { setupFlipButton } from './js/Buttons.js';
 
 createBoard();
 setupFlipButton();
