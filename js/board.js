@@ -1,4 +1,29 @@
+let board = null;
+
 export function createBoard() {
+  const boardElement = document.getElementById('board');
+  if (!boardElement) {
+    console.error("Няма елемент с ID 'board'");
+    return;
+  }
+
+  board = Chessboard(boardElement, {
+    draggable: true,
+    position: 'start',
+    showNotation: true,
+    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'
+  });
+
+  window.chessboard = board;
+}
+
+export function getBoard() {
+  return board;
+}
+
+
+
+/*export function createBoard() {
   const boardElement = document.getElementById('board');
   if (!boardElement) {
     console.error("Board container not found!");
@@ -14,7 +39,7 @@ export function createBoard() {
 
   window.chessboard = board;
 }
-
+*/
 /*export let board = null;
 
 export function createBoard() {
