@@ -24,3 +24,4 @@ export function initButtons(game, board) {
   setupSave(game, board);
   setupFlip(board); // 🔥 Добавено това
 }
+*/
