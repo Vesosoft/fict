@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     position: 'start'
   });
 
-  const flipBtn = document.getElementById('flipButton');
-  if (flipBtn) {
-    flipBtn.addEventListener('click', () => board.flip());
+  const flipButton = document.getElementById('flipButton');
+  if (flipButton) {
+    flipButton.addEventListener('click', () => board.flip());
   }
 });
 
