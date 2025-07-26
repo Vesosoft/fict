@@ -1,4 +1,21 @@
-export let board = null;
+export function createBoard() {
+  const boardElement = document.getElementById('board');
+  if (!boardElement) {
+    console.error("Board container not found!");
+    return;
+  }
+
+  const board = Chessboard(boardElement, {
+    position: 'start',
+    draggable: true,
+    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
+    showNotation: true
+  });
+
+  window.chessboard = board;
+}
+
+/*export let board = null;
 
 export function createBoard() {
   board = Chessboard('board', {
@@ -8,8 +25,8 @@ export function createBoard() {
   });
 }
 
-/*// js/board.js
-
+/ js/board.js
+"/
 // Глобална променлива за дъската
 let board = null;
 
