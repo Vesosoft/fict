@@ -1,4 +1,13 @@
-import { setupAuto } from '../butons/auto.js';
+export function createControlButtons(board) {
+  const container = document.getElementById('controls');
+
+  const flipBtn = document.createElement('button');
+  flipBtn.textContent = 'Завърти дъската';
+  flipBtn.onclick = () => board.flip();
+  container.appendChild(flipBtn);
+}
+
+/*import { setupAuto } from '../butons/auto.js';
 import { setupClear } from '../butons/clear.js';
 import { setupLoad } from '../butons/load.js';
 import { setupNext } from '../butons/next.js';
