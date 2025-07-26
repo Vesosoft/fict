@@ -1,9 +1,8 @@
-// butons/flipButton.js
-export function setupRotateButton(board) {
-  const btn = document.getElementById('flipBtn');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      board.flip();
-    });
+export function initFlipButton(board) {
+  const flipBtn = document.getElementById('flip')
+  if (flipBtn) {
+    flipBtn.addEventListener('click', () => {
+      board.flip()
+    })
   }
 }
