@@ -1,11 +1,11 @@
-let board = null
+export let board = null;
 
-export function initBoard() {
+export function createBoard() {
   board = Chessboard('board', {
-    draggable: true,
+    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
     position: 'start',
-  })
-  return board
+    showNotation: true
+  });
 }
 /*// js/board.js
 
