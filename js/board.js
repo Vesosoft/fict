@@ -10,7 +10,8 @@ export function createBoard(elementId) {
   board = Chessboard(elementId, {
     draggable: true,
     position: 'start',
-    pieceTheme: 'images/chesspieces/wikipedia/{piece}.png',
+    // pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
+pieceTheme: 'https://vesosoft.github.io/fict/libs/img/chesspieces/wikipedia/{piece}.png',
     showNotation: true,
   });
 
