@@ -1,5 +1,21 @@
-// js/main.js
 let board = null;
+
+document.addEventListener("DOMContentLoaded", function () {
+  board = Chessboard('board', {
+    draggable: true,
+    position: 'start',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
+    showNotation: true
+  });
+
+  const flipButton = document.getElementById('flipButton');
+  if (flipButton) {
+    flipButton.addEventListener('click', () => board.flip());
+  }
+});
+
+// js/main.js
+/*let board = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   board = Chessboard('board', {
@@ -12,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     flipButton.addEventListener('click', () => board.flip());
   }
 });
-
+*/
 /*export function setupButtons(board) {
   const flipButton = document.getElementById('flipButton');
 
