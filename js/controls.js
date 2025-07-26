@@ -1,7 +1,7 @@
 export function initControls(board) {
-  const flipBtn = document.getElementById('flip')
-  if (flipBtn) {
-    flipBtn.addEventListener('click', () => {
+  const flipButton = document.getElementById('flip')
+  if (flipButton) {
+    flipButton.addEventListener('click', () => {
       board.flip()
     })
   }
