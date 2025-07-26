@@ -1,4 +1,16 @@
-export function setupButtons() {
+export function setupButtons(board) {
+  const flipButton = document.getElementById('flipButton');
+
+  if (flipButton) {
+    flipButton.addEventListener('click', () => {
+      board.flip();
+    });
+  } else {
+    console.warn("Flip button not found.");
+  }
+}
+
+/*export function setupButtons() {
   document.getElementById('flipButton')?.addEventListener('click', () => {
     if (window.chessboard) {
       window.chessboard.flip();
@@ -9,7 +21,7 @@ export function setupButtons() {
 
   // Добави и други бутони по същия начин
 }
-
+*/
 /*export function createControlButtons(board) {
   const container = document.getElementById('controls');
 
