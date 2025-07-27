@@ -1,5 +1,19 @@
+// js/board.js
+
+import { Chessboard } from "../libs/chessboard-1.0.0.js";
+
+export let board = null;
+
+export function createBoard(containerId = "board") {
+  board = Chessboard(containerId, {
+    position: "start",
+    showNotation: true,
+    pieceTheme: "libs/img/chesspieces/wikipedia/{piece}.png"
+  });
+}
+
 // Създаване на празна шахматна дъска с координати и SVG фигури
-export function createBoard(containerId = 'board') {
+/*export function createBoard(containerId = 'board') {
   const container = document.getElementById(containerId);
   container.innerHTML = ''; // Изчистване
 
@@ -39,14 +53,14 @@ import { Chessboard } from "../libs/chessboard-1.0.0.js";
 
 export let board = null;
 
-export function initBoard(containerId = "board") {
+export function createBoard(containerId = "board") {
   board = Chessboard(containerId, {
     position: "start",
     showNotation: true,
     pieceTheme: "../libs/img/chesspieces/wikipedia/{piece}.png"
   });
 }
-
+*/
 /*
 /*let board = null;
 
