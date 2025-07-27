@@ -4,6 +4,23 @@ import { Chessboard } from '../libs/chessboard-1.0.0.js';
 export function createBoard() {
   const boardElement = document.getElementById('board');
   if (!boardElement) {
+    console.error('❌ Дъската не е намерена.');
+    return;
+  }
+
+  const board = Chessboard(boardElement, {
+    position: 'start',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+  });
+
+  console.log('✅ Дъска създадена успешно.');
+}
+
+/*import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
+export function createBoard() {
+  const boardElement = document.getElementById('board');
+  if (!boardElement) {
     console.error('Дъската не е намерена.');
     return;
   }
@@ -13,7 +30,7 @@ export function createBoard() {
     pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
   });
 }
-
+*/
 
 /**import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
