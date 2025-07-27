@@ -4,6 +4,22 @@ import { Chessboard } from '../libs/chessboard-1.0.0.js';
 export function createBoard() {
   const boardElement = document.getElementById('board');
   if (!boardElement) {
+    console.error('Дъската не е намерена.');
+    return;
+  }
+
+  const board = Chessboard(boardElement, {
+    position: 'start',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+  });
+}
+
+
+/**import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
+export function createBoard() {
+  const boardElement = document.getElementById('board');
+  if (!boardElement) {
     console.error('Дъската не е намерена в HTML. Увери се, че има <div id="board"></div>');
     return;
   }
@@ -15,7 +31,7 @@ export function createBoard() {
 
   return board;
 }
-
+*/
 /*import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
 const boardElement = document.getElementById('board');
