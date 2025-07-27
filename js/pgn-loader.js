@@ -1,4 +1,4 @@
-import { Chess } from '../libs/chess.min.js';
+import { Chess } from '../libs/chess.js';
 
 export function loadPGNFromFile(board) {
   const input = document.getElementById('pgnInput');
