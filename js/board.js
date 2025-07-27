@@ -1,6 +1,23 @@
 // js/board.js
 import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
+export function createBoard() {
+  const boardElement = document.getElementById('board');
+  if (!boardElement) {
+    console.error('Дъската не е намерена в HTML. Увери се, че има <div id="board"></div>');
+    return;
+  }
+
+  const board = Chessboard(boardElement, {
+    position: 'start',
+    pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+  });
+
+  return board;
+}
+
+/*import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
 const boardElement = document.getElementById('board');
 
 const board = Chessboard(boardElement, {
@@ -8,7 +25,7 @@ const board = Chessboard(boardElement, {
   pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
   coordinates: true
 });
-
+*/
 /*import { Chessboard } from '../libs/chessboard-1.0.0.js';
 
 const boardElement = document.getElementById('board');
