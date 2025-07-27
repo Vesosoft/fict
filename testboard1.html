@@ -2,28 +2,29 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Минимална дъска</title>
+  <title>Дъска без екстри</title>
   <link rel="stylesheet" href="libs/chessboard-1.0.0.css">
   <style>
     body {
       background: #111;
-      color: #fff;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-    }
-    #board {
-      width: 400px;
     }
   </style>
 </head>
 <body>
-  <div id="board"></div>
+  <div id="board" style="width: 400px;"></div>
 
-  <script src="libs/chess.min.js"></script>
   <script src="libs/chessboard-1.0.0.js"></script>
-  <script type="module" src="js/board.js"></script>
+  <script>
+    const board = Chessboard('board', {
+      pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
+      position: 'start'
+    });
+  </script>
 </body>
 </html>
