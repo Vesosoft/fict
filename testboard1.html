@@ -2,29 +2,26 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Дъска без екстри</title>
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="libs/chessboard-1.0.0.css">
   <style>
     body {
-      background: #111;
-      margin: 0;
-      padding: 0;
+      background: #1e1e1e;
+      color: #eee;
+      font-family: sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 2rem;
+    }
+    #board {
+      width: 400px;
     }
   </style>
 </head>
 <body>
-  <div id="board" style="width: 400px;"></div>
+  <div id="board"></div>
 
-  <script src="libs/chessboard-1.0.0.js"></script>
-  <script>
-    const board = Chessboard('board', {
-      pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
-      position: 'start'
-    });
-  </script>
+  <script type="module" src="js/board.js"></script>
 </body>
 </html>
