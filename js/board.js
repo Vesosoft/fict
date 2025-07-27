@@ -1,9 +1,15 @@
 // js/board.js
 const board = Chessboard('board', {
+  position: 'start',
+  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
+  showNotation: true
+});
+
+/*const board = Chessboard('board', {
   draggable: true,
   position: 'start'
 });
-
+*/
 /*export function createBoard() {
   const boardContainer = document.getElementById('board');
 
