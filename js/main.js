@@ -1,4 +1,4 @@
-import { setupLoadButton } from './js/load.js';
+import { setupLoadButton } from './load.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   setupLoadButton();
