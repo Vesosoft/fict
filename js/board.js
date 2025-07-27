@@ -1,5 +1,10 @@
 // js/board.js
-export function createBoard() {
+const board = Chessboard('board', {
+  draggable: true,
+  position: 'start'
+});
+
+/*export function createBoard() {
   const boardContainer = document.getElementById('board');
 
   if (!boardContainer) {
@@ -20,7 +25,7 @@ export function createBoard() {
   console.log('♟️ Дъската е създадена');
 }
 
-
+*/
 /*
 import { Chessboard } from "../libs/chessboard-1.0.0.js";
 
