@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="libs/chessboard-1.0.0.css">
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    #board {
+      width: 400px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Зареди партия</h1>
+  <div id="board"></div>
+
+  <script type="module">
+    import { createBoard } from './js/board.js';
+    createBoard();
+  </script>
+</body>
+</html>
