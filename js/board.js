@@ -1,5 +1,27 @@
 // js/board.js
+export function createBoard() {
+  const boardContainer = document.getElementById('board');
 
+  if (!boardContainer) {
+    console.error("❌ Няма елемент с id='board'");
+    return;
+  }
+
+  // Изчисти съдържанието, ако вече има дъска
+  boardContainer.innerHTML = '';
+
+  const config = {
+    draggable: true,
+    position: 'start'
+  };
+
+  // Създай нова дъска и я вържи към контейнера
+  const board = Chessboard('board', config);
+  console.log('♟️ Дъската е създадена');
+}
+
+
+/*
 import { Chessboard } from "../libs/chessboard-1.0.0.js";
 
 export let board = null;
@@ -11,7 +33,7 @@ export function createBoard(containerId = "board") {
     pieceTheme: "libs/img/chesspieces/wikipedia/{piece}.png"
   });
 }
-
+*/
 // Създаване на празна шахматна дъска с координати и SVG фигури
 /*export function createBoard(containerId = 'board') {
   const container = document.getElementById(containerId);
