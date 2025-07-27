@@ -1,14 +1,14 @@
 // js/flipButton.js
 export function createFlipButton(board) {
-  const button = document.createElement('button');
-  button.textContent = '⟳';
-  button.title = 'Завърти дъската';
-  button.id = 'flipButton';
-  button.className = 'control-button';
+  const buton = document.createElement('buton');
+  buton.textContent = '⟳';
+  buton.title = 'Завърти дъската';
+  buton.id = 'flipButton';
+  buton.className = 'control-button';
 
-  button.addEventListener('click', () => {
+  buton.addEventListener('click', () => {
     board.flip();
   });
 
-  return button;
+  return buton;
 }
