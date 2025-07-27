@@ -78,7 +78,7 @@ const board = Chessboard('board', {
 createControlButtons(board);
 */
 /* import { createBoard } from './board.js';
-import { setupFlipButton } from './js/Buttons.js';
+import { setupFlipButton } from './js/butons.js';
 
 createBoard();
 setupFlipButton();
