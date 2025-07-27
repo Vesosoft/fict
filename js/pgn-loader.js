@@ -1,61 +1,57 @@
-import { Chess } from '../libs/chess.js';
+let interval = null;
+let isPlaying = false;
 
-export function loadPGNFromFile(board) {
-  const input = document.getElementById('pgnInput');
-  input.addEventListener('change', () => {
-    const file = input.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const pgn = e.target.result;
-      const game = new Chess();
-
-      if (!game.load_pgn(pgn)) {
-        alert('Невалиден PGN файл.');
-        return;
-      }
-
-      const history = game.history();
-      let moveIndex = 0;
-
-      // Покажи началната позиция
+// Свържи бутоните, ако ги има
+if (nextBtn && prevBtn) {
+  nextBtn.onclick = () => {
+    if (moveIndex < history.length) {
+      game.move(history[moveIndex]);
       board.position(game.fen());
+      moveIndex++;
+    }
+  };
 
-      // Навигирай с бутоните (ако имаш бутони)
-      const nextBtn = document.getElementById('nextBtn');
-      const prevBtn = document.getElementById('prevBtn');
+  prevBtn.onclick = () => {
+    if (moveIndex > 0) {
+      moveIndex--;
+      game.undo();
+      board.position(game.fen());
+    }
+  };
 
-      if (nextBtn && prevBtn) {
-        nextBtn.onclick = () => {
-          if (moveIndex < history.length) {
-            game.move(history[moveIndex]);
-            board.position(game.fen());
-            moveIndex++;
-          }
-        };
-
-        prevBtn.onclick = () => {
-          if (moveIndex > 0) {
-            moveIndex--;
-            game.undo();
-            board.position(game.fen());
-          }
-        };
-      } else {
-        // Ако няма бутони – просто пусни автоматично
-        const interval = setInterval(() => {
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  if (playPauseBtn) {
+    playPauseBtn.onclick = () => {
+      if (!isPlaying) {
+        playPauseBtn.textContent = '⏸️';
+        isPlaying = true;
+        interval = setInterval(() => {
           if (moveIndex >= history.length) {
             clearInterval(interval);
+            isPlaying = false;
+            playPauseBtn.textContent = '▶️';
             return;
           }
           game.move(history[moveIndex]);
           board.position(game.fen());
           moveIndex++;
         }, 1000);
+      } else {
+        clearInterval(interval);
+        isPlaying = false;
+        playPauseBtn.textContent = '▶️';
       }
     };
-
-    reader.readAsText(file);
-  });
+  }
+} else {
+  // Без бутони – автоматично проиграване
+  interval = setInterval(() => {
+    if (moveIndex >= history.length) {
+      clearInterval(interval);
+      return;
+    }
+    game.move(history[moveIndex]);
+    board.position(game.fen());
+    moveIndex++;
+  }, 1000);
 }
