@@ -35,7 +35,7 @@ export function createBoard(containerId = 'board') {
     container.appendChild(label);
   }
 }
-/*import { Chessboard } from "../libs/chessboard-1.0.0.js";
+import { Chessboard } from "../libs/chessboard-1.0.0.js";
 
 export let board = null;
 
@@ -47,7 +47,7 @@ export function initBoard(containerId = "board") {
   });
 }
 
-*/
+/*
 /*let board = null;
 
 export function createBoard() {
