@@ -5,9 +5,19 @@ const boardElement = document.getElementById('board');
 
 const board = Chessboard(boardElement, {
   position: 'start',
-  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+  pieceTheme: 'img/chesspieces/wikipedia/{piece}.png',
+  coordinates: true
 });
 
+/*import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
+const boardElement = document.getElementById('board');
+
+const board = Chessboard(boardElement, {
+  position: 'start',
+  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+});
+*/
 /*const board = Chessboard('board', {
   position: 'start',
   pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
