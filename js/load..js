@@ -1,3 +1,4 @@
+//load.js
 import { createBoard } from './board.js';
 
 export function setupLoadButton(loadButtonId = 'loadBtn') {
