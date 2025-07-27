@@ -1,10 +1,19 @@
 // js/board.js
-const board = Chessboard('board', {
+import { Chessboard } from '../libs/chessboard-1.0.0.js';
+
+const boardElement = document.getElementById('board');
+
+const board = Chessboard(boardElement, {
+  position: 'start',
+  pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png'
+});
+
+/*const board = Chessboard('board', {
   position: 'start',
   pieceTheme: 'libs/img/chesspieces/wikipedia/{piece}.png',
   showNotation: true
 });
-
+*/
 /*const board = Chessboard('board', {
   draggable: true,
   position: 'start'
