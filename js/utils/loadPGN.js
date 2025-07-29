@@ -1,15 +1,18 @@
 // js/utils/loadPGN.js
 export function loadPGN(pgnText) {
+  const status = document.getElementById("status");
+
   try {
     window.game = new Chess();
     const success = window.game.load_pgn(pgnText);
 
     if (!success) {
-      alert("Грешка при зареждане на PGN.");
+      status.textContent = "❌ Грешка при зареждане на PGN.";
+      status.style.color = "red";
       return;
     }
 
-    const board = window.board || Chessboard('board', {
+    const board = window.board || Chessboard("board", {
       position: window.game.fen(),
       draggable: true
     });
@@ -17,15 +20,11 @@ export function loadPGN(pgnText) {
     board.position(window.game.fen());
     window.board = board;
 
-    const history = window.game.history();
-    const msg = `Партията е заредена успешно! Общо ходове: ${history.length}`;
-    alert(msg);
-
-    const statusEl = document.getElementById("status");
-    if (statusEl) statusEl.textContent = msg;
-
+    status.textContent = "✅ Партията е заредена успешно!";
+    status.style.color = "lime";
   } catch (e) {
-    alert("Грешка при обработка на партията.");
+    status.textContent = "⚠️ Грешка при обработка на партията.";
+    status.style.color = "orange";
     console.error(e);
   }
 }
