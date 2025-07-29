@@ -1,8 +1,53 @@
-<html>
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <title>Тест зареждане на партия</title>
+  <link rel="stylesheet" href="../libs/chessboard-1.0.0.css" />
+  <style>
+    #board {
+      width: 400px;
+      margin: 20px auto;
+    }
+    #status {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
 <body>
 
-<button id="load-btn">Зареди партията</button>
-<input type="file" id="pgn-file" accept=".pgn" style="display: none" />
+  <button id="load-btn">Зареди партията</button>
+  <input type="file" id="pgn-file" accept=".pgn" style="display: none" />
 
+  <div id="board"></div>
+  <div id="status">Готово за зареждане на партията</div>
+
+  <script type="module">
+    import { Chess } from "../libs/chess.min.js";
+    import { Chessboard } from "../libs/chessboard-1.0.0.js";
+
+    window.Chess = Chess;
+    window.Chessboard = Chessboard;
+
+    import { loadPGN } from "../js/utils/loadPGN.js";
+
+    document.getElementById("load-btn").addEventListener("click", () => {
+      document.getElementById("pgn-file").click();
+    });
+
+    document.getElementById("pgn-file").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const pgnText = e.target.result;
+        loadPGN(pgnText);
+      };
+      reader.readAsText(file);
+    });
+  </script>
 </body>
 </html>
