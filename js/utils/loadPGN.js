@@ -16,6 +16,14 @@ export function loadPGN(pgnText) {
 
     board.position(window.game.fen());
     window.board = board;
+
+    const history = window.game.history();
+    const msg = `Партията е заредена успешно! Общо ходове: ${history.length}`;
+    alert(msg);
+
+    const statusEl = document.getElementById("status");
+    if (statusEl) statusEl.textContent = msg;
+
   } catch (e) {
     alert("Грешка при обработка на партията.");
     console.error(e);
