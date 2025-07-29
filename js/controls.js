@@ -31,6 +31,28 @@ Re8 13. Nf1 Bf8 14. Ng3 g6 15. a4 Bg7 16. d5 Nc5 17. b4 Ncd7
   game.load_pgn(pgn);
   board.position(game.fen());
 });
+
+import { loadPGN } from './utils/loadPGN.js';
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // Зарежда HTML бутоните от butons/
+  const controlsContainer = document.getElementById("controls");
+  const response = await fetch('butons/load.html');
+  controlsContainer.innerHTML += await response.text();
+
+  const loadBtn = document.getElementById('load-btn');
+  const fileInput = document.getElementById('pgn-file');
+
+  loadBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const text = await file.text();
+    loadPGN(text);
+  });
+});
 /*// js/controls.js
 
 export function setupControls(board) {
