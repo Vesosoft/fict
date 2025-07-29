@@ -2,73 +2,44 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Тест: Фигурите се виждат ли?</title>
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      background: #222;
-      color: #fff;
+      margin: 0;
+      background-color: #111;
+      color: #eee;
       font-family: sans-serif;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      height: 100vh;
     }
-    #board {
-      display: grid;
-      grid-template-columns: repeat(8, 60px);
-      grid-template-rows: repeat(8, 60px);
-      border: 2px solid #555;
-      margin-top: 20px;
+
+    header {
+      padding: 1em;
+      text-align: center;
+      background-color: #222;
+      font-size: 1.2em;
     }
-    .square {
-      width: 60px;
-      height: 60px;
-      box-sizing: border-box;
-      position: relative;
-    }
-    .white { background-color: #eee; }
-    .black { background-color: #555; }
-    .square img {
+
+    iframe {
+      flex: 1;
+      border: none;
       width: 100%;
-      height: 100%;
+    }
+
+    footer {
+      background-color: #222;
+      padding: 0.5em;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h2>Тест: Показват ли се PNG фигурите?</h2>
-  <div id="board"></div>
+  <header>Шахматна дъска на Вес</header>
 
-  <script>
-    const piecePlacement = [
-      ['bR','bN','bB','bQ','bK','bB','bN','bR'],
-      ['bP','bP','bP','bP','bP','bP','bP','bP'],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['','','','','','','',''],
-      ['wP','wP','wP','wP','wP','wP','wP','wP'],
-      ['wR','wN','wB','wQ','wK','wB','wN','wR']
-    ];
+  <iframe src="components/board.html"></iframe>
 
-    const board = document.getElementById('board');
-    const basePath = 'libs/img/chesspieces/wikipedia/';
-
-    for (let row = 0; row < 8; row++) {
-      for (let col = 0; col < 8; col++) {
-        const square = document.createElement('div');
-        square.classList.add('square');
-        square.classList.add((row + col) % 2 === 0 ? 'white' : 'black');
-
-        const piece = piecePlacement[row][col];
-        if (piece) {
-          const img = document.createElement('img');
-          img.src = `${basePath}${piece}.png`;
-          img.alt = piece;
-          square.appendChild(img);
-        }
-
-        board.appendChild(square);
-      }
-    }
-  </script>
+  <footer>© 2025 VesoSoft</footer>
 </body>
-</html>  
+</html>
