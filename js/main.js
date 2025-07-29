@@ -1,4 +1,18 @@
-import { setupLoadButton } from './load.js';
+
+// main.js
+
+import { setupLoadButton } from './js/load.js';
+import loadHTML from './js/utils/loadHTML.js';
+
+window.addEventListener('DOMContentLoaded', async () => {
+  // Зарежда HTML шаблоните
+  await loadHTML('components/board.html', 'board-wrapper');
+  await loadHTML('components/controls.html', 'buttons-wrapper');
+
+  // След като HTML е зареден, инициализира бутона
+  setupLoadButton();
+});
+/*import { setupLoadButton } from './load.js';
 import loadHTML from './js/utils/loadHTML.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -6,7 +20,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   await loadHTML('components/controls.html', 'buttons-wrapper');
   setupLoadButton();
 });
-
+*/
 /*import { setupLoadButton } from './load.js';
 
 window.addEventListener('DOMContentLoaded', () => {
