@@ -1,4 +1,13 @@
 import { setupLoadButton } from './load.js';
+import loadHTML from './js/utils/loadHTML.js';
+
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadHTML('components/board.html', 'board-wrapper');
+  await loadHTML('components/controls.html', 'buttons-wrapper');
+  setupLoadButton();
+});
+
+/*import { setupLoadButton } from './load.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   setupLoadButton();
@@ -6,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 import loadHTML from './js/utils/loadHTML.js';
 
 await loadHTML('components/board.html', 'board-wrapper');
-await loadHTML('components/controls.html', 'buttons-wrapper');
+await loadHTML('components/controls.html', 'buttons-wrapper'); */
 /*	import { initBoard } from './board.js';
 import { loadPGN } from './load.js';
 
