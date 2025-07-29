@@ -1,41 +1,29 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Шахматна дъска</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.css" />
+  <link rel="stylesheet" href="../libs/chessboard-1.0.0.css" />
   <style>
     body {
-      background: #1c1c1c;
-      color: #eee;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 1rem;
-    }
-    #board {
-      width: 100%;
-      max-width: 400px;
-      margin: auto;
+      margin: 0;
+      background: #1e1e1e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
+  <div id="board" style="width: 100%; max-width: 90vmin;"></div>
 
-  <h1>Шахматна дъска</h1>
-  <div id="board"></div>
-  <button id="flip">Завърти дъската</button>
-
-  <script src="libs/chess.js"></script>
-  <script src="libs/chessboard-1.0.0.js"></script>
+  <script src="../libs/chess.min.js"></script>
+  <script src="../libs/chessboard-1.0.0.js"></script>
   <script>
     const board = Chessboard('board', {
-      draggable: true,
-      position: 'start'
-    });
-
-    document.getElementById('flip').addEventListener('click', () => {
-      board.flip();
+      position: 'start',
+      draggable: true
     });
   </script>
 </body>
