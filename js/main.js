@@ -1,7 +1,25 @@
+// main
+import loadHTML from './js/utils/loadHTML.js';
 
-// main.js
+async function initialize() {
+  await loadHTML('components/board.html', 'board-wrapper');
+  await loadHTML('components/controls.html', 'buttons-wrapper');
 
-import { setupLoadButton } from './js/load.js';
+  // След зареждането, инициализираме дъската
+  const boardDiv = document.getElementById('board');
+  if (boardDiv && window.Chessboard) {
+    const board = Chessboard(boardDiv, {
+      draggable: true,
+      position: 'start'
+    });
+    window.board = board; // За достъп отвън
+  } else {
+    console.error('Не е намерен елемент с ID "board" или липсва Chessboard.');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', initialize);
+/*import { setupLoadButton } from './js/load.js';
 import loadHTML from './js/utils/loadHTML.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -12,6 +30,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   // След като HTML е зареден, инициализира бутона
   setupLoadButton();
 });
+*/
+
 /*import { setupLoadButton } from './load.js';
 import loadHTML from './js/utils/loadHTML.js';
 
