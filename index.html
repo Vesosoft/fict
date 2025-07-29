@@ -3,55 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Veso PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      margin: 0;
-      background-color: #111;
+      background-color: #121212;
       color: #eee;
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    header {
       padding: 1em;
-      text-align: center;
-      background-color: #222;
-      font-size: 1.2em;
     }
-
-    iframe {
-      flex: 1;
-      border: none;
-      width: 100%;
+    #board-wrapper, #buttons-wrapper {
+      margin-bottom: 1em;
     }
-
-    footer {
-      background-color: #222;
-      padding: 0.5em;
-      text-align: center;
-    }
-
-
-  /* <!-- #status {
-  transition: opacity 1.5s ease;
-}
-
-#status.fade-out {
-  opacity: 0;
-} --> */
   </style>
 </head>
 <body>
-  <header>Шахматна дъска на Вес</header>
+  <h1>Veso PGN Viewer</h1>
+  <div id="board-wrapper"></div>
+  <div id="buttons-wrapper"></div>
 
-  <iframe src="components/board.html"></iframe>
-  <div id="controls" class="controls">
-  <button id="loadPGN">Зареди партията</button>
-  </div>
-
-  <footer>© 2025 VesoSoft</footer>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
