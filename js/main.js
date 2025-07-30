@@ -1,6 +1,6 @@
 // main
 // js/main.js
-import loadHTML from 'js/utils/loadHTML.js';
+import loadHTML from '../js/utils/loadHTML.js';
 
 async function initialize() {
   // Зареждане на HTML компонентите
