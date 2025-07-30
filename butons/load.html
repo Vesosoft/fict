@@ -2,52 +2,41 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>Тест зареждане на партия</title>
-  <link rel="stylesheet" href="../libs/chessboard-1.0.0.css" />
+  <title>Зареди партията</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/style.css" />
   <style>
-    #board {
-      width: 400px;
-      margin: 20px auto;
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 1em;
     }
-    #status {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 10px;
+
+    button {
+      background: #1f1f1f;
+      color: #eee;
+      border: 1px solid #444;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      font-size: 1em;
+      border-radius: 6px;
+    }
+
+    #board-wrapper, #buttons-wrapper {
+      margin-bottom: 1em;
     }
   </style>
 </head>
 <body>
+  <h1>Veso PGN Viewer</h1>
 
-  <button id="load-btn">Зареди партията</button>
-  <input type="file" id="pgn-file" accept=".pgn" style="display: none" />
+  <div id="board-wrapper"></div>
 
-  <!--<div id="board"></div> -->
-  <div id="status">Готово за зареждане на партията</div>
+  <div id="buttons-wrapper">
+    <button id="load-button">Зареди партията</button>
+  </div>
 
-  <script type="module">
-    import { Chess } from "../libs/chess.min.js";
-    import { Chessboard } from "../libs/chessboard-1.0.0.js";
-
-    window.Chess = Chess;
-    window.Chessboard = Chessboard;
-
-    import { loadPGN } from "../js/utils/loadPGN.js";
-
-    document.getElementById("load-btn").addEventListener("click", () => {
-      document.getElementById("pgn-file").click();
-    });
-
-    document.getElementById("pgn-file").addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const pgnText = e.target.result;
-        loadPGN(pgnText);
-      };
-      reader.readAsText(file);
-    });
-  </script>
+  <script type="module" src="../js/main.js"></script>
 </body>
 </html>
