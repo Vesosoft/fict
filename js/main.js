@@ -1,11 +1,14 @@
 // main
 // js/main.js
 import loadHTML from '../js/utils/loadHTML.js';
+//import { loadHTML } from '../js/utils/loadHTML.js'
+//import { loadPGN } from '../js/utils/loadPGN.js'
+
 
 async function initialize() {
   // Зареждане на HTML компонентите
   await loadHTML('components/board.html', 'board-wrapper');
-  await loadHTML('components/controls.html', 'buttons-wrapper');
+ // await loadHTML('components/controls.html', 'buttons-wrapper');
 
   // Инициализация на шахматната дъска
   const boardDiv = document.getElementById('board');
