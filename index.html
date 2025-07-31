@@ -2,15 +2,14 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>PGN Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veso PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-  <main>
-    <iframe id="pgn-frame" src="iframe.html" width="100%" height="600" style="border:none;"></iframe>
-  </main>
+  <h1>Моята шахматна дъска</h1>
 
-  <!-- ЗАДЪЛЖИТЕЛНО -->
-  <script type="module" src="js/main.js"></script>
+  <iframe id="viewer-frame" src="pgn-viewer/index.html" width="100%" height="600" style="border:1px solid #888;"></iframe>
+
+  <script type="module" src="main.js"></script>
 </body>
 </html>
