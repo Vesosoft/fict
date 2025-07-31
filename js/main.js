@@ -1,8 +1,10 @@
-// main
 // js/main.js
+import { board } from './components/board.js';
+import { loadHTML } from './utils/loadHTML.js';
+import { pgnToLastFen } from './utils/pgnTools.js'; // ще ти го дам след секунда
 
 // Вариант с async/await:
-export default async function loadHTML(url, selector) {
+loadHTML(url, selector) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
