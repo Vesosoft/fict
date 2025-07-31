@@ -63,4 +63,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-      
+export async function loadHTML(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Грешка при зареждане на ${url}: ${response.statusText}`);
+  }
+  return await response.text();
+}      
