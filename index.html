@@ -2,35 +2,15 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Veso PGN Viewer</title>
-  <!-- Стилове за шахматната дъска -->
-  <link rel="stylesheet" href="libs/chessboard-0.3.0.min.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #fff;
-    }
-    #loadPGN-container {
-      margin-top: 20px;
-    }
-  </style>
+  <title>PGN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
+  <main>
+    <iframe id="pgn-frame" src="iframe.html" width="100%" height="600" style="border:none;"></iframe>
+  </main>
 
-  <!-- Контейнер за дъската -->
-  <div id="board-wrapper"></div>
-
-  <!-- Контейнер за зареждане на PGN -->
-  <div id="loadPGN-container"></div>
-
-  <!-- Включване на Chessboard.js и Chess.js -->
-  <script src="libs/chessboard-0.3.0.min.js"></script>
-  <script src="libs/chess.min.js"></script>
-  
-  <!-- Включване на основния модул main.js -->
+  <!-- ЗАДЪЛЖИТЕЛНО -->
   <script type="module" src="js/main.js"></script>
-
 </body>
 </html>
