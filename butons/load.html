@@ -1,42 +1,22 @@
+<!-- load.html -->
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>Зареди партията</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>
-    body {
-      background: orange;
-      color: #eee;
-      font-family: sans-serif;
-      padding: 1em;
-    }
-
-    button {
-      background: #1f1f1f;
-      color: #eee;
-      border: 1px solid #444;
-      padding: 0.5em 1em;
-      cursor: pointer;
-      font-size: 1em;
-      border-radius: 6px;
-    }
-
-    #board-wrapper, #buttons-wrapper {
-      margin-bottom: 1em;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Зареждане на партия</title>
 </head>
 <body>
-  <h1>Veso PGN Viewer</h1>
+  <button id="loadBtn">Зареди партията</button>
 
-  <div id="board-wrapper"></div>
-
-  <div id="buttons-wrapper">
-    <button id="load-button">Зареди партията</button>
-  </div>
-
-  <script type="module" src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('loadBtn');
+      btn?.addEventListener('click', () => {
+        alert('🟢 Партидата ще бъде заредена...');
+        // Тук може да викаш функция от родителския прозорец:
+        // parent.loadPGN(pgnData);
+      });
+    });
+  </script>
 </body>
 </html>
