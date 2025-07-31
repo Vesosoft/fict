@@ -1,5 +1,19 @@
 // main
 // js/main.js
+
+// Вариант с async/await:
+export default async function loadHTML(url, selector) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Грешка при зареждане на ${url}: ${response.status}`);
+    }
+    const html = await response.text();
+    document.querySelector(selector).innerHTML = html;
+  } catch (error) {
+    console.error("Грешка при зареждане на HTML:", error);
+  }
+}
 import loadHTML from '../js/utils/loadHTML.js';
 //import { loadHTML } from '../js/utils/loadHTML.js'
 //import { loadPGN } from '../js/utils/loadPGN.js'
@@ -79,6 +93,20 @@ async function initialize() {
 }
 
 window.addEventListener('DOMContentLoaded', initialize);
+document.getElementById("load-pgn-button").addEventListener("click", async () => {
+  try {
+    const html = await loadHTML("pgn/loadPGN.html"); // или друг път
+    const pgn = extractPGN(html); // виж по-долу функцията
+    game.load_pgn(pgn);
+    board.position(game.fen());
+  } catch (e) {
+    console.error("Неуспешно зареждане на партия:", e);
+  }
+});
+function extractPGN(html) {
+  const match = html.match(/<pre.*?>([\s\S]*?)<\/pre>/);
+  return match ? match[1].trim() : "";
+}
 
 /*import { setupLoadButton } from './js/load.js';
 import loadHTML from './js/utils/loadHTML.js';
