@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbán – Trump – Putin | Russian terror in Ukraine</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #111;
+    color: #eee;
+    padding: 2em;
+    line-height: 1.6;
+  }
+  .lang-selector {
+    margin-bottom: 1em;
+  }
+  select {
+    background: #222;
+    color: #eee;
+    border: 1px solid #555;
+    padding: 0.4em;
+    border-radius: 6px;
+  }
+  button {
+    background: #222;
+    color: #ffcc00;
+    border: 1px solid #555;
+    padding: 0.4em 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1em;
+  }
+  button:hover {
+    background: #333;
+  }
+  .text-block { display: none; }
+  .active { display: block; }
+  h2 { color: #ffcc00; margin-top: 0.5em; }
+  .hashtags {
+    color: #aaa;
+    font-size: 0.9em;
+    margin-top: 1em;
+  }
+  #note-area {
+    display: none;
+    margin-top: 1em;
+  }
+  textarea {
+    width: 100%;
+    height: 120px;
+    background: #222;
+    color: #eee;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.6em;
+    resize: vertical;
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-selector">
+  🌍 <label for="language">Language:</label>
+  <select id="language">
+    <option value="bg">🇧🇬 Български</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="ua">🇺🇦 Українська</option>
+    <option value="cz">🇨🇿 Čeština</option>
+    <option value="pl">🇵🇱 Polski</option>
+  </select>
+</div>
+
+<!-- 🇧🇬 Bulgarian -->
+<div id="text-bg" class="text-block active">
+  <h2>🇭🇺 „Ми готові.“</h2>
+  <p>Орбан междувременно заяви, че планираната среща между Тръмп и Путин в Будапеща е <i>чудесна новина за миролюбивите народи на света.</i></p>
+  <p>☑️ На другаря Орбан няма да му е за пръв път.<br>
+  Помня визитата на Нетаняху — също издирван от Международния наказателен съд.</p>
+  <p class="hashtags">#RussianTerrorInUkraine #Орбан #Тръмп #Путин #Будапеща #ICC</p>
+</div>
+
+<!-- 🇬🇧 English -->
+<div id="text-en" class="text-block">
+  <h2>🇭🇺 "We are ready."</h2>
+  <p>Orban meanwhile declared that the planned meeting between Trump and Putin in Budapest is <i>great news for the peace-loving nations of the world.</i></p>
+  <p>☑️ It wouldn’t be the first time for comrade Orban.<br>
+  I remember Netanyahu’s visit — also wanted by the International Criminal Court.</p>
+  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapest #ICC</p>
+</div>
+
+<!-- 🇺🇦 Ukrainian -->
+<div id="text-ua" class="text-block">
+  <h2>🇭🇺 «Ми готові».</h2>
+  <p>Орбан тим часом заявив, що запланована зустріч Трампа і Путіна в Будапешті — <i>чудова новина для миролюбних народів світу.</i></p>
+  <p>☑️ Для товариша Орбана це не вперше.<br>
+  Пам’ятаю візит Нетаньяху — теж розшукуваного Міжнародним кримінальним судом.</p>
+  <p class="hashtags">#RussianTerrorInUkraine #Орбан #Трамп #Путін #Будапешт #ICC</p>
+</div>
+
+<!-- 🇨🇿 Czech -->
+<div id="text-cz" class="text-block">
+  <h2>🇭🇺 „Jsme připraveni.“</h2>
+  <p>Orbán mezitím prohlásil, že plánované setkání Trumpa a Putina v Budapešti je <i>skvělou zprávou pro mírumilovné národy světa.</i></p>
+  <p>☑️ Pro soudruha Orbána to nebude poprvé.<br>
+  Pamatuji si návštěvu Netanjahua — také hledaného Mezinárodním trestním soudem.</p>
+  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapešť #ICC</p>
+</div>
+
+<!-- 🇵🇱 Polish -->
+<div id="text-pl" class="text-block">
+  <h2>🇭🇺 „Jesteśmy gotowi.“</h2>
+  <p>Orban tymczasem oświadczył, że planowane spotkanie Trumpa i Putina w Budapeszcie to <i>wspaniała wiadomość dla miłujących pokój narodów świata.</i></p>
+  <p>☑️ Dla towarzysza Orbana to nie pierwszy raz.<br>
+  Pamiętam wizytę Netanjahu — również poszukiwanego przez Międzynarodowy Trybunał Karny.</p>
+  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapeszt #ICC</p>
+</div>
+
+<!-- Добави бележка -->
+<button id="add-btn">➕ Добави</button>
+<div id="note-area">
+  <textarea id="note" placeholder="Пиши или постави текст тук..."></textarea>
+</div>
+
+<script>
+  const select = document.getElementById('language');
+  const blocks = document.querySelectorAll('.text-block');
+  const addBtn = document.getElementById('add-btn');
+  const noteArea = document.getElementById('note-area');
+  const textarea = document.getElementById('note');
+
+  // Load saved language
+  const savedLang = localStorage.getItem('lang');
+  if (savedLang) {
+    select.value = savedLang;
+    switchLang(savedLang);
+  }
+
+  select.addEventListener('change', e => {
+    const lang = e.target.value;
+    switchLang(lang);
+    localStorage.setItem('lang', lang);
+  });
+
+  function switchLang(lang) {
+    blocks.forEach(b => b.classList.remove('active'));
+    const active = document.getElementById('text-' + lang);
+    if (active) active.classList.add('active');
+  }
+
+  // Toggle note area
+  addBtn.addEventListener('click', () => {
+    noteArea.style.display = noteArea.style.display === 'block' ? 'none' : 'block';
+    if (noteArea.style.display === 'block') textarea.focus();
+  });
+</script>
+
+</body>
+  </html>
