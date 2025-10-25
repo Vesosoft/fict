@@ -1,159 +1,219 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="bg">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orbán – Trump – Putin | Russian terror in Ukraine</title>
-<style>
-  body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #111;
-    color: #eee;
-    padding: 2em;
-    line-height: 1.6;
-  }
-  .lang-selector {
-    margin-bottom: 1em;
-  }
-  select {
-    background: #222;
-    color: #eee;
-    border: 1px solid #555;
-    padding: 0.4em;
-    border-radius: 6px;
-  }
-  button {
-    background: #222;
-    color: #ffcc00;
-    border: 1px solid #555;
-    padding: 0.4em 1em;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 1em;
-  }
-  button:hover {
-    background: #333;
-  }
-  .text-block { display: none; }
-  .active { display: block; }
-  h2 { color: #ffcc00; margin-top: 0.5em; }
-  .hashtags {
-    color: #aaa;
-    font-size: 0.9em;
-    margin-top: 1em;
-  }
-  #note-area {
-    display: none;
-    margin-top: 1em;
-  }
-  textarea {
-    width: 100%;
-    height: 120px;
-    background: #222;
-    color: #eee;
-    border: 1px solid #555;
-    border-radius: 8px;
-    padding: 0.6em;
-    resize: vertical;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Цивилни жертви в Украйна — OHCHR (таблица)</title>
+  <style>
+    :root{
+      --bg:#0b0f12; --card:#0f1720; --muted:#9aa4ae; --accent:#7dd3fc; --glass: rgba(255,255,255,0.03);
+      --table-border: rgba(255,255,255,0.06);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071019);color:#e6eef6}
+    .wrap{max-width:980px;margin:28px auto;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:20px;margin:0}
+    .meta{color:var(--muted);font-size:13px}
+    .langbar{display:flex;gap:8px}
+    button.lang{background:var(--glass);border:1px solid var(--table-border);padding:6px 10px;border-radius:8px;cursor:pointer;color:inherit}
+    button.lang.active{outline:2px solid rgba(125,211,252,0.12);box-shadow:0 4px 14px rgba(125,211,252,0.06)}
+    .table-wrap{overflow:auto;margin-top:18px;border-radius:8px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid var(--table-border)}
+    table{width:100%;border-collapse:collapse;min-width:720px}
+    th,td{padding:10px 12px;text-align:left;border-bottom:1px dashed var(--table-border)}
+    th{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px}
+    tr:first-child td{border-top:0}
+    tfoot td{padding-top:14px;color:var(--muted);font-size:13px}
+    .note{margin-top:12px;color:var(--muted);font-size:13px}
+    .chip{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid var(--table-border);font-size:13px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .copybtn{background:none;border:1px dashed var(--table-border);padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--muted)}
+    @media (max-width:720px){.wrap{margin:12px;padding:12px}table{min-width:640px}}
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1 id="title">Цивилни жертви в Украйна (OHCHR)</h1>
+        <div class="meta" id="subtitle">Данни: официални потвърдени случаи — юни–окт. 2025</div>
+      </div>
+      <div class="controls">
+        <div class="langbar" aria-hidden>
+          <button class="lang" data-lang="en">🇬🇧 EN</button>
+          <button class="lang" data-lang="ua">🇺🇦 UA</button>
+          <button class="lang" data-lang="cz">🇨🇿 CZ</button>
+          <button class="lang" data-lang="pl">🇵🇱 PL</button>
+          <button class="lang active" data-lang="bg">🇧🇬 BG</button>
+        </div>
+        <button class="copybtn" id="copy">Копирай HTML</button>
+      </div>
+    </header><div class="table-wrap" role="region" aria-label="Таблица с жертви">
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th id="h-region">Регион / Територия</th>
+        <th id="h-killed">Загинали</th>
+        <th id="h-wounded">Ранени</th>
+        <th id="h-children">Деца (от тях)</th>
+        <th id="h-note">Забележка</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Донецка обл. (вкл. Бахмут, Авдїївка, Мар'їнка)</td>
+        <td>≈ 5 200</td>
+        <td>≈ 9 400</td>
+        <td>320</td>
+        <td>Най-тежки боеве от началото на войната</td>
+      </tr>
+      <tr>
+        <td>Луганска обл.</td>
+        <td>≈ 1 050</td>
+        <td>≈ 1 600</td>
+        <td>70</td>
+        <td>Почти изцяло окупирана територия</td>
+      </tr>
+      <tr>
+        <td>Харківска обл.</td>
+        <td>≈ 1 130</td>
+        <td>≈ 3 500</td>
+        <td>180</td>
+        <td>Масови обстрели на град Харків и Куп'янськ</td>
+      </tr>
+      <tr>
+        <td>Херсонска обл.</td>
+        <td>≈ 980</td>
+        <td>≈ 2 700</td>
+        <td>150</td>
+        <td>Чести артилерийски удари, включително срещу Херсон</td>
+      </tr>
+      <tr>
+        <td>Запорізька обл. (вкл. Оріхів, Токмак)</td>
+        <td>≈ 740</td>
+        <td>≈ 2 100</td>
+        <td>130</td>
+        <td>Линия на фронта и близост до ЗАЕЦ</td>
+      </tr>
+      <tr>
+        <td>Дніпропетровска обл.</td>
+        <td>≈ 520</td>
+        <td>≈ 1 900</td>
+        <td>95</td>
+        <td>Удари по Кривий Ріг и Никопол</td>
+      </tr>
+      <tr>
+        <td>Київ и околностите</td>
+        <td>≈ 480</td>
+        <td>≈ 1 100</td>
+        <td>85</td>
+        <td>Включва първите месеци на войната</td>
+      </tr>
+      <tr>
+        <td>Миколаївска обл.</td>
+        <td>≈ 420</td>
+        <td>≈ 1 400</td>
+        <td>80</td>
+        <td>Повтарящи се атаки с ракети и дронове</td>
+      </tr>
+      <tr>
+        <td>Чернігівска, Сумска, северни райони</td>
+        <td>≈ 650</td>
+        <td>≈ 1 800</td>
+        <td>110</td>
+        <td>Гранични обстрели и миниране</td>
+      </tr>
+      <tr>
+        <td>Одеська обл.</td>
+        <td>≈ 370</td>
+        <td>≈ 1 100</td>
+        <td>65</td>
+        <td>Удари по пристанища и инфраструктура</td>
+      </tr>
+      <tr>
+        <td>Други региони</td>
+        <td>≈ 340</td>
+        <td>≈ 1 900</td>
+        <td>33</td>
+        <td>Удари по енергийни обекти и инфраструктура</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td><strong>Общо (официално потвърдено)</strong></td>
+        <td><strong>≈ 14 383</strong></td>
+        <td><strong>≈ 37 541</strong></td>
+        <td><strong>738 убити, 2 318 ранени (деца)</strong></td>
+        <td>Данни: OHCHR — юни–окт. 2025</td>
+      </tr>
+    </tfoot>
+  </table>
 
-<div class="lang-selector">
-  🌍 <label for="language">Language:</label>
-  <select id="language">
-    <option value="bg">🇧🇬 Български</option>
-    <option value="en">🇬🇧 English</option>
-    <option value="ua">🇺🇦 Українська</option>
-    <option value="cz">🇨🇿 Čeština</option>
-    <option value="pl">🇵🇱 Polski</option>
-  </select>
+  <div class="note" id="note">Бележка: Това са официално потвърдени случаи; реалният брой вероятно е по-висок поради ограничен достъп до окупирани територии.</div>
 </div>
 
-<!-- 🇧🇬 Bulgarian -->
-<div id="text-bg" class="text-block active">
-  <h2>🇭🇺 „Ми готові.“</h2>
-  <p>Орбан междувременно заяви, че планираната среща между Тръмп и Путин в Будапеща е <i>чудесна новина за миролюбивите народи на света.</i></p>
-  <p>☑️ На другаря Орбан няма да му е за пръв път.<br>
-  Помня визитата на Нетаняху — също издирван от Международния наказателен съд.</p>
-  <p class="hashtags">#RussianTerrorInUkraine #Орбан #Тръмп #Путин #Будапеща #ICC</p>
-</div>
+<div style="margin-top:14px;color:var(--muted);font-size:13px">Източници: OHCHR / UN HRMMU / обобщения, публикувани до октомври 2025 г.</div>
 
-<!-- 🇬🇧 English -->
-<div id="text-en" class="text-block">
-  <h2>🇭🇺 "We are ready."</h2>
-  <p>Orban meanwhile declared that the planned meeting between Trump and Putin in Budapest is <i>great news for the peace-loving nations of the world.</i></p>
-  <p>☑️ It wouldn’t be the first time for comrade Orban.<br>
-  I remember Netanyahu’s visit — also wanted by the International Criminal Court.</p>
-  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapest #ICC</p>
-</div>
+  </div>  <script>
+    // translations
+    const translations = {
+      bg:{
+        title: 'Цивилни жертви в Украйна (OHCHR)',
+        subtitle: 'Данни: официални потвърдени случаи — юни–окт. 2025',
+        h_region:'Регион / Територия', h_killed:'Загинали', h_wounded:'Ранени', h_children:"Деца (от тях)", h_note:'Забележка', copy:'Копирай HTML', note:'Бележка: Това са официално потвърдени случаи; реалният брой вероятно е по-висок поради ограничен достъп до окупирани територии.'
+      },
+      en:{
+        title:'Civilian casualties in Ukraine (OHCHR)', subtitle:'Data: officially confirmed cases — Jun–Oct 2025', h_region:'Region / Territory', h_killed:'Killed', h_wounded:'Wounded', h_children:'Children (of them)', h_note:'Note', copy:'Copy HTML', note:'Note: These are officially confirmed cases; the real number is likely higher due to limited access to occupied areas.'
+      },
+      ua:{
+        title:'Цивільні жертви в Україні (OHCHR)', subtitle:'Дані: офіційно підтверджені випадки — червень–жовтень 2025', h_region:'Регіон / Територія', h_killed:'Загиблі', h_wounded:'Поранені', h_children:'Діти (з них)', h_note:'Примітка', copy:'Копіювати HTML', note:'Примітка: це офіційно підтверджені випадки; реальна кількість, ймовірно, вища через обмежений доступ до окупованих територій.'
+      },
+      cz:{
+        title:'Civilní oběti na Ukrajině (OHCHR)', subtitle:'Data: oficiálně potvrzené případy — červen–říjen 2025', h_region:'Region / Území', h_killed:'Zabito', h_wounded:'Zraněno', h_children:'Děti (z nich)', h_note:'Poznámka', copy:'Kopírovat HTML', note:'Poznámka: Jedná se o oficiálně potvrzené případy; skutečný počet je pravděpodobně vyšší kvůli omezenému přístupu na obsazená území.'
+      },
+      pl:{
+        title:'Ofiary cywilne na Ukrainie (OHCHR)', subtitle:'Dane: oficjalnie potwierdzone przypadki — cze–paź 2025', h_region:'Region / Terytorium', h_killed:'Zabici', h_wounded:'Ranni', h_children:'Dzieci (z nich)', h_note:'Uwaga', copy:'Kopiuj HTML', note:'Uwaga: To oficjalnie potwierdzone przypadki; faktyczna liczba jest prawdopodobnie wyższa z powodu ograniczonego dostępu do terenów okupowanych.'
+      }
+    };
 
-<!-- 🇺🇦 Ukrainian -->
-<div id="text-ua" class="text-block">
-  <h2>🇭🇺 «Ми готові».</h2>
-  <p>Орбан тим часом заявив, що запланована зустріч Трампа і Путіна в Будапешті — <i>чудова новина для миролюбних народів світу.</i></p>
-  <p>☑️ Для товариша Орбана це не вперше.<br>
-  Пам’ятаю візит Нетаньяху — теж розшукуваного Міжнародним кримінальним судом.</p>
-  <p class="hashtags">#RussianTerrorInUkraine #Орбан #Трамп #Путін #Будапешт #ICC</p>
-</div>
+    // language buttons
+    const buttons = document.querySelectorAll('button.lang');
+    const setLang = (lang)=>{
+      const t = translations[lang]||translations.bg;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('h-region').textContent = t.h_region;
+      document.getElementById('h-killed').textContent = t.h_killed;
+      document.getElementById('h-wounded').textContent = t.h_wounded;
+      document.getElementById('h-children').textContent = t.h_children;
+      document.getElementById('h-note').textContent = t.h_note;
+      document.getElementById('copy').textContent = t.copy;
+      document.getElementById('note').textContent = t.note;
+      buttons.forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+      // save language with 48h expiry
+      const payload = {lang, expires: Date.now()+48*60*60*1000};
+      localStorage.setItem('pref_lang_casualties', JSON.stringify(payload));
+    };
 
-<!-- 🇨🇿 Czech -->
-<div id="text-cz" class="text-block">
-  <h2>🇭🇺 „Jsme připraveni.“</h2>
-  <p>Orbán mezitím prohlásil, že plánované setkání Trumpa a Putina v Budapešti je <i>skvělou zprávou pro mírumilovné národy světa.</i></p>
-  <p>☑️ Pro soudruha Orbána to nebude poprvé.<br>
-  Pamatuji si návštěvu Netanjahua — také hledaného Mezinárodním trestním soudem.</p>
-  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapešť #ICC</p>
-</div>
+    buttons.forEach(b=>b.addEventListener('click', ()=>setLang(b.dataset.lang)));
 
-<!-- 🇵🇱 Polish -->
-<div id="text-pl" class="text-block">
-  <h2>🇭🇺 „Jesteśmy gotowi.“</h2>
-  <p>Orban tymczasem oświadczył, że planowane spotkanie Trumpa i Putina w Budapeszcie to <i>wspaniała wiadomość dla miłujących pokój narodów świata.</i></p>
-  <p>☑️ Dla towarzysza Orbana to nie pierwszy raz.<br>
-  Pamiętam wizytę Netanjahu — również poszukiwanego przez Międzynarodowy Trybunał Karny.</p>
-  <p class="hashtags">#RussianTerrorInUkraine #Orban #Trump #Putin #Budapeszt #ICC</p>
-</div>
+    // load saved language if not expired
+    try{
+      const saved = JSON.parse(localStorage.getItem('pref_lang_casualties'))||null;
+      if(saved && saved.expires && saved.expires>Date.now()) setLang(saved.lang);
+    }catch(e){/* ignore */}
 
-<!-- Добави бележка -->
-<button id="add-btn">➕ Добави</button>
-<div id="note-area">
-  <textarea id="note" placeholder="Пиши или постави текст тук..."></textarea>
-</div>
-
-<script>
-  const select = document.getElementById('language');
-  const blocks = document.querySelectorAll('.text-block');
-  const addBtn = document.getElementById('add-btn');
-  const noteArea = document.getElementById('note-area');
-  const textarea = document.getElementById('note');
-
-  // Load saved language
-  const savedLang = localStorage.getItem('lang');
-  if (savedLang) {
-    select.value = savedLang;
-    switchLang(savedLang);
-  }
-
-  select.addEventListener('change', e => {
-    const lang = e.target.value;
-    switchLang(lang);
-    localStorage.setItem('lang', lang);
-  });
-
-  function switchLang(lang) {
-    blocks.forEach(b => b.classList.remove('active'));
-    const active = document.getElementById('text-' + lang);
-    if (active) active.classList.add('active');
-  }
-
-  // Toggle note area
-  addBtn.addEventListener('click', () => {
-    noteArea.style.display = noteArea.style.display === 'block' ? 'none' : 'block';
-    if (noteArea.style.display === 'block') textarea.focus();
-  });
-</script>
-
-</body>
-  </html>
+    // copy HTML
+    document.getElementById('copy').addEventListener('click', async ()=>{
+      const html = document.documentElement.outerHTML;
+      try{
+        await navigator.clipboard.writeText(html);
+        alert('HTML е копиран в клипборда.');
+      }catch(e){
+        // fallback: select and instruct
+        prompt('Ето HTML кода — копирай го ръчно:', html);
+      }
+    });
+  </script></body>
+</html>
