@@ -1,0 +1,67 @@
+<!doctype html>
+
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ден на мълчание за Киев</title>
+<style>
+  :root{
+    --bg:#0b0f12; --text:#e6eef6; --accent:#7dd3fc; --glass: rgba(0,0,0,0.4);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{margin:0;height:100%;background:#0b0f12;color:var(--text);display:flex;align-items:center;justify-content:center;}
+  body{background:url('https://upload.wikimedia.org/wikipedia/commons/5/55/Kyiv_center_ruins_2022.jpg') no-repeat center/cover;}
+  .overlay{background:var(--glass);padding:30px;border-radius:12px;max-width:720px;text-align:center;}
+  h1{margin:0 0 12px;font-size:26px;}
+  p{margin:8px 0;font-size:16px;line-height:1.5;}
+  .langbar{display:flex;justify-content:center;gap:10px;margin-top:16px;}
+  button.lang{background:none;border:1px solid rgba(255,255,255,0.2);padding:6px 10px;border-radius:8px;color:var(--text);cursor:pointer}
+  button.lang.active{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="overlay">
+  <h1 id="title">Ден на мълчание за Киев</h1>
+  <p id="text">24 октомври. Градът преживя нова нощ на удари и огън.<br>Сред развалините има живи — но няма покой.<br>Това не е новина. Това е рана, която не зараства.<br>Нека този ден бъде без думи. Само с памет.</p>
+  <div class="langbar">
+    <button class="lang active" data-lang="bg">🇧🇬 BG</button>
+    <button class="lang" data-lang="en">🇬🇧 EN</button>
+    <button class="lang" data-lang="ua">🇺🇦 UA</button>
+    <button class="lang" data-lang="cz">🇨🇿 CZ</button>
+    <button class="lang" data-lang="pl">🇵🇱 PL</button>
+    <p style="margin-top:12px;color:#cfd6db;font-size:14px;">Коментар: Между тъгата и сарказма — кратък ред, който напомня, че шумът често служи за прикритие на страданието и пропагандата.</p>
+  <p style="margin-top:8px;color:#c3d7e0;font-size:13px;">🇬🇧 Comment: Between sorrow and sarcasm — a short line reminding that noise often masks suffering and propaganda.</p>
+  <p style="margin-top:6px;color:#c3e8d9;font-size:13px;">🇺🇦 Коментар: Між сумом і сарказмом — короткий рядок, що нагадує, що шум часто маскує страждання і пропаганду.</p>
+  <p style="margin-top:6px;color:#e6e0d9;font-size:13px;">🇨🇿 Komentář: Mezi smutkem a sarkasmem — krátká věta, která připomíná, že hluk často maskuje utrpení a propagandu.</p>
+  <p style="margin-top:6px;color:#f0d6d6;font-size:13px;">🇵🇱 Komentarz: Między smutkiem a sarkazmem — krótki wers przypominający, że hałas często maskuje cierpienie i propagandę.</p>
+</div>
+</body>
+</html>
+<script>
+const texts = {
+  bg:{title:'Ден на мълчание за Киев',text:'24 октомври. Градът преживя нова нощ на удари и огън.<br>Сред развалините има живи — но няма покой.<br>Това не е новина. Това е рана, която не зараства.<br>Нека този ден бъде без думи. Само с памет.'},
+  en:{title:'A Day of Silence for Kyiv',text:'October 24. The city endured another night of strikes and fire.<br>Among the ruins, life remains — but no peace.<br>This is not news. It is a wound that does not heal.<br>Let this day pass without words. Only memory.'},
+  ua:{title:'День мовчання для Києва',text:'24 жовтня. Місто пережило ще одну ніч ударів і вогню.<br>Серед руїн є живі — але немає спокою.<br>Це не новина. Це рана, що не загоюється.<br>Нехай цей день буде без слів. Лише пам’ять.'},
+  cz:{title:'Den ticha pro Kyjev',text:'24. října. Město přežilo další noc úderů a ohně.<br>Mezi troskami zůstává život — ale žádný klid.<brTohle není zpráva. Je to rána, která se nehojí.<br>Ať tento den proběhne bez slov. Jen s pamětí.'},
+  pl:{title:'Dzień milczenia dla Kijowa',text:'24 października. Miasto przeżyło kolejną noc uderzeń i ognia.<br>Wśród ruin pozostało życie — ale nie ma spokoju.<br>To nie jest wiadomość. To rana, która się nie goi.<br>Niech ten dzień upłynie bez słów. Tylko z pamięcią.'}
+};
+const buttons=document.querySelectorAll('button.lang');
+buttons.forEach(b=>b.addEventListener('click',()=>{
+  const lang=b.dataset.lang;
+  document.getElementById('title').innerHTML=texts[lang].title;
+  document.getElementById('text').innerHTML=texts[lang].text;
+  buttons.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  localStorage.setItem('kyiv_silence_lang',lang);
+}));
+const saved=localStorage.getItem('kyiv_silence_lang');
+if(saved && texts[saved]){
+  document.getElementById('title').innerHTML=texts[saved].title;
+  document.getElementById('text').innerHTML=texts[saved].text;
+  buttons.forEach(x=>x.classList.remove('active'));
+  document.querySelector('button[data-lang="'+saved+'"]').classList.add('active');
+}
+</script>
+</body>
+</html>
